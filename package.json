@@ -1,0 +1,43 @@
+{
+  "name": "Journal.it",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "npm run webpack",
+    "webpack": "webpack",
+    "nodemon:dev": "nodemon server.js --ignore src/ --ignore dist/",
+    "webpack:dev": "npm run webpack -- --mode=development --watch",
+    "start:dev": "npm run webpack:dev & nodemon server.js --ignore src/ --ignore dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marfuen/Journal.it.git"
+  },
+  "babel": {
+    "presets": [
+      "react",
+      "stage-2"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marfuen/Journal.it/issues"
+  },
+  "homepage": "https://github.com/Marfuen/Journal.it#readme",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "express": "^4.17.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2"
+  }
+}
