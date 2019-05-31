@@ -2,10 +2,19 @@ const conn = require('../conn');
 const { Sequelize } = conn;
 
 module.exports = conn.define('journal', {
-  message: {
-    type: Sequelize.TEXT
+  content: {
+    type: Sequelize.TEXT,
   },
-  geotag: {
-    type:
-  }
+  latitude: {
+    type: Sequelize.DECIMAL(11, 8),
+  },
+  longitude: {
+    type: Sequelize.DECIMAL(11, 8),
+  },
+  likes: {
+    type: Sequelize.INTEGER,
+  },
+  bitcoinAddress: {
+    type: Sequelize.STRING,
+  },
 });
