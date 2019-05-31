@@ -2,14 +2,14 @@
   "name": "Journal.it",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "./server/server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node ./server/server.js",
     "postinstall": "npm run webpack",
     "webpack": "webpack",
-    "nodemon:dev": "nodemon server.js --ignore src/ --ignore dist/",
+    "nodemon:dev": "nodemon ./server/server.js --ignore src/ --ignore dist/",
     "webpack:dev": "npm run webpack -- --mode=development --watch",
-    "start:dev": "npm run webpack:dev & nodemon server.js --ignore src/ --ignore dist/"
+    "start:dev": "npm run webpack:dev & nodemon ./server/server.js --ignore src/ --ignore dist/"
   },
   "repository": {
     "type": "git",
