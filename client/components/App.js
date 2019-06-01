@@ -1,9 +1,14 @@
+//libraries
 import React, {Component} from 'react';
-import Entry from './Entry';
-import Nav from './Nav';
 import {Route} from 'react-router-dom';
 import axios from 'axios';
 
+//components
+import Home from './Home';
+import Entry from './Entry';
+import Nav from './Nav';
+
+//styles
 import '../styles/App.css';
 
 class App extends Component {
@@ -15,7 +20,7 @@ class App extends Component {
     return (
       <div>
         <Nav />
-        <Route exact path="/" component={Entry} />
+        <Route exact path="/" component={Home} />
         {/* <Route
           exact
           path="/summary"
