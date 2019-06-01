@@ -10,11 +10,11 @@ const Nav = props => {
         <h1 className="logo">Journal.it</h1>
       </div>
       <div className="menu-container">
-        <NavLink exact to="/" className="link">
-          <h4 style={{marginLeft: '10px', marginRight: '10px'}}>Entry</h4>
+      <NavLink exact to="/" className="link">
+          <h4 style={{marginLeft: '10px', marginRight: '10px'}}>Home</h4>
         </NavLink>
-        <NavLink to="/summary" className="link">
-          <h4 style={{marginLeft: '10px', marginRight: '10px'}}>Summary</h4>
+        <NavLink exact to="/entry" className="link">
+          <h4 style={{marginLeft: '10px', marginRight: '10px'}}>Entry</h4>
         </NavLink>
         <NavLink to="/map" className="link">
           <h4 style={{marginLeft: '10px', marginRight: '10px'}}>Map</h4>
