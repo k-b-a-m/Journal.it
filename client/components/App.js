@@ -1,19 +1,24 @@
 //libraries
-import React, {Component} from 'react';
-import {Route} from 'react-router-dom';
-import axios from 'axios';
-
+import React, { Component } from "react";
+import { Route } from "react-router-dom";
+import axios from "axios";
+import { fetchEntries } from "../redux/store";
+import { connect } from "react-redux";
 //components
-import Home from './Home';
-import Entry from './Entry';
-import Nav from './Nav';
+import Home from "./Home";
+import Entry from "./Entry";
+import Nav from "./Nav";
 
 //styles
-import '../styles/App.css';
+import "../styles/App.css";
 
 class App extends Component {
   constructor() {
     super();
+  }
+
+  componentDidMount() {
+    this.props.fetchEntries();
   }
 
   render() {
@@ -36,4 +41,7 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(
+  null,
+  { fetchEntries }
+)(App);

@@ -19,6 +19,7 @@ export const fetchEntries = () => async dispatch => {
   try {
     const response = await axios.get('/entries');
     const entries = response.data;
+    console.log(entries)
     return dispatch(setEntries(entries));
   } catch (err) {
     throw new Error(err);
@@ -38,13 +39,15 @@ export const addEntryThunk = entry => {
 
 //REDUCER
 
-const entries = (state = [], action) => {
+const entriesReducer = (state = [], action) => {
   switch (action.type) {
     case SET_ENTRIES:
-      return action.entries;
+      return [...action.entries];
     default:
       return state;
   }
 };
 
-export const store = createStore(entries, applyMiddleware(thunkMiddleware));
+const store = createStore(entriesReducer, applyMiddleware(thunkMiddleware));
+
+export default store
