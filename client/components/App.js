@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import JournalEntry from './JournalEntry';
+import Entry from './Entry';
 import Nav from './Nav';
 import Summary from './Summary';
 import Map from './Map';

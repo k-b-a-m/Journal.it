@@ -1,0 +1,42 @@
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top:0;
+  position:sticky;
+  z-index: 9999;
+}
+
+.menu-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.border {
+  border-top: solid 1px lightgray;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.link:hover {
+  text-decoration: none;
+  color: black;
+  border-bottom: 1px solid black;
+}
+
+.menu-container .active {
+  border-bottom: 1px solid black;
+}
+
+.logo {
+  font-size: 120px;
+  padding: 0px;
+  margin: 0px;
+}

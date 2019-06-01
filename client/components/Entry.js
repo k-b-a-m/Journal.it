@@ -3,7 +3,7 @@ import Nav from './Nav';
 
 import '../styles/JournalEntry.css';
 
-class JournalEntry extends Component {
+class Entry extends Component {
   constructor() {
     super();
     this.state = {
@@ -151,4 +151,4 @@ class JournalEntry extends Component {
   }
 }
 
-export default JournalEntry;
+export default Entry;
