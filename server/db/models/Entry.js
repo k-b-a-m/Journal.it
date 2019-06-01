@@ -1,7 +1,7 @@
 const conn = require('../conn');
 const { Sequelize } = conn;
 
-module.exports = conn.define('journal', {
+module.exports = conn.define('entry', {
   content: {
     type: Sequelize.TEXT,
   },
@@ -10,6 +10,9 @@ module.exports = conn.define('journal', {
   },
   longitude: {
     type: Sequelize.DECIMAL(11, 8),
+  },
+  dateTime: {
+    type: Sequelize.STRING,
   },
   likes: {
     type: Sequelize.INTEGER,
