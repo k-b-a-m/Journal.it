@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Nav from "./Nav";
-import addEntryThunk from "../redux/store";
+import {addEntryThunk, fetchEntries } from "../redux/store";
 import { connect } from 'react-redux'
 import "../styles/Entry.css";
 
@@ -84,4 +84,4 @@ class Entry extends Component {
   }
 }
 
-export default Entry;
+export default connect(null,{addEntryThunk, fetchEntries})(Entry);

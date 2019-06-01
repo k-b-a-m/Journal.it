@@ -47,4 +47,6 @@ const entries = (state = [], action) => {
   }
 };
 
-export const store = createStore(entries, applyMiddleware(thunkMiddleware));
+const store = createStore(entries, applyMiddleware(thunkMiddleware));
+
+export default store
