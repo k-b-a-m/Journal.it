@@ -39,14 +39,7 @@ class Entry extends Component {
 
   componentDidMount() {
     this.getDateTime();
-    // if (this.props.entries[0]) {
-    //   const submittedEntry = this.props.entries.filter(
-    //     entry => entry.date === this.state.date
-    //   )[0];
-    //   this.setState({submittedEntry});
-    // } else {
-    //   this.interval = setInterval(() => this.getDateTime(), 1000);
-    // }
+    this.interval = setInterval(() => this.getDateTime(), 1000);
   }
 
   // componentDidUpdate(prevProps, prevState) {
@@ -62,12 +55,31 @@ class Entry extends Component {
   //   }
   // }
 
-  // componentWillUnmount() {
-  //   clearInterval(this.interval);
-  // }
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
   render() {
-    return <div>hi</div>;
+    const {entry, date, time} = this.state;
+    return (
+      <div className="container-fluid entry-container">
+        <h3>Location</h3>
+        <div>
+          <form className="d-flex flex-column justify-content-center">
+            <input
+              type="text"
+              value={entry}
+              onChange={evt => this.handleChangeInput(evt)}
+            />
+          </form>
+        </div>
+        <button disabled={entry === ''}>Submit</button>
+        <div className="date-container">
+          <h3>{date}</h3>
+          <h3>{time}</h3>
+        </div>
+      </div>
+    );
   }
 }
 
