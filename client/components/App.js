@@ -18,8 +18,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { fetchEntries } = this.props;
-    const output = fetchEntries();
+    this.props.fetchEntries();
   }
 
   render() {
