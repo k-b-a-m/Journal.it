@@ -29,11 +29,14 @@
   },
   "homepage": "https://github.com/k-b-a-m/Journal.it#readme",
   "dependencies": {
+    "axios": "^0.19.0",
     "express": "^4.17.1",
     "pg": "^7.11.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "sequelize": "^5.8.7",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2"
