@@ -21,11 +21,8 @@ class App extends Component {
       <div>
         <Nav />
         <Route exact path="/" component={Home} />
-        {/* <Route
-          exact
-          path="/summary"
-          render={props => <Summary props={props} entries={entries} />}
-        />
+        <Route path="/entry" component={Entry} />
+        {/*
         <Route
           path="/summary/:word"
           render={props => <Summary props={props} entries={entries} />}
