@@ -11,7 +11,7 @@ const makeFakeEntry = () => {
 
 const entries = [];
 
-for (let i = 0; i < 5000; i++) {
+for (let i = 0; i < 50; i++) {
   entries.push(makeFakeEntry());
 }
 
