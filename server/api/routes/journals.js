@@ -1,37 +1,38 @@
 const router = require('express').Router();
-const Journal = require('../../db/models/Journal');
+const Entry = require('../../db/models/Entry');
 
 module.exports = router;
 
-router.get('/', (req,res,next) => {
-  Journal.findAll()
-    .then(journals => res.json(journals))
+router.get('/', (req, res, next) => {
+  Entry.findAll()
+    .then(entries => res.json(entries))
     .catch(next);
 });
 
-router.post('/', (req,res,next) => {
-  Journal.create(req.body)
-    .then(newJournal => res.json(newJournal))
+router.post('/', (req, res, next) => {
+  Entry.create(req.body)
+    .then(newEntry => res.json(newEntry))
     .catch(next);
 });
 
-router.put('/:id', (req,res,next) => {
-  Journal.update(
+router.put('/:id', (req, res, next) => {
+  Entry.update(
     {
       content: req.body.content,
     },
     {
-      returning: true, where: {
-        id: req.params.id
+      returning: true,
+      where: {
+        id: req.params.id,
       },
-    },
+    }
   )
-  .then(updatedJournal => res.json(updatedJournal))
-  .catch(next);
+    .then(updatedEntry => res.json(updatedEntry))
+    .catch(next);
 });
 
-router.delete('/:id', (req,res,next) => {
-  Journal.destroy({where: {id: req.params.id}})
-    .then(destroyedJournal => res.json(destroyedJournal))
+router.delete('/:id', (req, res, next) => {
+  Entry.destroy({ where: { id: req.params.id } })
+    .then(destroyedEntry => res.json(destroyedEntry))
     .catch(next);
 });

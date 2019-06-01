@@ -1,3 +1,3 @@
-const Journal = require('./Journal');
+const Entry = require('./Entry');
 
-module.exports = { Journal };
+module.exports = { Entry };
