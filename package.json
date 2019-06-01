@@ -2,18 +2,18 @@
   "name": "Journal.it",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "./server/server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node ./server/server.js",
     "postinstall": "npm run webpack",
     "webpack": "webpack",
-    "nodemon:dev": "nodemon server.js --ignore src/ --ignore dist/",
+    "nodemon:dev": "nodemon ./server/server.js --ignore src/ --ignore dist/",
     "webpack:dev": "npm run webpack -- --mode=development --watch",
-    "start:dev": "npm run webpack:dev & nodemon server.js --ignore src/ --ignore dist/"
+    "start:dev": "npm run webpack:dev & DATABASE_URL=postgres://localhost/journalit nodemon ./server/server.js --ignore src/ --ignore dist/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Marfuen/Journal.it.git"
+    "url": "git+https://github.com/k-b-a-m/Journal.it.git"
   },
   "babel": {
     "presets": [
@@ -25,18 +25,20 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Marfuen/Journal.it/issues"
+    "url": "https://github.com/k-b-a-m/Journal.it/issues"
   },
-  "homepage": "https://github.com/Marfuen/Journal.it#readme",
+  "homepage": "https://github.com/k-b-a-m/Journal.it#readme",
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "express": "^4.17.1",
+    "pg": "^7.11.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
+    "sequelize": "^5.8.7",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2"
   }
