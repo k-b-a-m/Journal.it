@@ -17,9 +17,8 @@ app.get('/app.js', (req, res, next) =>
 );
 
 // API Middleware
-app.use('/journals', require('./api/routes/journals'));
+app.use('/entries', require('./api/routes/entries'));
 
 // Parsing Middleware
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-
+app.use(express.urlencoded({ extended: true }));
