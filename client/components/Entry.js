@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {getCurrentCoordinates} from '../utils/utils';
 import Nav from './Nav';
 
 import '../styles/Entry.css';
@@ -11,6 +12,8 @@ class Entry extends Component {
       date: '',
       time: '',
       submittedEntry: '',
+      curLatitude: 0,
+      curLongitude: 0,
     };
   }
 
@@ -36,10 +39,13 @@ class Entry extends Component {
     const time = hours + ':' + minutes + ':' + seconds;
     this.setState({date, time});
   };
-
   componentDidMount() {
     this.getDateTime();
     this.interval = setInterval(() => this.getDateTime(), 1000);
+    navigator.geolocation.getCurrentPosition(success => this.setState({
+      curLatitude: success.coords.latitude,
+      curLongitude: success.coords.longitude,
+    }))
   }
 
   // componentDidUpdate(prevProps, prevState) {
@@ -77,6 +83,7 @@ class Entry extends Component {
         <div className="date-container">
           <h3>{date}</h3>
           <h3>{time}</h3>
+          {this.state.curLatitude ? <div><h5>Latitude: {this.state.curLatitude}</h5><h5>Longitude: {this.state.curLongitude}</h5></div> : <div/>}
         </div>
       </div>
     );

@@ -1,6 +1,7 @@
 //libraries
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
+import GoogleApiWrapper from './GoogleMaps';
 import axios from 'axios';
 
 //components
@@ -22,15 +23,15 @@ class App extends Component {
         <Nav />
         <Route exact path="/" component={Home} />
         <Route path="/entry" component={Entry} />
-        {/*
+{/*
         <Route
           path="/summary/:word"
           render={props => <Summary props={props} entries={entries} />}
-        />
+        /> */}
         <Route
           path="/map"
-          render={props => <Map props={props} entries={entries} />}
-        /> */}
+          render={props => <GoogleApiWrapper props={props} /*entries={entries}*/ />}
+        />
       </div>
     );
   }
