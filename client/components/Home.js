@@ -21,7 +21,7 @@ const Home = (props) => {
 
 const mapStateToProps = state => {
   return {
-    entries: state.entries
+    entries: state
   };
 };
 
