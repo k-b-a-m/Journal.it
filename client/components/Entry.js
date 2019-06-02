@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {getCurrentCoordinates} from '../utils/utils';
 import Nav from './Nav';
-
 import '../styles/Entry.css';
+import { addEntryThunk, fetchEntries } from "../redux/store";
+import { connect } from "react-redux";
+import "../styles/Entry.css";
 
 class Entry extends Component {
   constructor() {
@@ -18,17 +20,17 @@ class Entry extends Component {
   }
 
   handleChangeInput = evt => {
-    const {target} = evt;
-    this.setState({entry: target.value});
+    const { target } = evt;
+    this.setState({ entry: target.value });
   };
 
   getDateTime = () => {
     const today = new Date();
     const date =
       today.getFullYear() +
-      '-' +
+      "-" +
       (today.getMonth() + 1) +
-      '-' +
+      "-" +
       today.getDate();
     const hours =
       today.getHours() < 10 ? `0${today.getHours()}` : today.getHours();
@@ -36,8 +38,8 @@ class Entry extends Component {
       today.getMinutes() < 10 ? `0${today.getMinutes()}` : today.getMinutes();
     const seconds =
       today.getSeconds() < 10 ? `0${today.getSeconds()}` : today.getSeconds();
-    const time = hours + ':' + minutes + ':' + seconds;
-    this.setState({date, time});
+    const time = hours + ":" + minutes + ":" + seconds;
+    this.setState({ date, time });
   };
   componentDidMount() {
     this.getDateTime();
@@ -66,7 +68,7 @@ class Entry extends Component {
   }
 
   render() {
-    const {entry, date, time} = this.state;
+    const { entry, date, time } = this.state;
     return (
       <div className="container-fluid entry-container">
         <h3>Location</h3>
@@ -79,7 +81,7 @@ class Entry extends Component {
             />
           </form>
         </div>
-        <button disabled={entry === ''}>Submit</button>
+        <button disabled={entry === ""}>Submit</button>
         <div className="date-container">
           <h3>{date}</h3>
           <h3>{time}</h3>
@@ -90,4 +92,9 @@ class Entry extends Component {
   }
 }
 
-export default Entry;
+
+
+export default connect(
+  null,
+  { addEntryThunk, fetchEntries }
+)(Entry);
