@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Nav from "./Nav";
-import { addEntryThunk, fetchEntries } from "../redux/store";
-import { connect } from "react-redux";
+import {addEntryThunk, fetchEntries } from "../redux/store";
+import { connect } from 'react-redux'
 import "../styles/Entry.css";
 
 class Entry extends Component {
@@ -60,6 +60,7 @@ class Entry extends Component {
     clearInterval(this.interval);
   }
 
+  
   render() {
     const { entry, date, time } = this.state;
     return (
@@ -84,9 +85,4 @@ class Entry extends Component {
   }
 }
 
-
-
-export default connect(
-  null,
-  { addEntryThunk, fetchEntries }
-)(Entry);
+export default connect(null,{addEntryThunk, fetchEntries})(Entry);
