@@ -10,6 +10,9 @@ import Home from './Home';
 import Entry from './Entry';
 import Nav from './Nav';
 
+//redux
+import {fetchEntries} from '../redux/store';
+
 //styles
 import '../styles/App.css';
 
