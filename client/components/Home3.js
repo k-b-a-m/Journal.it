@@ -81,9 +81,15 @@ class Home3 extends Component {
     this.stats = stats;
     this.mount.appendChild(stats.dom);
     //
-    // window.addEventListener('resize', onWindowResize, false);
+    window.addEventListener('resize', this.onWindowResize, false);
     // document.addEventListener('mousemove', onDocumentMouseMove, false);
     this.animate()
+  }
+
+  onWindowResize=()=> {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize( window.innerWidth, window.innerHeight );
   }
 
   // componentWillUnmount() {
