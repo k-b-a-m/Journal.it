@@ -7,7 +7,7 @@ const Home = props => {
 
   return (
     <div>
-      <div className="container-fluid entry-container">
+      <div className="container">
         <h3>Location</h3>
         <ul>
           {entries.map(entry => (
@@ -30,3 +30,34 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(Home);
+
+
+
+  // getDateTime = () => {
+  //   const today = new Date();
+  //   const date =
+  //     today.getFullYear() +
+  //     "-" +
+  //     (today.getMonth() + 1) +
+  //     "-" +
+  //     today.getDate();
+  //   const hours =
+  //     today.getHours() < 10 ? `0${today.getHours()}` : today.getHours();
+  //   const minutes =
+  //     today.getMinutes() < 10 ? `0${today.getMinutes()}` : today.getMinutes();
+  //   const seconds =
+  //     today.getSeconds() < 10 ? `0${today.getSeconds()}` : today.getSeconds();
+  //   const time = hours + ":" + minutes + ":" + seconds;
+  //   this.setState({ date, time });
+  // };
+
+
+  // componentDidMount() {
+  //   this.getDateTime();
+  //   this.interval = setInterval(() => this.getDateTime(), 1000);
+  //   navigator.geolocation.getCurrentPosition(success => this.setState({
+  //     curLatitude: success.coords.latitude,
+  //     curLongitude: success.coords.longitude,
+  //   }))
+  // }
+  

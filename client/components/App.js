@@ -4,6 +4,7 @@ import {Route} from 'react-router-dom';
 import GoogleApiWrapper from './GoogleMaps';
 import axios from 'axios';
 import {connect} from 'react-redux';
+import {fetchEntries} from '../redux/store'
 
 //components
 import Home from './Home';
