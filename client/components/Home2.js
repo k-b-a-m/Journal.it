@@ -17,38 +17,29 @@ class Home2 extends Component {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 2000);
     const renderer = new THREE.WebGLRenderer({antialias: true});
-    renderer.setClearColor(0x00ff00);
+    renderer.setClearColor('black');
     renderer.setSize(width, height);
 
-    const light = new THREE.AmbientLight(0xffffff,0.5);
-    scene.add(light);
-    const light1 = new THREE.PointLight(0xffffff,0.5);
-    scene.add(light1);
-
     //rendering sphere
-    // const geometry = new THREE.SphereGeometry(10, 32, 32);
-    // const material = new THREE.MeshBasicMaterial({color: 'green'});
-    // const sphere = new THREE.Mesh(geometry, material);
-    // scene.add(sphere);
-    // camera.position.z = 3;
-
-    //rendering cube
-    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const material = new THREE.MeshLambertMaterial({color: 0xffff00});
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-    //move camera out to view cube
-    camera.position.z = 4;
+    const geometry = new THREE.SphereGeometry(100,32,32)
+    const material = new THREE.MeshLambertMaterial({color: 'green'});
+    const sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere);
+    camera.position.z = 800;
 
     //bind element to renderer
     this.scene = scene;
     this.camera = camera;
     this.renderer = renderer;
     this.material = material;
-    this.cube = cube;
-    this.light = light;
-    this.light1 = light1;
-    // this.sphere = sphere;
+    this.sphere = sphere;
+
+    //lights
+    const light = new THREE.AmbientLight(0x404040);
+    scene.add(light);
+    const light1 = new THREE.DirectionalLight(0xffffff, 2, 500);
+    light1.target = sphere
+    scene.add(light1);
 
     this.mount.appendChild(this.renderer.domElement);
     this.start();
@@ -71,14 +62,14 @@ class Home2 extends Component {
   };
 
   animate = () => {
-    this.cube.rotation.x += 0.01;
-    this.cube.rotation.y += 0.01;
+    this.sphere.rotation.x += 0.01;
+    this.sphere.rotation.y += 0.01;
 
     this.renderScene();
     this.frameId = window.requestAnimationFrame(this.animate);
   };
 
-  renderScene() {
+  renderScene = ()=> {
     this.renderer.render(this.scene, this.camera);
   }
 
