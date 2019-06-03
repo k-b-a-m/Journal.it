@@ -11,6 +11,10 @@ class Nav extends React.Component {
       });
   }
 
+  toggleEntryFormOpen = () =>{
+    this.setState({entryFormOpen: !this.state.entryFormOpen})
+  }
+
   render() {
     console.log(this.state.entryFormOpen);
     const { entryFormOpen } = this.state;
@@ -24,28 +28,20 @@ class Nav extends React.Component {
             <h4 style={{ marginLeft: "10px", marginRight: "10px" }}>Home</h4>
           </NavLink>
 
-    
-
-
           <NavLink to="/map" className="link">
             <h4 style={{ marginLeft: "10px", marginRight: "10px" }}>Map</h4>
           </NavLink>
 
-<a>
-          <h4
-            
-            style={{ marginLeft: "10px", marginRight: "10px" }}
-            onClick={() => {
-              this.setState({ entryFormOpen: !this.state.entryFormOpen });
-            }}
-            
-          >
-            New Entry
-          </h4> </a>
-         
-        </div>
+  
+            <h4
+              style={{ marginLeft: "10px", marginRight: "10px" }}
+              onClick={this.toggleEntryFormOpen}
+            >
+              New Entry
+            </h4>
+          </div>
 
-        {entryFormOpen ? <Entry /> : <div />}
+        {entryFormOpen ? <Entry toggleEntryFormOpen = {this.toggleEntryFormOpen} /> : <div />}
       </div>
     );
   }

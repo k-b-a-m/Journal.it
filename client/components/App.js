@@ -28,7 +28,7 @@ class App extends Component {
       <div>
         <Nav />
         <Route exact path="/" component={Home} />
-        <Route path="/entry" component={Entry} />
+        {/* <Route path="/entry" component={Entry} /> */}
         {/*
         <Route
           path="/summary/:word"

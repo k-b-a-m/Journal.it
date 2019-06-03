@@ -3,12 +3,13 @@ import Nav from "./Nav";
 import { addEntryThunk } from "../redux/store";
 import { connect } from "react-redux";
 import "../styles/Entry.css";
+import { Redirect } from "react-router-dom";
 
 class Entry extends Component {
   constructor() {
     super();
     this.state = {
-      entry: '',
+      entry: ""
     };
   }
 
@@ -17,37 +18,37 @@ class Entry extends Component {
     this.setState({ entry: target.value });
   };
 
-
-
   handleSubmit = evt => {
     evt.preventDefault();
-
     const newEntry = {
       content: evt.target.content.value
     };
-
-    this.props.addEntryThunk(newEntry);
+    this.props.addEntryThunk(newEntry).then(() => {
+      this.props.toggleEntryFormOpen();
+    });
   };
 
   render() {
     const { entry } = this.state;
     return (
-      <div>
-        <h3>Enter Something</h3>
-        <div>
-          <form
-            className="d-flex flex-column justify-content-center"
-            onSubmit={() => this.handleSubmit(event)}
-          >
-            <input
-              name="content"
-              type="text"
-              value={entry}
-              onChange={evt => this.handleChangeInput(evt)}
-            />
-            <br></br>
-            <button disabled={entry === ""}>Submit</button>
-          </form>
+      <div className="entry-container"> 
+        <div >
+          <h3>Enter Something</h3>
+          <div>
+            <form
+              className="d-flex flex-column justify-content-center"
+              onSubmit={() => this.handleSubmit(event)}
+            >
+              <input
+                name="content"
+                type="text"
+                value={entry}
+                onChange={evt => this.handleChangeInput(evt)}
+              />
+              <br />
+              <button disabled={entry === ""}>Submit</button>
+            </form>
+          </div>
         </div>
       </div>
     );
