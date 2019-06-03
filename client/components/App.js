@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 
 //components
 import Home from './Home';
+import Home2 from './Home2';
 import Entry from './Entry';
 import Nav from './Nav';
 
@@ -29,7 +30,7 @@ class App extends Component {
     return (
       <div>
         <Nav />
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={Home2} />
         <Route path="/entry" component={Entry} />
         {/*
         <Route
