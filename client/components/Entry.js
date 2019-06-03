@@ -1,8 +1,6 @@
-import React, {Component} from 'react';
-import {getCurrentCoordinates} from '../utils/utils';
-import Nav from './Nav';
-import '../styles/Entry.css';
-import { addEntryThunk, fetchEntries } from "../redux/store";
+import React, { Component } from "react";
+import Nav from "./Nav";
+import { addEntryThunk } from "../redux/store";
 import { connect } from "react-redux";
 import "../styles/Entry.css";
 
@@ -67,21 +65,37 @@ class Entry extends Component {
     clearInterval(this.interval);
   }
 
+  handleSubmit = evt => {
+    evt.preventDefault();
+
+    const newEntry = {
+      content: evt.target.content.value
+    };
+
+    this.props.addEntryThunk(newEntry);
+  };
+
   render() {
     const { entry, date, time } = this.state;
     return (
       <div className="container-fluid entry-container">
-        <h3>Location</h3>
+        <h3>Enter Something</h3>
         <div>
-          <form className="d-flex flex-column justify-content-center">
+          <form
+            className="d-flex flex-column justify-content-center"
+            onSubmit={() => this.handleSubmit(event)}
+          >
             <input
+              name="content"
               type="text"
               value={entry}
               onChange={evt => this.handleChangeInput(evt)}
             />
+            <br></br>
+            <button disabled={entry === ""}>Submit</button>
           </form>
         </div>
-        <button disabled={entry === ""}>Submit</button>
+
         <div className="date-container">
           <h3>{date}</h3>
           <h3>{time}</h3>
@@ -92,9 +106,7 @@ class Entry extends Component {
   }
 }
 
-
-
 export default connect(
   null,
-  { addEntryThunk, fetchEntries }
+  { addEntryThunk }
 )(Entry);
