@@ -39,6 +39,7 @@ class Entry extends Component {
     const time = hours + ":" + minutes + ":" + seconds;
     this.setState({ date, time });
   };
+
   componentDidMount() {
     this.getDateTime();
     this.interval = setInterval(() => this.getDateTime(), 1000);
