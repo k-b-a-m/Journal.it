@@ -7,9 +7,13 @@ import {connect} from 'react-redux';
 import {fetchEntries} from '../redux/store';
 
 //components
+import HomeSphere from './Home-Sphere';
 import Home from './Home';
 import Entry from './Entry';
 import Nav from './Nav';
+
+//redux
+import {fetchEntries} from '../redux/store';
 
 //styles
 import '../styles/App.css';
@@ -28,7 +32,8 @@ class App extends Component {
       <div>
         <Nav />
         <Route exact path="/" component={Home} />
-        <Route path="/entry" component={Entry} />
+        <Route exact path="/homesphere" component={HomeSphere} />
+        {/* <Route path="/entry" component={Entry} /> */}
         {/*
         <Route
           path="/summary/:word"

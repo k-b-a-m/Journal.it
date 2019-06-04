@@ -19,7 +19,6 @@ export const fetchEntries = () => async dispatch => {
   try {
     const response = await axios.get('/entries');
     const entries = response.data;
-    console.log(entries)
     return dispatch(setEntries(entries));
   } catch (err) {
     throw new Error(err);

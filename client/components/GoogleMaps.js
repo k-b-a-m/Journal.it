@@ -48,7 +48,7 @@ export class Container extends Component {
           onReady={this.fetchPlaces}
           style={style}
           initialCenter={{
-            lat: 40.753383,
+            lat: 40.763383,
             lng: -73.9758986
           }}
           zoom={15}
