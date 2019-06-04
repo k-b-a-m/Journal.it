@@ -1,9 +1,8 @@
 const router = require("express").Router();
 const Entry = require("../../db/models/Entry");
 const { Op } = require("sequelize");
-const findNearbyMinMaxCoordinates = require('./utility')
+const findNearbyMinMaxCoordinates = require("./utility");
 
-module.exports = router;
 
 router.get("/", (req, res, next) => {
   Entry.findAll()
@@ -12,7 +11,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/mapmarkers", (req, res, next) => {
-  const { min, max } = req.body
+  const { min, max } = req.body;
   Entry.findAll({
     where: {
       [Op.and]: {
@@ -31,27 +30,20 @@ router.get("/mapmarkers", (req, res, next) => {
     .catch(next);
 });
 
-
 router.get("/nearby", (req, res, next) => {
+  const { coordinate, distance } = req.body;
+  const { min, max } = findNearbyMinMaxCoordinates(coordinate, distance);
 
- 
-  //center{latitude, longitude}
-  //date today
-  //distance 
-
-
-  
-
-
-
+  console.log(min)
+  console.log(max)
   Entry.findAll({
     where: {
       [Op.and]: {
         latitude: {
-          [Op.between]: [req.body.min.latitude, req.body.max.latitude]
+          [Op.between]: [min.latitude, max.latitude]
         },
         longitude: {
-          [Op.between]: [req.body.min.longitude, req.body.max.longitude]
+          [Op.between]: [min.longitude, max.longitude]
         }
       }
     }
@@ -89,3 +81,5 @@ router.delete("/:id", (req, res, next) => {
     .then(destroyedEntry => res.json(destroyedEntry))
     .catch(next);
 });
+
+module.exports = router;
