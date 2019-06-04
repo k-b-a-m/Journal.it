@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const Entry = require("../../db/models/Entry");
-const { Op } = require('sequelize');
+const { Op } = require("sequelize");
 
 module.exports = router;
 
@@ -10,13 +10,38 @@ router.get("/", (req, res, next) => {
     .catch(next);
 });
 
-router.get("/nearby", (req, res, next) => {
-  console.log(req.body.coordinates)
+router.get("/mapmarkers", (req, res, next) => {
+  const { min, max } = req.body
   Entry.findAll({
     where: {
       [Op.and]: {
-        latitude: { [Op.between]: req.body.coordinates.latitude },
-        longitude: { [Op.between]: req.body.coordinates.longitude }
+        latitude: {
+          [Op.between]: [min.latitude, max.latitude]
+        },
+        longitude: {
+          [Op.between]: [min.longitude, max.longitude]
+        }
+      }
+    }
+  })
+    .then(resp => {
+      res.json(resp);
+    })
+    .catch(next);
+});
+
+router.get("/nearby", (req, res, next) => {
+  console.log(req.body.min.longitude);
+  console.log(req.body.max.longitude);
+  Entry.findAll({
+    where: {
+      [Op.and]: {
+        latitude: {
+          [Op.between]: [req.body.min.latitude, req.body.max.latitude]
+        },
+        longitude: {
+          [Op.between]: [req.body.min.longitude, req.body.max.longitude]
+        }
       }
     }
   })
