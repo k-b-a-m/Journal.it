@@ -26,3 +26,8 @@ input {
   border: none;
   border-bottom: solid 1px lightgray;
 }
+
+.entry-container {
+  height:150px;
+}
+
