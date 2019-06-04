@@ -16,7 +16,6 @@ class Nav extends React.Component {
   }
 
   render() {
-    console.log(this.state.entryFormOpen);
     const { entryFormOpen } = this.state;
     return (
       <div className="nav-container">
