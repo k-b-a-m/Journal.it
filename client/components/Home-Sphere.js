@@ -28,13 +28,13 @@ class HomeSphere extends Component {
     camera.position.z = 450;
 
     //Creating sphere
-    var vertices = new THREE.SphereGeometry(150, 32, 32).vertices;
+    var vertices = new THREE.SphereGeometry(150, 12, 12).vertices;
     var positions = new Float32Array(vertices.length * 3);
     var colors = new Float32Array(vertices.length * 3);
     var sizes = new Float32Array(vertices.length);
     var vertex;
     var color = new THREE.Color();
-    console.log(vertices)
+    console.log(vertices);
     for (var i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
@@ -158,15 +158,27 @@ class HomeSphere extends Component {
   };
 
   render() {
-    console.log(this.state.entryIndex);
+    const {entryIndex} = this.state;
+    console.log(entryIndex);
     return (
-      <div
-        style={{width: '400px', height: '400px'}}
-        //this is where all the 3d will mount
-        ref={mount => {
-          this.mount = mount;
-        }}
-      />
+      <div style={{position:'relative'}}>
+        <div
+          //this is where all the 3d will mount
+
+          ref={mount => {
+            this.mount = mount;
+          }}
+        />
+        {/*if entry index is more than 0 (which means some dots were clicked),
+        render out message box with entry */}
+        {entryIndex >= 0 ? (
+          <div style={{color: 'black', zIndex: 9999, position: 'absolute', top:'50%',left:'50%', backgroundColor:'white'}}>
+            <h1>{entryIndex}</h1>
+          </div>
+        ) : (
+          ''
+        )}
+      </div>
     );
   }
 }
