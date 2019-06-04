@@ -6,6 +6,9 @@ import {connect} from 'react-redux';
 class HomeSphere extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      entryIndex: -1,
+    };
   }
 
   componentDidMount() {
@@ -31,6 +34,7 @@ class HomeSphere extends Component {
     var sizes = new Float32Array(vertices.length);
     var vertex;
     var color = new THREE.Color();
+    console.log(vertices)
     for (var i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
@@ -143,7 +147,10 @@ class HomeSphere extends Component {
           attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE * 1.25;
           attributes.size.needsUpdate = true;
           //TODO add pop up message containing entries here
-
+          //set state as current dots index
+          if (this.state.entryIndex !== this.intersects[0].index) {
+            this.setState({entryIndex: this.intersects[0].index});
+          }
         }
       }
     }
@@ -151,6 +158,7 @@ class HomeSphere extends Component {
   };
 
   render() {
+    console.log(this.state.entryIndex);
     return (
       <div
         style={{width: '400px', height: '400px'}}
