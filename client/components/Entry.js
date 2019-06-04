@@ -3,17 +3,13 @@ import Nav from "./Nav";
 import { addEntryThunk } from "../redux/store";
 import { connect } from "react-redux";
 import "../styles/Entry.css";
+import { Redirect } from "react-router-dom";
 
 class Entry extends Component {
   constructor() {
     super();
     this.state = {
-      entry: '',
-      date: '',
-      time: '',
-      submittedEntry: '',
-      curLatitude: 0,
-      curLongitude: 0,
+      entry: ""
     };
   }
 
@@ -22,6 +18,7 @@ class Entry extends Component {
     this.setState({ entry: target.value });
   };
 
+<<<<<<< HEAD
   getDateTime = () => {
     const today = new Date();
     const date =
@@ -66,41 +63,39 @@ class Entry extends Component {
     clearInterval(this.interval);
   }
 
+=======
+>>>>>>> 017db5c6f1080c91a16e15a8aaa039dff57b7f28
   handleSubmit = evt => {
     evt.preventDefault();
-
     const newEntry = {
       content: evt.target.content.value
     };
-
-    this.props.addEntryThunk(newEntry);
+    this.props.addEntryThunk(newEntry).then(() => {
+      this.props.toggleEntryFormOpen();
+    });
   };
 
   render() {
-    const { entry, date, time } = this.state;
+    const { entry } = this.state;
     return (
-      <div className="container-fluid entry-container">
-        <h3>Enter Something</h3>
-        <div>
-          <form
-            className="d-flex flex-column justify-content-center"
-            onSubmit={() => this.handleSubmit(event)}
-          >
-            <input
-              name="content"
-              type="text"
-              value={entry}
-              onChange={evt => this.handleChangeInput(evt)}
-            />
-            <br></br>
-            <button disabled={entry === ""}>Submit</button>
-          </form>
-        </div>
-
-        <div className="date-container">
-          <h3>{date}</h3>
-          <h3>{time}</h3>
-          {this.state.curLatitude ? <div><h5>Latitude: {this.state.curLatitude}</h5><h5>Longitude: {this.state.curLongitude}</h5></div> : <div/>}
+      <div className="entry-container"> 
+        <div >
+          <h3>Enter Something</h3>
+          <div>
+            <form
+              className="d-flex flex-column justify-content-center"
+              onSubmit={() => this.handleSubmit(event)}
+            >
+              <input
+                name="content"
+                type="text"
+                value={entry}
+                onChange={evt => this.handleChangeInput(evt)}
+              />
+              <br />
+              <button disabled={entry === ""}>Submit</button>
+            </form>
+          </div>
         </div>
       </div>
     );
