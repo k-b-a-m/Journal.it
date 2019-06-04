@@ -21,44 +21,19 @@ class Home extends React.Component {
         }
       });
     });
-    // const {entries} = this.props;
-    // const entriesCoords = [];
-    // entries.forEach(entry => {
-    //   entriesCoords.push({latitude: entry.latitude, longitude: entry.longitude})
-    // })
-    // this.setState({entriesCoords: entriesCoordsArr})
   }
 
   render() {
     const { entries } = this.props;
-    const {entriesCoords} = this.state;
-    const distance = geolib.convertDistance(geolib.getDistance(
-        {latitude: this.state.currentPos.latitude, longitude: this.state.currentPos.longitude},
-        {latitude: this.state.currentPos.latitude -0.001, longitude: this.state.currentPos.longitude}
-      ), 'ft')
-    const bounds = geolib.getBounds([
-      {latitude: this.state.currentPos.latitude, longitude: this.state.currentPos.longitude},
-      {latitude: this.state.currentPos.latitude -0.001, longitude: this.state.currentPos.longitude}
-    ])
-    const entriesCoordsArr = [];
-    entries.forEach(entry => {
-      entriesCoordsArr.push({latitude: entry.latitude, longitude: entry.longitude})
-    })
-    console.log([...entriesCoordsArr]);
-    entriesCoordsArr.forEach(entry => {
-      console.log(`Is ${{...entry}} within radius?: ${geolib.isPointWithinRadius({latitude: entry.latitude, longitude: entry.longitude}, {latitude: this.state.currentPos.latitude,longitude: this.state.currentPos.longitude}, 5000000)}`)
-    })
-    // const entriesInBounds = geolib.isPointWithinRadius([...entriesCoordsArr])
     return (
       <div>
         <div className="container">
           <h3>Location, your coordinates right now are: {this.state.currentPos.latitude}, {this.state.currentPos.longitude}</h3>
-          {/* <h3>You are {Math.round(distance)} feet away from {this.state.currentPos.latitude -0.001}, {this.state.currentPos.longitude} right now!</h3> */}
           <ul>
-            <h5>Here are coordinates within 1640 feet of your coordinates</h5>
+            <h5>Here are coordinates within 100 feet of your coordinates</h5>
             <hr/>
             {entries.map(entry => (
-              geolib.isPointWithinRadius({latitude: entry.latitude, longitude: entry.longitude}, {latitude: this.state.currentPos.latitude,longitude: this.state.currentPos.longitude}, 5000) ?
+              geolib.isPointWithinRadius({latitude: entry.latitude, longitude: entry.longitude}, {latitude: this.state.currentPos.latitude,longitude: this.state.currentPos.longitude}, 30) ?
               <li key={entry.id} style={{marginBottom: '3px'}}>
                 Content: {entry.content}
                 <br/>
