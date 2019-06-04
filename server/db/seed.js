@@ -4,14 +4,15 @@ const makeFakeEntry = () => {
   return {
     content: faker.lorem.sentence(),
     //Faking loads of fake data around NYC
-    latitude: faker.address.latitude({
-      min:40.6,
-      max:40.8
-    }),
-    longitude: faker.address.longitude({
-      min:73.9,
-      max:74.1
-    }),
+    //Unfortunately faker.address.latitude/longitude returns strings
+  
+    //Whole World
+    // latitude: faker.finance.amount(-90,90,10),
+    // longitude: faker.finance.amount(-180,180, 10),
+
+    //Around NYC
+    latitude: faker.finance.amount(40.5,41,10),
+    longitude: faker.finance.amount(-74.5,-74,10),
     likes: faker.random.number()
   };
 };
