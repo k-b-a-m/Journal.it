@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Entry = require("../../db/models/Entry");
 const { Op } = require("sequelize");
+const findNearbyMinMaxCoordinates = require('./utility')
 
 module.exports = router;
 
@@ -30,9 +31,19 @@ router.get("/mapmarkers", (req, res, next) => {
     .catch(next);
 });
 
+
 router.get("/nearby", (req, res, next) => {
-  console.log(req.body.min.longitude);
-  console.log(req.body.max.longitude);
+
+ 
+  //center{latitude, longitude}
+  //date today
+  //distance 
+
+
+  
+
+
+
   Entry.findAll({
     where: {
       [Op.and]: {
