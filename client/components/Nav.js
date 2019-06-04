@@ -18,7 +18,7 @@ class Nav extends React.Component {
   render() {
     const { entryFormOpen } = this.state;
     return (
-      <div className="nav-container">
+      <div className="nav-container" style={{backgroundColor: 'white'}}>
         <div>
           <h1 className="logo">Journal.it</h1>
         </div>
@@ -31,7 +31,7 @@ class Nav extends React.Component {
             <h4 style={{ marginLeft: "10px", marginRight: "10px" }}>Map</h4>
           </NavLink>
 
-  
+
             <h4
               style={{ marginLeft: "10px", marginRight: "10px" }}
               onClick={this.toggleEntryFormOpen}

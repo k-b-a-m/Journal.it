@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import * as geolib from 'geolib';
 
 class Home extends React.Component {
   constructor() {
@@ -23,19 +24,27 @@ class Home extends React.Component {
 
   render() {
     const { entries } = this.props;
-
+    const distance = geolib.convertDistance(geolib.getDistance(
+        {latitude: this.state.currentPos.latitude, longitude: this.state.currentPos.longitude},
+        {latitude: this.state.currentPos.latitude -0.001, longitude: this.state.currentPos.longitude}
+      ), 'ft')
     return (
       <div>
         <div className="container">
-          <h3>Location</h3>
+          <h3>Location, your coordinates right now are: {this.state.currentPos.latitude}, {this.state.currentPos.longitude}</h3>
+          <h3>You are {Math.round(distance)} feet away from {this.state.currentPos.latitude -0.001}, {this.state.currentPos.longitude} right now!</h3>
           <ul>
             {entries.map(entry => (
-              <li key={entry.id}>
-                {entry.content}
-                {entry.latitude}
-                {entry.longitude}
-                {entry.likes}
-                {entry.createdAt}
+              <li key={entry.id} style={{marginBottom: '3px'}}>
+                Content: {entry.content}
+                <br/>
+                Lat: {entry.latitude}
+                <br/>
+                Long: {entry.longitude}
+                <br/>
+                Likes: {entry.likes}
+                <br/>
+                CreatedAt: {entry.createdAt}
               </li>
             ))}
           </ul>
