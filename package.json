@@ -9,7 +9,7 @@
     "webpack": "webpack",
     "nodemon:dev": "nodemon ./server/server.js --ignore src/ --ignore dist/",
     "webpack:dev": "npm run webpack -- --mode=development --watch",
-    "start:dev": "npm run webpack:dev & DATABASE_URL=postgres://localhost/journalit nodemon ./server/server.js --ignore src/ --ignore dist/"
+    "start:dev": "npm run webpack:dev & DATABASE_URL=postgres://localhost/journalit nodemon ./server/server.js --ignore client/ --ignore dist/"
   },
   "repository": {
     "type": "git",
