@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import React, {Component} from 'react';
 import * as THREE from 'three';
 import Stats from 'stats.js';

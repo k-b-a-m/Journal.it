@@ -9,7 +9,7 @@
     "webpack": "webpack",
     "nodemon:dev": "nodemon ./server/server.js --ignore src/ --ignore dist/",
     "webpack:dev": "npm run webpack -- --mode=development --watch",
-    "start:dev": "npm run webpack:dev & DATABASE_URL=postgres://localhost/journalit nodemon ./server/server.js --ignore src/ --ignore dist/"
+    "start:dev": "npm run webpack:dev & DATABASE_URL=postgres://localhost/journalit nodemon ./server/server.js --ignore client/ --ignore dist/"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "express": "^4.17.1",
+    "geolib": "^3.0.3",
     "google-maps-react": "^2.0.2",
     "pg": "^7.11.0",
     "react": "^16.8.6",
@@ -50,8 +51,8 @@
     "babel-loader": "^7.1.5",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
-    "faker": "^4.1.0",
     "css-loader": "^2.1.1",
+    "faker": "^4.1.0",
     "style-loader": "^0.23.1"
   }
 }
