@@ -14,7 +14,7 @@ class HomeSphere extends Component {
   componentDidMount() {
     var renderer, scene, camera, stats, geometry, material;
     var particles;
-    var PARTICLE_SIZE = 20;
+    var PARTICLE_SIZE = 50;
     var raycaster, intersects;
     var mouse, INTERSECTED;
 
