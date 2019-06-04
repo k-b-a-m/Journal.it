@@ -6,7 +6,7 @@ import axios from 'axios';
 import {connect} from 'react-redux';
 
 //components
-import Home from './Home';
+import HomeSphere from './Home-Sphere';
 import Entry from './Entry';
 import Nav from './Nav';
 

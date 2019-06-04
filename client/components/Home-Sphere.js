@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import Stats from 'stats.js';
 import {connect} from 'react-redux';
 
-class Home extends Component {
+class HomeSphere extends Component {
   constructor(props) {
     super(props);
   }
@@ -142,6 +142,8 @@ class Home extends Component {
           this.INTERSECTED = this.intersects[0].index;
           attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE * 1.25;
           attributes.size.needsUpdate = true;
+          //TODO add pop up message containing entries here
+
         }
       }
     }
@@ -165,4 +167,4 @@ const mapStateToProps = state => {
   return {entries: state};
 };
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(HomeSphere);
