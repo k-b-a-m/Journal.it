@@ -16,10 +16,10 @@ router.get("/mapmarkers", (req, res, next) => {
     where: {
       [Op.and]: {
         latitude: {
-          [Op.between]: [min.latitude, max.latitude]
+          [Op.between]: [min.latitude, max.latitude].sort((a,b)=>a-b)
         },
         longitude: {
-          [Op.between]: [min.longitude, max.longitude]
+          [Op.between]: [min.longitude, max.longitude].sort((a,b)=>a-b)
         }
       }
     }
@@ -30,7 +30,8 @@ router.get("/mapmarkers", (req, res, next) => {
     .catch(next);
 });
 
-router.get("/nearby", (req, res, next) => {
+router.post("/nearby", (req, res, next) => {
+  console.log(req.body)
   const { coordinate, distance } = req.body;
   const { min, max } = findNearbyMinMaxCoordinates(coordinate, distance);
 
@@ -40,10 +41,10 @@ router.get("/nearby", (req, res, next) => {
     where: {
       [Op.and]: {
         latitude: {
-          [Op.between]: [min.latitude, max.latitude]
+          [Op.between]: [min.latitude, max.latitude].sort((a,b)=>a-b)
         },
         longitude: {
-          [Op.between]: [min.longitude, max.longitude]
+          [Op.between]: [min.longitude, max.longitude].sort((a,b)=>a-b)
         }
       }
     }
