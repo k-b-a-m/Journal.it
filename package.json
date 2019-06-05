@@ -44,7 +44,8 @@
     "stats.js": "^0.17.0",
     "three": "^0.105.1",
     "webpack": "^4.32.2",
-    "webpack-cli": "^3.3.2"
+    "webpack-cli": "^3.3.2",
+    "faker": "^4.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -52,7 +53,6 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^2.1.1",
-    "faker": "^4.1.0",
     "style-loader": "^0.23.1"
   }
 }
