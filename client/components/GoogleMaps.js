@@ -17,12 +17,12 @@ export class Container extends Component {
     }
   }
   componentDidMount() {
-    this.props.fetchEntries()
-      .then(entries => {
-        this.setState({entries})
-        this.props.google.maps.heatmap.setMap(true);
-      })
-      .catch(e => console.log(`Error fetching Entries:\n${e}`));
+    // this.props.fetchEntries()
+    //   .then(entries => {
+    //     this.setState({entries})
+    //     this.props.google.maps.heatmap.setMap(true);
+    //   })
+    //   .catch(e => console.log(`Error fetching Entries:\n${e}`));
 
   }
   render() {
