@@ -37,7 +37,7 @@ class Entry extends Component {
   render() {
     const {entry} = this.state;
     return (
-      <div className="entry-container">
+      <div className="modal fade">
         <div>
           <h3>Enter Something</h3>
           <div>
