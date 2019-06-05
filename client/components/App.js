@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import GoogleApiWrapper from "./GoogleMaps";
-import axios from "axios";
 import { connect } from "react-redux";
 
 //components
@@ -24,12 +23,12 @@ class App extends Component {
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => {
-      //can put in distance in miles as 2nd parameter
-      const {latitude, longitude} = position.coords
-      this.props.fetchNearby({coordinate:{latitude, longitude}, distance:1})
-      .then((resp) =>{
-        console.log(resp.entries)
-      });
+      const { latitude, longitude } = position.coords;
+      this.props
+        .fetchNearby({ coordinate: { latitude, longitude }, distance: 500 })  //distance is in feet 5280ft = 1mi
+        .then(resp => {
+          console.log(resp.entries);
+        });
     });
   }
 

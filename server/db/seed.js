@@ -11,16 +11,21 @@ const makeFakeEntry = () => {
     // longitude: faker.finance.amount(-180,180, 10),
 
     //Around NYC
-    latitude: faker.finance.amount(40.5,41,10),
-    longitude: faker.finance.amount(-74.5,-74,10),
-    likes: faker.random.number()
+    latitude: faker.finance.amount(40.7,40.81,10),
+    longitude: faker.finance.amount(-74.02,-73.923,10),
+    likes: faker.random.number({
+      "min":0,
+      "max":100
+    })
   };
 };
 
 const entries = [];
 
-for (let i = 0; i < 5000; i++) {
+for (let i = 0; i < 20000; i++) {
   entries.push(makeFakeEntry());
 }
 
 module.exports = entries;
+
+

@@ -1,13 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import * as geolib from 'geolib';
+import * as geolib from "geolib";
 
 class Home extends React.Component {
   constructor() {
     super();
     this.state = {
       currentPos: { latitude: 0, longitude: 0 },
-      entriesCoords: [],
     };
   }
 
@@ -28,12 +27,15 @@ class Home extends React.Component {
     return (
       <div>
         <div className="container">
-          <h3>Location, your coordinates right now are: {this.state.currentPos.latitude}, {this.state.currentPos.longitude}</h3>
+          <h3>
+            Your coordinates: {this.state.currentPos.latitude},{" "}
+            {this.state.currentPos.longitude}
+          </h3>
           <ul>
-            <h5>Here are coordinates within 100 feet of your coordinates</h5>
-            <hr/>
+            <h5>Entries within 500 feet of your coordinates</h5>
+            <hr />
             {entries.map(entry => (
-              geolib.isPointWithinRadius({latitude: entry.latitude, longitude: entry.longitude}, {latitude: this.state.currentPos.latitude,longitude: this.state.currentPos.longitude}, 30) ?
+              geolib.isPointWithinRadius({latitude: entry.latitude, longitude: entry.longitude}, {latitude: this.state.currentPos.latitude,longitude: this.state.currentPos.longitude}, 152) ?
               <li key={entry.id} style={{marginBottom: '3px'}}>
                 Content: {entry.content}
                 <br/>
@@ -47,6 +49,8 @@ class Home extends React.Component {
               </li>
               : null
             ))}
+
+      
           </ul>
         </div>
       </div>
