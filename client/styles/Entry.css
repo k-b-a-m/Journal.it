@@ -1,0 +1,33 @@
+.entry-container {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.date-container {
+  margin-top:15px;
+  padding:0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+*:focus {
+  outline: none;
+}
+
+input {
+  width: 70vw;
+  border: none;
+  border-bottom: solid 1px lightgray;
+}
+
+.entry-container {
+  height:150px;
+}
+
