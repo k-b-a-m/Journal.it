@@ -4,7 +4,7 @@ const { syncAndSeed } = require('./db');
 
 //Start server
 app.listen(port, () =>
-  console.log(`Server listening on: http://localhost:3000`)
+  console.log(`Server listening on: https://localhost:3000`)
 );
 
 syncAndSeed();
