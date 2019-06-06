@@ -20,4 +20,13 @@ module.exports = conn.define('entry', {
   bitcoinAddress: {
     type: Sequelize.STRING,
   },
+},
+{
+  indexes: [
+    {
+      unique:false,
+      fields: ['latitude', 'longitude']
+    }
+  ]
+
 });
