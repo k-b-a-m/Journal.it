@@ -33,7 +33,10 @@ class HomeSphere extends Component {
     this.scene = scene;
     this.camera = camera;
     this.renderer = renderer;
-    this.DrawSphere(0, this.scene, this.camera, this.renderer);
+    const segment = this.props.entries.length
+      ? Math.ceil(Math.sqrt(this.props.entries.length))
+      : 0;
+    this.DrawSphere(segment, this.scene, this.camera, this.renderer);
   }
 
   componentDidUpdate(prevProps) {
