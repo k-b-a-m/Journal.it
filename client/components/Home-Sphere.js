@@ -33,22 +33,24 @@ class HomeSphere extends Component {
     this.scene = scene;
     this.camera = camera;
     this.renderer = renderer;
-
-    this.DrawSphere(14, this.scene, this.camera, this.renderer);
+    this.DrawSphere(0, this.scene, this.camera, this.renderer);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (
-  //     JSON.stringify(JSON.stringify(prevProps.entries)) !==
-  //     JSON.stringify(JSON.stringify(this.props.entries))
-  //   ) {
-  //     const selectedObject = this.scene.getObjectByName('memorySphere');
-  //     this.scene.remove(selectedObject);
-  //     const segment = Math.ceil(Math.sqrt(this.props.entries.length));
-  //     console.log(segment);
-  //     this.DrawSphere(segment);
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    if (
+      JSON.stringify(JSON.stringify(prevProps.entries)) !==
+      JSON.stringify(JSON.stringify(this.props.entries))
+    ) {
+      while (this.scene.children.length > 0) {
+        this.scene.remove(this.scene.children[0]);
+      }
+      const selectedObject = this.scene.getObjectByName('memorySphere');
+      this.scene.remove(selectedObject);
+      const segment = Math.ceil(Math.sqrt(this.props.entries.length));
+      console.log(segment);
+      this.DrawSphere(segment, this.scene, this.camera, this.renderer);
+    }
+  }
 
   DrawSphere = (segment, scene, camera, renderer) => {
     let stats, geometry, material;
