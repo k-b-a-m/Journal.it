@@ -1,3 +1,6 @@
+const config = require('./config.js');
+const webpack = require('webpack');
+
 module.exports = {
   devtool: 'eval',
   entry: './client',
@@ -14,4 +17,9 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': { GOOGLE_API_KEY: JSON.stringify(config.GOOGLE_API_KEY) },
+    }),
+  ],
 };
