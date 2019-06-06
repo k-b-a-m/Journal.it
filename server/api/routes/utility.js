@@ -5,6 +5,10 @@ module.exports = (coordinate, distance) => {
   //1 deg latitude ~= 69 miles
   //1 deg longitude = cos (latitude) * 69 miles
 
+
+  //convert distance to miles
+  distance /= 5280
+
   return {
     min: {
       latitude: coordinate.latitude - distance / 69,
