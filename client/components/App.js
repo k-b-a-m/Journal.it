@@ -47,7 +47,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        {/* <Nav /> */}
+        <Nav />
         <Route exact path="/" component={Home} />
         <Route exact path="/homesphere" component={HomeSphere} />
         {/* <Route path="/entry" component={Entry} /> */}
