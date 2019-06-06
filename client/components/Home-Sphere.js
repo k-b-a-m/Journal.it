@@ -14,15 +14,9 @@ class HomeSphere extends Component {
   }
 
   componentDidMount() {
-    let renderer, scene, camera, stats, geometry, material;
-    let particles;
-    let PARTICLE_SIZE = 35;
-    let raycaster, intersects;
-    let mouse, INTERSECTED;
-
     //initialize scene and camera
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
       45,
       window.innerWidth / window.innerHeight,
       1,
@@ -30,8 +24,42 @@ class HomeSphere extends Component {
     );
     camera.position.z = 450;
 
+    //config renderer
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    //bind
+    this.scene = scene;
+    this.camera = camera;
+    this.renderer = renderer;
+
+    this.DrawSphere(14, this.scene, this.camera, this.renderer);
+  }
+
+  // componentDidUpdate(prevProps) {
+  //   if (
+  //     JSON.stringify(JSON.stringify(prevProps.entries)) !==
+  //     JSON.stringify(JSON.stringify(this.props.entries))
+  //   ) {
+  //     const selectedObject = this.scene.getObjectByName('memorySphere');
+  //     this.scene.remove(selectedObject);
+  //     const segment = Math.ceil(Math.sqrt(this.props.entries.length));
+  //     console.log(segment);
+  //     this.DrawSphere(segment);
+  //   }
+  // }
+
+  DrawSphere = (segment, scene, camera, renderer) => {
+    let stats, geometry, material;
+    let particles;
+    let PARTICLE_SIZE = 35;
+    let raycaster, intersects;
+    let mouse, INTERSECTED;
+
     //Creating sphere
-    let vertices = new THREE.SphereGeometry(150, 14, 14).vertices;
+    // const segment = entries.length ? Math.ceil(Math.sqrt(entries.length - 1)) : 1;
+    let vertices = new THREE.SphereGeometry(150, segment, segment).vertices;
     let positions = new Float32Array(vertices.length * 3);
     let colors = new Float32Array(vertices.length * 3);
     let sizes = new Float32Array(vertices.length);
@@ -48,6 +76,7 @@ class HomeSphere extends Component {
 
     //add dots texture
     geometry = new THREE.BufferGeometry();
+    geometry.name = 'memorySphere';
     geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
     geometry.addAttribute('customColor', new THREE.BufferAttribute(colors, 3));
     geometry.addAttribute('size', new THREE.BufferAttribute(sizes, 1));
@@ -67,19 +96,11 @@ class HomeSphere extends Component {
     particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    //config renderer
-    renderer = new THREE.WebGLRenderer();
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
     //bind constants
     this.particles = particles;
     this.geometry = geometry;
     this.material = material;
-    this.scene = scene;
-    this.camera = camera;
     this.PARTICLE_SIZE = PARTICLE_SIZE;
-    this.renderer = renderer;
     this.intersects = intersects;
     this.INTERSECTED = INTERSECTED;
 
@@ -113,7 +134,7 @@ class HomeSphere extends Component {
 
     //start animation
     this.animate();
-  }
+  };
 
   onWindowResize = () => {
     this.camera.aspect = window.innerWidth / window.innerHeight;
