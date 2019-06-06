@@ -29,7 +29,7 @@ class HomeSphere extends Component {
     camera.position.z = 450;
 
     //Creating sphere
-    var vertices = new THREE.SphereGeometry(150, 12, 12).vertices;
+    var vertices = new THREE.SphereGeometry(150, 14, 14).vertices;
     var positions = new Float32Array(vertices.length * 3);
     var colors = new Float32Array(vertices.length * 3);
     var sizes = new Float32Array(vertices.length);
@@ -160,7 +160,6 @@ class HomeSphere extends Component {
 
   render() {
     const {entryIndex} = this.state;
-    console.log(entryIndex);
     return (
       <div style={{position:'relative'}}>
         <div
