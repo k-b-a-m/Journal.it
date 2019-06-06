@@ -207,7 +207,11 @@ class Map extends Component {
     // Heatmap data
     const getPoints = () => {
       return entries.map(
-        entry => new google.maps.LatLng(+entry.latitude, +entry.longitude)
+        entry =>
+          new google.maps.LatLng(
+            Number(entry.latitude),
+            Number(entry.longitude)
+          )
       );
     };
     initMap();

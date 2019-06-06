@@ -36,6 +36,7 @@
     "google-maps-react": "^2.0.2",
     "pg": "^7.11.0",
     "react": "^16.8.6",
+    "react-dependent-script": "^1.1.0",
     "react-dom": "^16.8.6",
     "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.0",
