@@ -47,12 +47,12 @@ class HomeSphere extends Component {
       const selectedObject = this.scene.getObjectByName('memorySphere');
       this.scene.remove(selectedObject);
       const segment = Math.ceil(Math.sqrt(this.props.entries.length));
-      console.log(segment);
       this.DrawSphere(segment, this.scene, this.camera, this.renderer);
     }
   }
 
   DrawSphere = (segment, scene, camera, renderer) => {
+    const{entries}= this.props;
     let stats, geometry, material;
     let particles;
     let PARTICLE_SIZE = 35;
@@ -62,13 +62,17 @@ class HomeSphere extends Component {
     //Creating sphere
     // const segment = entries.length ? Math.ceil(Math.sqrt(entries.length - 1)) : 1;
     let vertices = new THREE.SphereGeometry(150, segment, segment).vertices;
+    //add in extra vertices if we need more
+    if(vertices.length < entries.length){
+      vertices = new THREE.SphereGeometry(150, segment+1, segment).vertices;
+    }
     let positions = new Float32Array(vertices.length * 3);
     let colors = new Float32Array(vertices.length * 3);
     let sizes = new Float32Array(vertices.length);
     let vertex;
     let color = new THREE.Color();
     // console.log(vertices);
-    for (var i = 0, l = vertices.length; i < l; i++) {
+    for (var i = 0, l = entries.length-1; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
       color.setHSL(0.02 + 0.1 * (i / l), 1.0, 0.5);
