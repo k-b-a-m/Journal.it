@@ -1,21 +1,20 @@
 //libraries
-import React, {Component} from 'react';
-import {Route} from 'react-router-dom';
-import GoogleApiWrapper from './GoogleMaps';
-import axios from 'axios';
-import {connect} from 'react-redux';
+import React, { Component } from "react";
+import { Route } from "react-router-dom";
+import GoogleApiWrapper from "./GoogleMaps";
+import { connect } from "react-redux";
 
 //components
-import HomeSphere from './Home-Sphere';
-import Home from './Home';
-import Entry from './Entry';
-import Nav from './Nav';
+import HomeSphere from "./Home-Sphere";
+import Home from "./Home";
+import Entry from "./Entry";
+import Nav from "./Nav";
 
 //redux
-import {fetchEntries} from '../redux/store';
+import { fetchNearby } from "../redux/store";
 
 //styles
-import '../styles/App.css';
+import "../styles/App.css";
 
 class App extends Component {
   constructor() {
@@ -23,7 +22,14 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchEntries();
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords;
+      this.props
+        .fetchNearby({ coordinate: { latitude, longitude }, distance: 500 })  //distance is in feet 5280ft = 1mi
+        .then(resp => {
+          console.log(resp.entries);
+        });
+    });
   }
 
   render() {
@@ -51,5 +57,5 @@ class App extends Component {
 
 export default connect(
   null,
-  {fetchEntries}
+  { fetchNearby }
 )(App);
