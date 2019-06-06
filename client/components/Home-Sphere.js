@@ -98,7 +98,10 @@ class HomeSphere extends Component {
     this.mount.appendChild(stats.dom);
 
     //add trackball control to control the sphere
-    const controls = new TrackballControls(this.camera, this.renderer.domElement);
+    const controls = new TrackballControls(
+      this.camera,
+      this.renderer.domElement
+    );
     //controls.update() must be called after any manual changes to the camera's transform
     controls.rotateSpeed = 1.5;
     this.controls = controls;
@@ -106,7 +109,7 @@ class HomeSphere extends Component {
 
     //add mouse listener and window resize listener
     window.addEventListener('resize', this.onWindowResize, false);
-    document.addEventListener('click',this.handleDocumentClick,false);
+    document.addEventListener('click', this.handleDocumentClick, false);
 
     //start animation
     this.animate();
