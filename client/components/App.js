@@ -31,6 +31,14 @@ class App extends Component {
           console.log(resp.entries);
         });
     });
+
+    const googleMapsScript = document.createElement('script');
+    googleMapsScript.type = 'text/javascript';
+    googleMapsScript.defer = true;
+    googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${
+      process.env.GOOGLE_API_KEY
+    }&libraries=visualization`;
+    document.getElementsByTagName('head')[0].appendChild(googleMapsScript);
   }
 
   render() {
