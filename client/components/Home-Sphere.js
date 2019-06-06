@@ -164,6 +164,7 @@ class HomeSphere extends Component {
   };
 
   render() {
+    const {entries} = this.props;
     const {entryIndex} = this.state;
     return (
       <div style={{position: 'relative'}}>
@@ -176,7 +177,7 @@ class HomeSphere extends Component {
         />
         {/*if entry index is more than 0 (which means some dots were clicked),
         render out message box with entry */}
-        {entryIndex >= 0 ? (
+        {entryIndex >= 0 && entries[0] ? (
           <div
             style={{
               color: 'black',
@@ -188,7 +189,7 @@ class HomeSphere extends Component {
               transform: 'translate(-50%, -50%)',
             }}
           >
-            <h1>{entryIndex}</h1>
+            <h1>{entries[entryIndex].content}</h1>
           </div>
         ) : (
           ''
@@ -233,7 +234,7 @@ class HomeSphere extends Component {
 }
 
 const mapStateToProps = state => {
-  return {entries: state};
+  return {entries: state.entries};
 };
 
 export default connect(mapStateToProps)(HomeSphere);
