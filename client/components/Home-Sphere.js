@@ -1,21 +1,26 @@
 /* eslint-disable max-statements */
 import React, {Component} from 'react';
 import * as THREE from 'three';
+import TrackballControls from 'three-trackballcontrols';
 import Stats from 'stats.js';
 import {connect} from 'react-redux';
 
 class HomeSphere extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      entryIndex: -1,
+    };
   }
 
   componentDidMount() {
-    var renderer, scene, camera, stats, geometry, material;
-    var particles;
-    var PARTICLE_SIZE = 20;
-    var raycaster, intersects;
-    var mouse, INTERSECTED;
+    let renderer, scene, camera, stats, geometry, material;
+    let particles;
+    let PARTICLE_SIZE = 25;
+    let raycaster, intersects;
+    let mouse, INTERSECTED;
 
+    //initialize scene and camera
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(
       45,
@@ -26,12 +31,13 @@ class HomeSphere extends Component {
     camera.position.z = 450;
 
     //Creating sphere
-    var vertices = new THREE.SphereGeometry(150, 32, 32).vertices;
-    var positions = new Float32Array(vertices.length * 3);
-    var colors = new Float32Array(vertices.length * 3);
-    var sizes = new Float32Array(vertices.length);
-    var vertex;
-    var color = new THREE.Color();
+    let vertices = new THREE.SphereGeometry(150, 14, 14).vertices;
+    let positions = new Float32Array(vertices.length * 3);
+    let colors = new Float32Array(vertices.length * 3);
+    let sizes = new Float32Array(vertices.length);
+    let vertex;
+    let color = new THREE.Color();
+    // console.log(vertices);
     for (var i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
@@ -91,10 +97,19 @@ class HomeSphere extends Component {
     this.stats = stats;
     this.mount.appendChild(stats.dom);
 
+    //add trackball control to control the sphere
+    const controls = new TrackballControls(
+      this.camera,
+      this.renderer.domElement
+    );
+    //controls.update() must be called after any manual changes to the camera's transform
+    controls.rotateSpeed = 1.5;
+    this.controls = controls;
+    this.controls.update();
+
     //add mouse listener and window resize listener
     window.addEventListener('resize', this.onWindowResize, false);
-    document.addEventListener('mousedown', this.onDocumentMouseDown, false);
-    document.addEventListener('mouseup', this.onDocumentMouseUp, false);
+    document.addEventListener('click', this.handleDocumentClick, false);
 
     //start animation
     this.animate();
@@ -106,28 +121,21 @@ class HomeSphere extends Component {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   };
 
-  onDocumentMouseDown = event => {
+  animate = () => {
+    requestAnimationFrame(this.animate);
+    this.renderParticles();
+    this.stats.update();
+  };
+
+  handleDocumentClick = () => {
     event.preventDefault();
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   };
 
-  onDocumentMouseUp = event => {
-    event.preventDefault();
-    this.mouse.x = null;
-    this.mouse.y = null;
-  };
-
-  animate = () => {
-    requestAnimationFrame(this.animate);
-
-    this.renderParticles();
-    this.stats.update();
-  };
-
   renderParticles = () => {
-    this.particles.rotation.x += 0.0005;
-    this.particles.rotation.y += 0.001;
+    this.particles.rotation.x += 0.0004;
+    this.particles.rotation.y += 0.0002;
     var geometry = this.particles.geometry;
     var attributes = geometry.attributes;
     this.raycaster.setFromCamera(this.mouse, this.camera);
@@ -144,22 +152,47 @@ class HomeSphere extends Component {
           attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE * 1.25;
           attributes.size.needsUpdate = true;
           //TODO add pop up message containing entries here
-
+          //set state as current dots index
+          if (this.state.entryIndex !== this.intersects[0].index) {
+            this.setState({entryIndex: this.intersects[0].index});
+          }
         }
       }
     }
+    this.controls.update();
     this.renderer.render(this.scene, this.camera);
   };
 
   render() {
+    const {entryIndex} = this.state;
     return (
-      <div
-        style={{width: '400px', height: '400px'}}
-        //this is where all the 3d will mount
-        ref={mount => {
-          this.mount = mount;
-        }}
-      />
+      <div style={{position: 'relative'}}>
+        <div
+          //this is where all the 3d will mount
+
+          ref={mount => {
+            this.mount = mount;
+          }}
+        />
+        {/*if entry index is more than 0 (which means some dots were clicked),
+        render out message box with entry */}
+        {entryIndex >= 0 ? (
+          <div
+            style={{
+              color: 'black',
+              zIndex: 9999,
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              backgroundColor: 'white',
+            }}
+          >
+            <h1>{entryIndex}</h1>
+          </div>
+        ) : (
+          ''
+        )}
+      </div>
     );
   }
 }
