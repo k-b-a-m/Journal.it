@@ -93,9 +93,9 @@ class HomeSphere extends Component {
     this.mouse = mouse;
 
     //add fps monitor, can take away later
-    stats = new Stats();
-    this.stats = stats;
-    this.mount.appendChild(stats.dom);
+    // stats = new Stats();
+    // this.stats = stats;
+    // this.mount.appendChild(stats.dom);
 
     //add trackball control to control the sphere
     const controls = new TrackballControls(
@@ -124,7 +124,7 @@ class HomeSphere extends Component {
   animate = () => {
     requestAnimationFrame(this.animate);
     this.renderParticles();
-    this.stats.update();
+    // this.stats.update();
   };
 
   handleDocumentClick = () => {
@@ -214,6 +214,18 @@ class HomeSphere extends Component {
           }}
         >
           <img src="next.png" />
+        </div>
+        <div
+          style={{
+            color: 'white',
+            position: 'absolute',
+            zIndex: 9999,
+            bottom: 0,
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          5/18/2019
         </div>
       </div>
     );
