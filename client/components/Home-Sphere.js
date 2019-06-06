@@ -37,7 +37,7 @@ class HomeSphere extends Component {
     let sizes = new Float32Array(vertices.length);
     let vertex;
     let color = new THREE.Color();
-    console.log(vertices);
+    // console.log(vertices);
     for (var i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
@@ -97,17 +97,16 @@ class HomeSphere extends Component {
     this.stats = stats;
     this.mount.appendChild(stats.dom);
 
-    //add mouse listener and window resize listener
-    window.addEventListener('resize', this.onWindowResize, false);
-    document.addEventListener('mousedown', this.onDocumentMouseDown, false);
-    document.addEventListener('mouseup', this.onDocumentMouseUp, false);
-
     //add trackball control to control the sphere
-    let controls = new TrackballControls(this.camera, this.renderer.domElement);
+    const controls = new TrackballControls(this.camera, this.renderer.domElement);
     //controls.update() must be called after any manual changes to the camera's transform
-    controls.rotateSpeed = 1.5
+    controls.rotateSpeed = 1.5;
     this.controls = controls;
     this.controls.update();
+
+    //add mouse listener and window resize listener
+    window.addEventListener('resize', this.onWindowResize, false);
+    document.addEventListener('click',this.handleDocumentClick,false);
 
     //start animation
     this.animate();
@@ -119,28 +118,21 @@ class HomeSphere extends Component {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   };
 
-  onDocumentMouseDown = event => {
+  animate = () => {
+    requestAnimationFrame(this.animate);
+    this.renderParticles();
+    this.stats.update();
+  };
+
+  handleDocumentClick = () => {
     event.preventDefault();
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   };
 
-  onDocumentMouseUp = event => {
-    event.preventDefault();
-    this.mouse.x = null;
-    this.mouse.y = null;
-  };
-
-  animate = () => {
-    requestAnimationFrame(this.animate);
-    this.controls.update();
-    this.renderParticles();
-    this.stats.update();
-  };
-
   renderParticles = () => {
-    this.particles.rotation.x += 0.0005;
-    this.particles.rotation.y += 0.001;
+    this.particles.rotation.x += 0.0004;
+    this.particles.rotation.y += 0.0002;
     var geometry = this.particles.geometry;
     var attributes = geometry.attributes;
     this.raycaster.setFromCamera(this.mouse, this.camera);
@@ -164,6 +156,7 @@ class HomeSphere extends Component {
         }
       }
     }
+    this.controls.update();
     this.renderer.render(this.scene, this.camera);
   };
 
