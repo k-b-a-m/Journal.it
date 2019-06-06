@@ -22,6 +22,12 @@ class App extends Component {
   }
 
   componentDidMount() {
+    var socket = io('https://localhost:8443');
+    socket.on('updateNearby', entry => {
+      console.log(entry);
+    });
+
+
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
       this.props

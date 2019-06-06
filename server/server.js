@@ -6,16 +6,18 @@ const path = require("path");
 let port = process.env.PORT || 3000;
 let portSecure = process.env.PORT || 8443;
 const { syncAndSeed } = require("./db");
+const listeners = require("./listeners");
+const socketio = require("socket.io");
 
 //HTTP Server
-http
+const httpserver = http
   .createServer(app)
   .listen(port, () =>
     console.log(`HTTP Server listening on: https://localhost:${port}`)
   );
 
 //HTTPS Server
-https
+const httpsServer = https
   .createServer(
     {
       key: fs.readFileSync(
@@ -30,5 +32,10 @@ https
   .listen(portSecure, () =>
     console.log(`HTTPS Server listening on: https://localhost:${portSecure}`)
   );
+
+//Enable Websockets on server
+const io = socketio(httpsServer);
+listeners(io);
+
 
 syncAndSeed();
