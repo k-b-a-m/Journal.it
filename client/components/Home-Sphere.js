@@ -16,7 +16,7 @@ class HomeSphere extends Component {
   componentDidMount() {
     let renderer, scene, camera, stats, geometry, material;
     let particles;
-    let PARTICLE_SIZE = 25;
+    let PARTICLE_SIZE = 35;
     let raycaster, intersects;
     let mouse, INTERSECTED;
 
@@ -41,7 +41,7 @@ class HomeSphere extends Component {
     for (var i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
-      color.setHSL(0.01 + 0.1 * (i / l), 1.0, 0.5);
+      color.setHSL(0.02 + 0.1 * (i / l), 1.0, 0.5);
       color.toArray(colors, i * 3);
       sizes[i] = PARTICLE_SIZE * 0.5;
     }
@@ -185,6 +185,7 @@ class HomeSphere extends Component {
               top: '50%',
               left: '50%',
               backgroundColor: 'white',
+              transform: 'translate(-50%, -50%)',
             }}
           >
             <h1>{entryIndex}</h1>
@@ -192,6 +193,28 @@ class HomeSphere extends Component {
         ) : (
           ''
         )}
+        <div
+          style={{
+            position: 'absolute',
+            zIndex: 9999,
+            top: '50%',
+            left: 0,
+            transform: 'translate(0, -50%)',
+          }}
+        >
+          <img src="prev.png" />
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            zIndex: 9999,
+            top: '50%',
+            right: 0,
+            transform: 'translate(0, -50%)',
+          }}
+        >
+          <img src="next.png" />
+        </div>
       </div>
     );
   }
