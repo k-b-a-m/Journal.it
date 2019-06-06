@@ -1,6 +1,7 @@
 /* eslint-disable max-statements */
 import React, {Component} from 'react';
 import * as THREE from 'three';
+import TrackballControls from 'three-trackballcontrols';
 import Stats from 'stats.js';
 import {connect} from 'react-redux';
 
@@ -13,12 +14,13 @@ class HomeSphere extends Component {
   }
 
   componentDidMount() {
-    var renderer, scene, camera, stats, geometry, material;
-    var particles;
-    var PARTICLE_SIZE = 50;
-    var raycaster, intersects;
-    var mouse, INTERSECTED;
+    let renderer, scene, camera, stats, geometry, material;
+    let particles;
+    let PARTICLE_SIZE = 25;
+    let raycaster, intersects;
+    let mouse, INTERSECTED;
 
+    //initialize scene and camera
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(
       45,
@@ -29,12 +31,12 @@ class HomeSphere extends Component {
     camera.position.z = 450;
 
     //Creating sphere
-    var vertices = new THREE.SphereGeometry(150, 14, 14).vertices;
-    var positions = new Float32Array(vertices.length * 3);
-    var colors = new Float32Array(vertices.length * 3);
-    var sizes = new Float32Array(vertices.length);
-    var vertex;
-    var color = new THREE.Color();
+    let vertices = new THREE.SphereGeometry(150, 14, 14).vertices;
+    let positions = new Float32Array(vertices.length * 3);
+    let colors = new Float32Array(vertices.length * 3);
+    let sizes = new Float32Array(vertices.length);
+    let vertex;
+    let color = new THREE.Color();
     console.log(vertices);
     for (var i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
@@ -100,6 +102,13 @@ class HomeSphere extends Component {
     document.addEventListener('mousedown', this.onDocumentMouseDown, false);
     document.addEventListener('mouseup', this.onDocumentMouseUp, false);
 
+    //add trackball control to control the sphere
+    let controls = new TrackballControls(this.camera, this.renderer.domElement);
+    //controls.update() must be called after any manual changes to the camera's transform
+    controls.rotateSpeed = 1.5
+    this.controls = controls;
+    this.controls.update();
+
     //start animation
     this.animate();
   }
@@ -124,7 +133,7 @@ class HomeSphere extends Component {
 
   animate = () => {
     requestAnimationFrame(this.animate);
-
+    this.controls.update();
     this.renderParticles();
     this.stats.update();
   };
@@ -161,7 +170,7 @@ class HomeSphere extends Component {
   render() {
     const {entryIndex} = this.state;
     return (
-      <div style={{position:'relative'}}>
+      <div style={{position: 'relative'}}>
         <div
           //this is where all the 3d will mount
 
@@ -172,7 +181,16 @@ class HomeSphere extends Component {
         {/*if entry index is more than 0 (which means some dots were clicked),
         render out message box with entry */}
         {entryIndex >= 0 ? (
-          <div style={{color: 'black', zIndex: 9999, position: 'absolute', top:'50%',left:'50%', backgroundColor:'white'}}>
+          <div
+            style={{
+              color: 'black',
+              zIndex: 9999,
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              backgroundColor: 'white',
+            }}
+          >
             <h1>{entryIndex}</h1>
           </div>
         ) : (

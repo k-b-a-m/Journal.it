@@ -43,6 +43,7 @@
     "sequelize": "^5.8.7",
     "stats.js": "^0.17.0",
     "three": "^0.105.1",
+    "three-trackballcontrols": "0.0.8",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2"
   },
