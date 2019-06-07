@@ -10,7 +10,7 @@ router.get("/", (req, res, next) => {
     .catch(next);
 });
 
-router.get("/mapmarkers", (req, res, next) => {
+router.post("/mapmarkers", (req, res, next) => {
   const { min, max } = req.body;
   Entry.findAll({
     where: {
