@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactDependentScript from 'react-dependent-script';
-// import {GOOGLE_API_KEY} from '../../config';
+//import {GOOGLE_API_KEY} from '../../config';
 
 //components
 import HomeSphere from './Home-Sphere';
@@ -19,7 +19,7 @@ import '../styles/App.css';
 
 class App extends Component {
   componentDidMount() {
-    var socket = io('https://localhost:8443');
+    var socket = io('http://localhost:3000');
     socket.on('updateNearby', entry => {
       console.log(entry);
     });
