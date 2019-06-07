@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactDependentScript from 'react-dependent-script';
+import {GOOGLE_API_KEY} from '../../config';
 
 //components
 import HomeSphere from './Home-Sphere';
@@ -47,7 +48,7 @@ class App extends Component {
             <ReactDependentScript
               scripts={[
                 `https://maps.googleapis.com/maps/api/js?key=${
-                  process.env.GOOGLE_API_KEY
+                  process.env.GOOGLE_API_KEY || GOOGLE_API_KEY
                 }&libraries=visualization`,
               ]}
             >

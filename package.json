@@ -1,5 +1,5 @@
 {
-  "name": "Journal.it",
+  "name": "mnemosphere",
   "version": "1.0.0",
   "description": "",
   "main": "./server/server.js",
@@ -9,6 +9,7 @@
     "webpack": "webpack",
     "nodemon:dev": "nodemon ./server/server.js --ignore src/ --ignore dist/",
     "webpack:dev": "npm run webpack -- --mode=development --watch",
+    "heroku-postbuild": "webpack -p",
     "start:dev": "npm run webpack:dev & DATABASE_URL=postgres://localhost/journalit nodemon ./server/server.js --ignore client/ --ignore dist/"
   },
   "repository": {
