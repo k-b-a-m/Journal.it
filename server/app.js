@@ -4,8 +4,6 @@ const path = require('path');
 
 module.exports = app;
 
-
-
 //Middleware Needed for PROD to redirect http requests to https
 // app.use((req, res, next) => {
 //   if (req.secure) {
@@ -28,6 +26,7 @@ app.get('/app.js', (req, res, next) =>
 );
 
 // API Middleware
+app.use('/googlemaps', require('./api/routes/googlemaps'));
 app.use('/entries', require('./api/routes/entries'));
 
 // Parsing Middleware
