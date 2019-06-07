@@ -10,10 +10,25 @@ class Home extends Component {
     super(props);
     this.state = {
       entryIndex: -1,
+      date: '',
     };
   }
 
   componentDidMount() {
+    //add current date to state
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1;
+    const yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    today = `${mm}/${dd}/${yyyy}`;
+    this.setState({date: today});
+
     //initialize scene and camera
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
@@ -36,6 +51,8 @@ class Home extends Component {
     const segment = this.props.entries.length
       ? Math.ceil(Math.sqrt(this.props.entries.length))
       : 0;
+
+    //draw sphere
     this.DrawSphere(segment, this.scene, this.camera, this.renderer);
   }
 
@@ -163,6 +180,12 @@ class Home extends Component {
     this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   };
 
+  handleArrowClick = (evt, next) => {
+    evt.preventDefault();
+    const {date} = this.state;
+    console.log(date);
+  };
+
   renderParticles = () => {
     this.particles.rotation.x += 0.0004;
     this.particles.rotation.y += 0.0002;
@@ -195,7 +218,7 @@ class Home extends Component {
 
   render() {
     const {entries} = this.props;
-    const {entryIndex} = this.state;
+    const {entryIndex, date} = this.state;
     return (
       <div style={{position: 'relative'}}>
         <div
@@ -232,6 +255,7 @@ class Home extends Component {
             left: 0,
             transform: 'translate(0, -50%)',
           }}
+          onClick={evt => this.handleArrowClick(evt, false)}
         >
           <img src="prev.png" />
         </div>
@@ -243,6 +267,7 @@ class Home extends Component {
             right: 0,
             transform: 'translate(0, -50%)',
           }}
+          onClick={evt => this.handleArrowClick(evt, true)}
         >
           <img src="next.png" />
         </div>
@@ -256,7 +281,7 @@ class Home extends Component {
             transform: 'translate(-50%, -50%)',
           }}
         >
-          <h1>5/18/2019</h1>
+          <h1>{date}</h1>
         </div>
       </div>
     );

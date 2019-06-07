@@ -49,8 +49,6 @@ export const addEntryThunk = entry => {
 
 export const fetchNearby = obj => async dispatch => {
   const {coordinate, distance} = obj;
-  console.log(coordinate);
-  console.log(distance);
   try {
     const resp = await axios.post('/entries/nearby', {coordinate, distance});
 

@@ -11,15 +11,15 @@ class HomeCheck extends React.Component {
   }
 
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
-      this.setState({
-        currentPos: {
-          latitude,
-          longitude
-        }
-      });
-    });
+    // navigator.geolocation.getCurrentPosition(position => {
+    //   const { latitude, longitude } = position.coords;
+    //   this.setState({
+    //     currentPos: {
+    //       latitude,
+    //       longitude
+    //     }
+    //   });
+    // });
   }
 
   render() {
