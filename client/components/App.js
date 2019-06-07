@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import ReactDependentScript from 'react-dependent-script';
 
 //components
 import HomeSphere from './Home-Sphere';
@@ -17,6 +18,10 @@ import { fetchNearby } from '../redux/store';
 import '../styles/App.css';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = { key: '' };
+  }
   async componentDidMount() {
     // var socket = io('https://localhost:8443');
     // socket.on('updateNearby', entry => {
@@ -31,29 +36,36 @@ class App extends Component {
       }); //distance is in feet 5280ft = 1mi
     });
 
-    const googleMapsScript = document.createElement('script');
-    googleMapsScript.type = 'text/javascript';
-    googleMapsScript.defer = true;
     await axios
       .get('/googlemaps')
-      .then(response => response.data)
-      .then(script => (googleMapsScript.innerHTML = script))
-      .then(() =>
-        document.getElementsByTagName('head')[0].appendChild(googleMapsScript)
-      );
+      .then(response => this.setState({ key: response.data }));
   }
 
-  googleMapsScript;
-
   render() {
-    return (
+    return this.state.key.length ? (
       <div>
         <Nav />
         <Route exact path="/" component={Home} />
         <Route exact path="/homesphere" component={HomeSphere} />
         {/* <Route path="/entry" component={Entry} /> */}
-        <Route exact path="/map" component={Map} />
+        <Route
+          exact
+          path="/map"
+          render={() => (
+            <ReactDependentScript
+              scripts={[
+                `https://maps.googleapis.com/maps/api/js?key=${
+                  this.state.key
+                }&libraries=visualization`,
+              ]}
+            >
+              <Map />
+            </ReactDependentScript>
+          )}
+        />
       </div>
+    ) : (
+      <div>Loading...</div>
     );
   }
 }
