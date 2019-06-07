@@ -17,25 +17,25 @@ const httpserver = http
   );
 
 //HTTPS Server
-const httpsServer = https
-  .createServer(
-    {
-      key: fs.readFileSync(
-        path.join(__dirname, "..", "encryption", "server.key")
-      ),
-      cert: fs.readFileSync(
-        path.join(__dirname, "..", "encryption", "server.cert")
-      )
-    },
-    app
-  )
-  .listen(portSecure, () =>
-    console.log(`HTTPS Server listening on: https://localhost:${portSecure}`)
-  );
+// const httpsServer = https
+//   .createServer(
+//     {
+//       key: fs.readFileSync(
+//         path.join(__dirname, "..", "encryption", "server.key")
+//       ),
+//       cert: fs.readFileSync(
+//         path.join(__dirname, "..", "encryption", "server.cert")
+//       )
+//     },
+//     app
+//   )
+//   .listen(portSecure, () =>
+//     console.log(`HTTPS Server listening on: https://localhost:${portSecure}`)
+//   );
 
 //Enable Websockets on server
-const io = socketio(httpsServer);
-listeners(io);
+// const io = socketio(httpsServer);
+// listeners(io);
 
 
 syncAndSeed();
