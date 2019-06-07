@@ -7,13 +7,13 @@ module.exports = app;
 
 
 //Middleware Needed for PROD to redirect http requests to https
-app.use((req, res, next) => {
-  if (req.secure) {
-    next();
-  } else {
-    res.redirect(`https://localhost:8443`); //For PROD Change this to `https://`+req.headers.host+req.url`
-    }
-});
+// app.use((req, res, next) => {
+//   if (req.secure) {
+//     next();
+//   } else {
+//     res.redirect(`https://localhost:8443`); //For PROD Change this to `https://`+req.headers.host+req.url`
+//     }
+// });
 
 //Static middleware
 app.use(express.static(path.join(__dirname, 'public')));
