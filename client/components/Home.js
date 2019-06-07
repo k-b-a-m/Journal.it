@@ -48,6 +48,11 @@ class Home extends Component {
       ? Math.ceil(Math.sqrt(this.props.entries.length))
       : 0;
 
+    //add light
+    const ambientLight = new THREE.AmbientLight(0x404040);
+    this.ambientLight = ambientLight;
+    this.scene.add(this.ambientLight);
+
     //draw sphere
     this.DrawSphere(segment, this.scene, this.camera, this.renderer);
   }
@@ -120,7 +125,7 @@ class Home extends Component {
       uniforms: {
         color: {value: new THREE.Color(0xffffff)},
         texture: {
-          value: new THREE.TextureLoader().load('/disc.png'),
+          value: new THREE.TextureLoader().load('/neptune.png'),
         },
       },
       vertexShader: document.getElementById('vertexshader').textContent,
