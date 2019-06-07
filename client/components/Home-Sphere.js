@@ -14,15 +14,9 @@ class HomeSphere extends Component {
   }
 
   componentDidMount() {
-    let renderer, scene, camera, stats, geometry, material;
-    let particles;
-    let PARTICLE_SIZE = 25;
-    let raycaster, intersects;
-    let mouse, INTERSECTED;
-
     //initialize scene and camera
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
       45,
       window.innerWidth / window.innerHeight,
       1,
@@ -30,24 +24,68 @@ class HomeSphere extends Component {
     );
     camera.position.z = 450;
 
+    //config renderer
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    //bind
+    this.scene = scene;
+    this.camera = camera;
+    this.renderer = renderer;
+    const segment = this.props.entries.length
+      ? Math.ceil(Math.sqrt(this.props.entries.length))
+      : 0;
+    this.DrawSphere(segment, this.scene, this.camera, this.renderer);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      JSON.stringify(JSON.stringify(prevProps.entries)) !==
+      JSON.stringify(JSON.stringify(this.props.entries))
+    ) {
+      while (this.scene.children.length > 0) {
+        this.scene.remove(this.scene.children[0]);
+      }
+      const selectedObject = this.scene.getObjectByName('memorySphere');
+      this.scene.remove(selectedObject);
+      const segment = Math.ceil(Math.sqrt(this.props.entries.length));
+      this.DrawSphere(segment, this.scene, this.camera, this.renderer);
+    }
+  }
+
+  DrawSphere = (segment, scene, camera, renderer) => {
+    const {entries} = this.props;
+    let stats, geometry, material;
+    let particles;
+    let PARTICLE_SIZE = 35;
+    let raycaster, intersects;
+    let mouse, INTERSECTED;
+
     //Creating sphere
-    let vertices = new THREE.SphereGeometry(150, 14, 14).vertices;
+    // const segment = entries.length ? Math.ceil(Math.sqrt(entries.length - 1)) : 1;
+    let vertices = new THREE.SphereGeometry(150, segment, segment).vertices;
+    //add in extra vertices if we need more
+    if (vertices.length < entries.length) {
+      vertices = new THREE.SphereGeometry(150, segment + 1, segment).vertices;
+    }
     let positions = new Float32Array(vertices.length * 3);
     let colors = new Float32Array(vertices.length * 3);
     let sizes = new Float32Array(vertices.length);
     let vertex;
     let color = new THREE.Color();
     // console.log(vertices);
-    for (var i = 0, l = vertices.length; i < l; i++) {
+    for (var i = 0, l = entries.length - 1; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
-      color.setHSL(0.01 + 0.1 * (i / l), 1.0, 0.5);
+      color.setHSL(0.02 + 0.1 * (i / l), 1.0, 0.5);
       color.toArray(colors, i * 3);
       sizes[i] = PARTICLE_SIZE * 0.5;
     }
 
     //add dots texture
     geometry = new THREE.BufferGeometry();
+    geometry.name = 'memorySphere';
     geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
     geometry.addAttribute('customColor', new THREE.BufferAttribute(colors, 3));
     geometry.addAttribute('size', new THREE.BufferAttribute(sizes, 1));
@@ -67,19 +105,11 @@ class HomeSphere extends Component {
     particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    //config renderer
-    renderer = new THREE.WebGLRenderer();
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
     //bind constants
     this.particles = particles;
     this.geometry = geometry;
     this.material = material;
-    this.scene = scene;
-    this.camera = camera;
     this.PARTICLE_SIZE = PARTICLE_SIZE;
-    this.renderer = renderer;
     this.intersects = intersects;
     this.INTERSECTED = INTERSECTED;
 
@@ -93,9 +123,9 @@ class HomeSphere extends Component {
     this.mouse = mouse;
 
     //add fps monitor, can take away later
-    stats = new Stats();
-    this.stats = stats;
-    this.mount.appendChild(stats.dom);
+    // stats = new Stats();
+    // this.stats = stats;
+    // this.mount.appendChild(stats.dom);
 
     //add trackball control to control the sphere
     const controls = new TrackballControls(
@@ -113,7 +143,7 @@ class HomeSphere extends Component {
 
     //start animation
     this.animate();
-  }
+  };
 
   onWindowResize = () => {
     this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -124,7 +154,7 @@ class HomeSphere extends Component {
   animate = () => {
     requestAnimationFrame(this.animate);
     this.renderParticles();
-    this.stats.update();
+    // this.stats.update();
   };
 
   handleDocumentClick = () => {
@@ -164,6 +194,7 @@ class HomeSphere extends Component {
   };
 
   render() {
+    const {entries} = this.props;
     const {entryIndex} = this.state;
     return (
       <div style={{position: 'relative'}}>
@@ -176,7 +207,7 @@ class HomeSphere extends Component {
         />
         {/*if entry index is more than 0 (which means some dots were clicked),
         render out message box with entry */}
-        {entryIndex >= 0 ? (
+        {entryIndex >= 0 && entries[0] ? (
           <div
             style={{
               color: 'black',
@@ -185,20 +216,55 @@ class HomeSphere extends Component {
               top: '50%',
               left: '50%',
               backgroundColor: 'white',
+              transform: 'translate(-50%, -50%)',
             }}
           >
-            <h1>{entryIndex}</h1>
+            <h1>{entries[entryIndex].content}</h1>
           </div>
         ) : (
           ''
         )}
+        <div
+          style={{
+            position: 'absolute',
+            zIndex: 9999,
+            top: '50%',
+            left: 0,
+            transform: 'translate(0, -50%)',
+          }}
+        >
+          <img src="prev.png" />
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            zIndex: 9999,
+            top: '50%',
+            right: 0,
+            transform: 'translate(0, -50%)',
+          }}
+        >
+          <img src="next.png" />
+        </div>
+        <div
+          style={{
+            color: 'white',
+            position: 'absolute',
+            zIndex: 9999,
+            bottom: 0,
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <h1>5/18/2019</h1>
+        </div>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return {entries: state};
+  return {entries: state.entries};
 };
 
 export default connect(mapStateToProps)(HomeSphere);

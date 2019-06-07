@@ -28,9 +28,6 @@ class App extends Component {
       const { latitude, longitude } = position.coords;
       this.props
         .fetchNearby({ coordinate: { latitude, longitude }, distance: 500 }) //distance is in feet 5280ft = 1mi
-        .then(resp => {
-          console.log(resp.entries);
-        });
     });
   }
 
