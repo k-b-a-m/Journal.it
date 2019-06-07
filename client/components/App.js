@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactDependentScript from 'react-dependent-script';
-// import {GOOGLE_API_KEY} from '../../config';
+import axios from 'axios';
 
 //components
 import HomeSphere from './Home-Sphere';
@@ -18,17 +18,30 @@ import { fetchNearby } from '../redux/store';
 import '../styles/App.css';
 
 class App extends Component {
-  componentDidMount() {
-    var socket = io('https://localhost:8443');
-    socket.on('updateNearby', entry => {
-      console.log(entry);
-    });
+  async componentDidMount() {
+    // var socket = io('https://localhost:8443');
+    // socket.on('updateNearby', entry => {
+    //   console.log(entry);
+    // });
 
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
-      this.props
-        .fetchNearby({ coordinate: { latitude, longitude }, distance: 500 }) //distance is in feet 5280ft = 1mi
+      this.props.fetchNearby({
+        coordinate: { latitude, longitude },
+        distance: 500,
+      }); //distance is in feet 5280ft = 1mi
     });
+
+    const googleMapsScript = document.createElement('script');
+    googleMapsScript.type = 'text/javascript';
+    googleMapsScript.defer = true;
+    await axios
+      .get('/googlemaps')
+      .then(response => response.data)
+      .then(script => (googleMapsScript.innerHTML = script))
+      .then(() =>
+        document.getElementsByTagName('head')[0].appendChild(googleMapsScript)
+      );
   }
 
   render() {
@@ -42,15 +55,16 @@ class App extends Component {
           exact
           path="/map"
           render={() => (
-            <ReactDependentScript
-              scripts={[
-                `https://maps.googleapis.com/maps/api/js?key=${
-                  process.env.GOOGLE_API_KEY || GOOGLE_API_KEY
-                }&libraries=visualization`,
-              ]}
-            >
-              <Map />
-            </ReactDependentScript>
+            // <ReactDependentScript
+            // scripts={[
+            //   `https://maps.googleapis.com/maps/api/js?key=${process.env
+            //     .GOOGLE_API_KEY || GOOGLE_API_KEY}&libraries=visualization`,
+            // ]}
+
+            // >
+            <Map />
+            //{' '}
+            // </ReactDependentScript>
           )}
         />
       </div>
