@@ -20,10 +20,8 @@ class Home extends Component {
     this.today = today;
     const todayStr = this.parseDate(this.today);
     this.setState({date: todayStr});
-
     //bind
     this.today = today;
-    console.log(this.today);
 
     //initialize scene and camera
     const scene = new THREE.Scene();
@@ -49,7 +47,7 @@ class Home extends Component {
       : 0;
 
     //add light
-    const ambientLight = new THREE.AmbientLight(0x404040);
+    const ambientLight = new THREE.AmbientLight(0x404040, 150);
     this.ambientLight = ambientLight;
     this.scene.add(this.ambientLight);
 
@@ -110,7 +108,7 @@ class Home extends Component {
     for (var i = 0, l = entries.length - 1; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
-      color.setHSL(0.02 + 0.1 * (i / l), 1.0, 0.5);
+      color.setHSL(0.08 + 0.1 * (i / l), 1, 0.5);
       color.toArray(colors, i * 3);
       sizes[i] = PARTICLE_SIZE * 0.5;
     }
@@ -123,9 +121,10 @@ class Home extends Component {
     geometry.addAttribute('size', new THREE.BufferAttribute(sizes, 1));
     material = new THREE.ShaderMaterial({
       uniforms: {
+        lights: true,
         color: {value: new THREE.Color(0xffffff)},
         texture: {
-          value: new THREE.TextureLoader().load('/neptune.png'),
+          value: new THREE.TextureLoader().load('disc.png'),
         },
       },
       vertexShader: document.getElementById('vertexshader').textContent,
@@ -205,8 +204,8 @@ class Home extends Component {
   };
 
   renderParticles = () => {
-    this.particles.rotation.x += 0.0004;
-    this.particles.rotation.y += 0.0002;
+    this.particles.rotation.x += 0.0002;
+    this.particles.rotation.y += 0.0001;
     var geometry = this.particles.geometry;
     var attributes = geometry.attributes;
     this.raycaster.setFromCamera(this.mouse, this.camera);
@@ -299,7 +298,7 @@ class Home extends Component {
             transform: 'translate(-50%, -50%)',
           }}
         >
-          <h1>{date}</h1>
+          <h3>{date}</h3>
         </div>
       </div>
     );
