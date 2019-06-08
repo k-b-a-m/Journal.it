@@ -1,9 +1,11 @@
-/* eslint-disable max-statements */
 import React, {Component} from 'react';
 import * as THREE from 'three';
 import TrackballControls from 'three-trackballcontrols';
 import Stats from 'stats.js';
 import {connect} from 'react-redux';
+
+//styles
+import '../styles/Home.css';
 
 class Home extends Component {
   constructor(props) {
@@ -239,7 +241,6 @@ class Home extends Component {
   render() {
     const {entries} = this.props;
     const {entryIndex, date} = this.state;
-    console.log(entries);
     return (
       <div style={{position: 'relative'}}>
         <div
