@@ -50,7 +50,7 @@ class Home extends React.Component {
               : null
             ))}
 
-      
+
           </ul>
         </div>
       </div>

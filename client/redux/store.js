@@ -1,18 +1,23 @@
-import { createStore, applyMiddleware, combineReducers } from "redux";
-import thunkMiddleware from "redux-thunk";
-import axios from "axios";
+import {createStore, applyMiddleware} from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import axios from 'axios';
+
+//initialState
+const initialState = {
+  entries: [],
+};
 
 //ACTION TYPES
 
-const SET_ENTRIES = "SET_ENTRIES";
-const ADD_ENTRY = "ADD_ENTRY`";
+const SET_ENTRIES = 'SET_ENTRIES';
+const ADD_ENTRY = 'ADD_ENTRY`';
 const SET_HEATMAP = "SET_HEATMAP";
 
 //ACTION CREATORS
 
 const setEntries = entries => ({
   type: SET_ENTRIES,
-  entries
+  entries,
 });
 
 const addEntry = entry => ({
@@ -77,12 +82,12 @@ export const updateHeatMap = coords => async dispatch => {
 
 //REDUCER
 
-const entries = (state = [], action) => {
+const entriesReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_ENTRIES:
-      return [...action.entries];
+      return {...state, entries: [...action.entries]};
     case ADD_ENTRY:
-      return [...state, ...action.entry];
+      return {...state, entries: [...state.entries, ...action.entry]};
     default:
       return state;
   }

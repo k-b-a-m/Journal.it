@@ -1,4 +1,4 @@
-const config = require('./config.js');
+// const config = require('./config.js');
 const webpack = require('webpack');
 
 module.exports = {
@@ -17,9 +17,9 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': { GOOGLE_API_KEY: JSON.stringify(config.GOOGLE_API_KEY) },
-    }),
-  ],
+  // plugins: [
+  //   new webpack.DefinePlugin({
+  //     'process.env':{GOOGLE_API_KEY: process.env.GOOGLE_API_KEY || config.GOOGLE_API_KEY },
+  //   }),
+  // ],
 };
