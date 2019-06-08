@@ -204,8 +204,11 @@ class Home extends Component {
   };
 
   renderParticles = () => {
-    this.particles.rotation.x += 0.0002;
-    this.particles.rotation.y += 0.0001;
+    const {entryIndex} = this.state;
+    if (entryIndex < 0) {
+      this.particles.rotation.x += 0.0002;
+      this.particles.rotation.y += 0.0001;
+    }
     var geometry = this.particles.geometry;
     var attributes = geometry.attributes;
     this.raycaster.setFromCamera(this.mouse, this.camera);
@@ -217,13 +220,13 @@ class Home extends Component {
           attributes.size.needsUpdate = true;
           this.INTERSECTED = null;
         } else if (this.INTERSECTED !== this.intersects[0].index) {
-          attributes.size.array[this.INTERSECTED] = this.ARTICLE_SIZE;
+          attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE;
           this.INTERSECTED = this.intersects[0].index;
-          attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE * 1.25;
+          attributes.size.array[this.INTERSECTED] = 50;
           attributes.size.needsUpdate = true;
           //TODO add pop up message containing entries here
           //set state as current dots index
-          if (this.state.entryIndex !== this.intersects[0].index) {
+          if (entryIndex !== this.intersects[0].index) {
             this.setState({entryIndex: this.intersects[0].index});
           }
         }
@@ -236,6 +239,7 @@ class Home extends Component {
   render() {
     const {entries} = this.props;
     const {entryIndex, date} = this.state;
+    console.log(entries);
     return (
       <div style={{position: 'relative'}}>
         <div
