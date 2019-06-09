@@ -229,8 +229,8 @@ class Home extends Component {
   renderParticles = () => {
     const {entryIndex} = this.state;
     if (entryIndex < 0) {
-      this.particles.rotation.x += 0.0002;
-      this.particles.rotation.y += 0.0001;
+      this.particles.rotation.x += 0.0001;
+      this.particles.rotation.y += 0.00008;
     }
     var geometry = this.particles.geometry;
     var attributes = geometry.attributes;
@@ -279,43 +279,18 @@ class Home extends Component {
         {/*if entry index is more than 0 (which means some dots were clicked),
         render out message box with entry */}
         {entryIndex >= 0 && entries[0] ? (
-          <div
-            style={{
-              color: 'black',
-              zIndex: 9999,
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              backgroundColor: 'white',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
+          <div className="displayedEntry">
             <h1>{displayedEntries[entryIndex].content}</h1>
           </div>
         ) : (
           ''
         )}
-        <div
-          style={{
-            position: 'absolute',
-            zIndex: 9999,
-            top: '50%',
-            left: 0,
-            transform: 'translate(0, -50%)',
-          }}
-          onClick={evt => this.handleArrowClick(evt, false)}
-        >
-          <img src="prev.png" />
+        <div className="prev">
+          <button onClick={evt => this.handleArrowClick(evt, false)}>
+            <img src="prev.png" />
+          </button>
         </div>
-        <div
-          style={{
-            position: 'absolute',
-            zIndex: 9999,
-            top: '50%',
-            right: 0,
-            transform: 'translate(0, -50%)',
-          }}
-        >
+        <div className="next">
           <button
             onClick={evt => this.handleArrowClick(evt, true)}
             disabled={disabledButton}
@@ -323,16 +298,7 @@ class Home extends Component {
             <img src="next.png" />
           </button>
         </div>
-        <div
-          style={{
-            color: 'white',
-            position: 'absolute',
-            zIndex: 9999,
-            bottom: 0,
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
+        <div className="date">
           <h3>{date}</h3>
         </div>
       </div>

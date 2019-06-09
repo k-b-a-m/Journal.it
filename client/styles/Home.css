@@ -1,8 +1,43 @@
-button{
-  background:black;
+.displayedEntry {
+  color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: white;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.prev {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+  z-index: 9999;
+}
+
+.next {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+  z-index: 9999;
+}
+
+.date {
+  color: white;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+button {
+  background: black;
   border: none;
 }
 
-button:focus{
+button:focus {
   outline: none;
 }
