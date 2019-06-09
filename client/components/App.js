@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import ReactDependentScript from 'react-dependent-script';
+//import {GOOGLE_API_KEY} from '../../config';
 
 //components
 import HomeSphere from './Home-Sphere';
@@ -18,15 +19,11 @@ import { fetchNearby } from '../redux/store';
 import '../styles/App.css';
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = { key: '' };
-  }
-  async componentDidMount() {
-    // var socket = io('https://localhost:8443');
-    // socket.on('updateNearby', entry => {
-    //   console.log(entry);
-    // });
+  componentDidMount() {
+    var socket = io('http://localhost:3000');
+    socket.on('updateNearby', entry => {
+      console.log(entry);
+    });
 
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
