@@ -50,7 +50,7 @@ class Home extends React.Component {
               : null
             ))}
 
-      
+
           </ul>
         </div>
       </div>
@@ -59,7 +59,7 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { entries: state };
+  return { entries: state.entries };
 };
 
 export default connect(mapStateToProps)(Home);

@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import ReactDependentScript from 'react-dependent-script';
 //import {GOOGLE_API_KEY} from '../../config';
 
@@ -26,16 +27,19 @@ class App extends Component {
 
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
-      this.props
-        .fetchNearby({ coordinate: { latitude, longitude }, distance: 500 }) //distance is in feet 5280ft = 1mi
-        .then(resp => {
-          console.log(resp.entries);
-        });
+      this.props.fetchNearby({
+        coordinate: { latitude, longitude },
+        distance: 500,
+      }); //distance is in feet 5280ft = 1mi
     });
+
+    await axios
+      .get('/googlemaps')
+      .then(response => this.setState({ key: response.data }));
   }
 
   render() {
-    return (
+    return this.state.key.length ? (
       <div>
         <Nav />
         <Route exact path="/" component={Home} />
@@ -48,7 +52,7 @@ class App extends Component {
             <ReactDependentScript
               scripts={[
                 `https://maps.googleapis.com/maps/api/js?key=${
-                  process.env.GOOGLE_API_KEY || GOOGLE_API_KEY
+                  this.state.key
                 }&libraries=visualization`,
               ]}
             >
@@ -57,6 +61,8 @@ class App extends Component {
           )}
         />
       </div>
+    ) : (
+      <div>Loading...</div>
     );
   }
 }

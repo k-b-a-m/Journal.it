@@ -223,7 +223,7 @@ class Map extends Component {
 
 const mapStateToProps = state => {
   return {
-    entries: state,
+    entries: state.entries,
   };
 };
 
