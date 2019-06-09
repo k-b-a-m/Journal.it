@@ -1,0 +1,8 @@
+button{
+  background:black;
+  border: none;
+}
+
+button:focus{
+  outline: none;
+}

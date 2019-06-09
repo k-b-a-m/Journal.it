@@ -73,7 +73,6 @@ class Home extends Component {
       const selectedObject = this.scene.getObjectByName('memorySphere');
       this.scene.remove(selectedObject);
       const segment = Math.ceil(Math.sqrt(this.state.displayedEntries.length));
-      console.log(segment);
       this.DrawSphere(segment, this.scene, this.camera, this.renderer);
     } else if (prevState.displayedEntries !== this.state.displayedEntries) {
       while (this.scene.children.length > 0) {
@@ -82,7 +81,6 @@ class Home extends Component {
       const selectedObject = this.scene.getObjectByName('memorySphere');
       this.scene.remove(selectedObject);
       const segment = Math.ceil(Math.sqrt(this.state.displayedEntries.length));
-      console.log(segment);
       this.DrawSphere(segment, this.scene, this.camera, this.renderer);
     }
   }
@@ -262,6 +260,11 @@ class Home extends Component {
   };
 
   render() {
+    const today = new Date();
+    const disabledButton = this.today
+      ? JSON.stringify(this.today.toDateString()) ===
+        JSON.stringify(today.toDateString())
+      : false;
     const {entries} = this.props;
     const {entryIndex, date, displayedEntries} = this.state;
     return (
@@ -312,9 +315,13 @@ class Home extends Component {
             right: 0,
             transform: 'translate(0, -50%)',
           }}
-          onClick={evt => this.handleArrowClick(evt, true)}
         >
-          <img src="next.png" />
+          <button
+            onClick={evt => this.handleArrowClick(evt, true)}
+            disabled={disabledButton}
+          >
+            <img src="next.png" />
+          </button>
         </div>
         <div
           style={{
