@@ -83,9 +83,9 @@ export const updateHeatMap = coords => async dispatch => {
 const entriesReducer = (state = [], action) => {
   switch (action.type) {
     case SET_ENTRIES:
-      return {...state, entries: [...action.entries]};
+      return [...state, ...action.entries];
     case ADD_ENTRY:
-      return {...state, entries: [...state.entries, ...action.entry]};
+      return [...state, action.entry];
     default:
       return state;
   }

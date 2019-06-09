@@ -21,7 +21,7 @@ import '../styles/App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {key: ''};
+    this.state = {key: 'holder'};
   }
 
   async componentDidMount() {
@@ -38,14 +38,12 @@ class App extends Component {
       }); //distance is in feet 5280ft = 1mi
     });
 
-    await axios
-      .get('/googlemaps')
-      .then(response => this.setState({key: response.data}));
-    console.log('hi');
+    // await axios
+    //   .get('/googlemaps')
+    //   .then(response => this.setState({key: response.data}));
   }
 
   render() {
-    console.log(this.state.key);
     return this.state.key.length ? (
       <div>
         {/* <Nav /> */}

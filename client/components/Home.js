@@ -241,6 +241,7 @@ class Home extends Component {
   render() {
     const {entries} = this.props;
     const {entryIndex, date} = this.state;
+    console.log(entries);
     return (
       <div style={{position: 'relative'}}>
         <div
