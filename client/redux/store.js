@@ -1,4 +1,4 @@
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, combineReducers} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import axios from 'axios';
 
@@ -11,7 +11,7 @@ const initialState = {
 
 const SET_ENTRIES = 'SET_ENTRIES';
 const ADD_ENTRY = 'ADD_ENTRY`';
-const SET_HEATMAP = "SET_HEATMAP";
+const SET_HEATMAP = 'SET_HEATMAP';
 
 //ACTION CREATORS
 
@@ -22,12 +22,12 @@ const setEntries = entries => ({
 
 const addEntry = entry => ({
   type: ADD_ENTRY,
-  entry
+  entry,
 });
 
 const setHeatMap = entries => ({
   type: SET_HEATMAP,
-  entries
+  entries,
 });
 
 //THUNK CREATORS
@@ -54,11 +54,9 @@ export const addEntryThunk = entry => {
 };
 
 export const fetchNearby = obj => async dispatch => {
-  const { coordinate, distance } = obj;
-  console.log(coordinate);
-  console.log(distance);
+  const {coordinate, distance} = obj;
   try {
-    const resp = await axios.post("/entries/nearby", { coordinate, distance });
+    const resp = await axios.post('/entries/nearby', {coordinate, distance});
 
     const entries = resp.data;
     return dispatch(setEntries(entries));
@@ -68,11 +66,11 @@ export const fetchNearby = obj => async dispatch => {
 };
 
 export const updateHeatMap = coords => async dispatch => {
-  const { min, max } = coords;
+  const {min, max} = coords;
   console.log(min);
   console.log(max);
   try {
-    const resp = await axios.post("/entries/mapmarkers", coords);
+    const resp = await axios.post('/entries/mapmarkers', coords);
     const entries = resp.data;
     return dispatch(setHeatMap(entries));
   } catch (err) {
@@ -82,18 +80,18 @@ export const updateHeatMap = coords => async dispatch => {
 
 //REDUCER
 
-const entriesReducer = (state = initialState, action) => {
+const entriesReducer = (state = [], action) => {
   switch (action.type) {
     case SET_ENTRIES:
-      return {...state, entries: [...action.entries]};
+      return [...state, ...action.entries];
     case ADD_ENTRY:
-      return {...state, entries: [...state.entries, ...action.entry]};
+      return [...state, action.entry];
     default:
       return state;
   }
 };
 
-const heatmap = (state = [], action) => {
+const heatmapReducer = (state = [], action) => {
   switch (action.type) {
     case SET_HEATMAP:
       return [...action.entries];
@@ -102,7 +100,10 @@ const heatmap = (state = [], action) => {
   }
 };
 
-const rootReducer = combineReducers(entries, heatmap);
+const rootReducer = combineReducers({
+  entries: entriesReducer,
+  heatmap: heatmapReducer,
+});
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
