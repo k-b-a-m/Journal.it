@@ -33,6 +33,10 @@
   z-index: 9999;
 }
 
+.disabled {
+  opacity: 0.3;
+}
+
 button {
   background: black;
   border: none;

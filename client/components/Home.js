@@ -290,7 +290,7 @@ class Home extends Component {
             <img src="prev.png" />
           </button>
         </div>
-        <div className="next">
+        <div className={`next ${disabledButton ? 'disabled':''}`}>
           <button
             onClick={evt => this.handleArrowClick(evt, true)}
             disabled={disabledButton}
