@@ -44,7 +44,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.key)
     return this.state.key.length ? (
       <div>
         {/* <Nav /> */}

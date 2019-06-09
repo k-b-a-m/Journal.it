@@ -11,6 +11,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      displayedEntries:[],
       entryIndex: -1,
       date: '',
     };
@@ -24,6 +25,8 @@ class Home extends Component {
     this.setState({date: todayStr});
     //bind
     this.today = today;
+
+    //set displayed entries to be only today
 
     //initialize scene and camera
     const scene = new THREE.Scene();
