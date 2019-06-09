@@ -10,11 +10,15 @@ const listeners = require("./listeners");
 const socketio = require("socket.io");
 
 //HTTP Server
-const httpserver = http
-  .createServer(app)
-  .listen(port, () =>
-    console.log(`HTTP Server listening on: https://localhost:${port}`)
-  );
+// const httpServer = http
+//   .createServer(app)
+//   .listen(port, () =>
+//     console.log(`HTTP Server listening on: https://localhost:${port}`)
+//   );
+
+const httpServer = app.listen(port, () =>
+  console.log(`HTTP Server listening on: https://localhost:${port}`)
+);
 
 //HTTPS Server
 // const httpsServer = https
@@ -34,8 +38,7 @@ const httpserver = http
 //   );
 
 //Enable Websockets on server
-// const io = socketio(httpsServer);
-// listeners(io);
-
+const io = socketio(httpServer);
+listeners(io);
 
 syncAndSeed();

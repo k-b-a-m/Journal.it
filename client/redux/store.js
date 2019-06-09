@@ -11,6 +11,7 @@ const initialState = {
 
 const SET_ENTRIES = 'SET_ENTRIES';
 const ADD_ENTRY = 'ADD_ENTRY`';
+const SET_HEATMAP = "SET_HEATMAP";
 
 //ACTION CREATORS
 
@@ -21,7 +22,12 @@ const setEntries = entries => ({
 
 const addEntry = entry => ({
   type: ADD_ENTRY,
-  entry,
+  entry
+});
+
+const setHeatMap = entries => ({
+  type: SET_HEATMAP,
+  entries
 });
 
 //THUNK CREATORS
@@ -48,12 +54,31 @@ export const addEntryThunk = entry => {
 };
 
 export const fetchNearby = obj => async dispatch => {
+<<<<<<< HEAD
   const {coordinate, distance} = obj;
+=======
+  const { coordinate, distance } = obj;
+  console.log(coordinate);
+  console.log(distance);
+>>>>>>> ca06213fb54c8ad4b750b8efc80b94b9333304d9
   try {
-    const resp = await axios.post('/entries/nearby', {coordinate, distance});
+    const resp = await axios.post("/entries/nearby", { coordinate, distance });
 
     const entries = resp.data;
     return dispatch(setEntries(entries));
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+export const updateHeatMap = coords => async dispatch => {
+  const { min, max } = coords;
+  console.log(min);
+  console.log(max);
+  try {
+    const resp = await axios.post("/entries/mapmarkers", coords);
+    const entries = resp.data;
+    return dispatch(setHeatMap(entries));
   } catch (err) {
     throw new Error(err);
   }
@@ -72,6 +97,17 @@ const entriesReducer = (state = initialState, action) => {
   }
 };
 
-const store = createStore(entriesReducer, applyMiddleware(thunkMiddleware));
+const heatmap = (state = [], action) => {
+  switch (action.type) {
+    case SET_HEATMAP:
+      return [...action.entries];
+    default:
+      return state;
+  }
+};
+
+const rootReducer = combineReducers(entries, heatmap);
+
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 export default store;

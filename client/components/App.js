@@ -1,9 +1,16 @@
 //libraries
+<<<<<<< HEAD
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
 import {connect} from 'react-redux';
+=======
+import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import axios from 'axios';
+>>>>>>> ca06213fb54c8ad4b750b8efc80b94b9333304d9
 import ReactDependentScript from 'react-dependent-script';
-// import {GOOGLE_API_KEY} from '../../config';
+//import {GOOGLE_API_KEY} from '../../config';
 
 //components
 import Home from './Home';
@@ -19,22 +26,32 @@ import '../styles/App.css';
 
 class App extends Component {
   componentDidMount() {
-    var socket = io('https://localhost:8443');
+    var socket = io('http://localhost:3000');
     socket.on('updateNearby', entry => {
       console.log(entry);
     });
 
     navigator.geolocation.getCurrentPosition(position => {
+<<<<<<< HEAD
       const {latitude, longitude} = position.coords;
       this.props.fetchNearby({
         coordinate: {latitude, longitude},
+=======
+      const { latitude, longitude } = position.coords;
+      this.props.fetchNearby({
+        coordinate: { latitude, longitude },
+>>>>>>> ca06213fb54c8ad4b750b8efc80b94b9333304d9
         distance: 500,
       }); //distance is in feet 5280ft = 1mi
     });
+
+    await axios
+      .get('/googlemaps')
+      .then(response => this.setState({ key: response.data }));
   }
 
   render() {
-    return (
+    return this.state.key.length ? (
       <div>
         {/* <Nav /> */}
         <Route exact path="/" component={Home} />
@@ -47,7 +64,7 @@ class App extends Component {
             <ReactDependentScript
               scripts={[
                 `https://maps.googleapis.com/maps/api/js?key=${
-                  process.env.GOOGLE_API_KEY || GOOGLE_API_KEY
+                  this.state.key
                 }&libraries=visualization`,
               ]}
             >
@@ -56,6 +73,8 @@ class App extends Component {
           )}
         />
       </div>
+    ) : (
+      <div>Loading...</div>
     );
   }
 }
