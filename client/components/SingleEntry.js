@@ -2,29 +2,23 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { updateEntryThunk } from '../redux/store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faTimes } from '@fortawesome/free-solid-svg-icons';
+//styles
+import '../styles/Home.css';
 
 class SingleEntry extends Component {
   render() {
-    const { entries, entryIndex, updateEntry } = this.props;
+    const { entries, entryIndex, updateEntry, toggleEntry } = this.props;
     const entry = entries[entryIndex];
 
     return (
-      <div
-        id="entry"
-        style={{
-          color: 'black',
-          borderRadius: '1em',
-          padding: '1em',
-          zIndex: 9999,
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          backgroundColor: 'white',
-          transform: 'translate(-50%, -50%)',
-        }}
-      >
-        <p style={{ textAlign: 'right' }}>X</p>
+      <div id="entry" className="displayedEntry">
+        <p
+          style={{ textAlign: 'right', fontSize: '2em' }}
+          onClick={toggleEntry}
+        >
+          <FontAwesomeIcon icon={faTimes} />
+        </p>
         <h1>{entry.content}</h1>
 
         <p
