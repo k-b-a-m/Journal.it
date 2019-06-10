@@ -11,6 +11,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      displayedEntries: [],
       entryIndex: -1,
       date: '',
     };
@@ -24,6 +25,9 @@ class Home extends Component {
     this.setState({date: todayStr});
     //bind
     this.today = today;
+
+    //set displayed entries to be only today
+    this.renderDisplayedEntries();
 
     //initialize scene and camera
     const scene = new THREE.Scene();
@@ -57,20 +61,36 @@ class Home extends Component {
     this.DrawSphere(segment, this.scene, this.camera, this.renderer);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (
       JSON.stringify(JSON.stringify(prevProps.entries)) !==
       JSON.stringify(JSON.stringify(this.props.entries))
     ) {
+      this.renderDisplayedEntries();
       while (this.scene.children.length > 0) {
         this.scene.remove(this.scene.children[0]);
       }
       const selectedObject = this.scene.getObjectByName('memorySphere');
       this.scene.remove(selectedObject);
-      const segment = Math.ceil(Math.sqrt(this.props.entries.length));
+      const segment = Math.ceil(Math.sqrt(this.state.displayedEntries.length));
+      this.DrawSphere(segment, this.scene, this.camera, this.renderer);
+    } else if (prevState.displayedEntries !== this.state.displayedEntries) {
+      while (this.scene.children.length > 0) {
+        this.scene.remove(this.scene.children[0]);
+      }
+      const selectedObject = this.scene.getObjectByName('memorySphere');
+      this.scene.remove(selectedObject);
+      const segment = Math.ceil(Math.sqrt(this.state.displayedEntries.length));
       this.DrawSphere(segment, this.scene, this.camera, this.renderer);
     }
   }
+
+  renderDisplayedEntries = () => {
+    const displayedEntries = this.props.entries.filter(
+      entry => entry.dateTime.substring(0, 15) === this.today.toDateString()
+    );
+    this.setState({displayedEntries});
+  };
 
   parseDate = date => {
     let dd = date.getDate();
@@ -88,6 +108,7 @@ class Home extends Component {
 
   DrawSphere = (segment, scene, camera, renderer) => {
     const {entries} = this.props;
+    const {displayedEntries} = this.state;
     let stats, geometry, material;
     let particles;
     let PARTICLE_SIZE = 35;
@@ -95,10 +116,9 @@ class Home extends Component {
     let mouse, INTERSECTED;
 
     //Creating sphere
-    // const segment = entries.length ? Math.ceil(Math.sqrt(entries.length - 1)) : 1;
     let vertices = new THREE.SphereGeometry(150, segment, segment).vertices;
     //add in extra vertices if we need more
-    if (vertices.length < entries.length) {
+    if (vertices.length < displayedEntries.length) {
       vertices = new THREE.SphereGeometry(150, segment + 1, segment).vertices;
     }
     let positions = new Float32Array(vertices.length * 3);
@@ -107,7 +127,7 @@ class Home extends Component {
     let vertex;
     let color = new THREE.Color();
     // console.log(vertices);
-    for (var i = 0, l = entries.length - 1; i < l; i++) {
+    for (var i = 0, l = displayedEntries.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
       color.setHSL(0.08 + 0.1 * (i / l), 1, 0.5);
@@ -202,14 +222,15 @@ class Home extends Component {
       ? this.today.setDate(this.today.getDate() + 1)
       : this.today.setDate(this.today.getDate() - 1);
     const todayStr = this.parseDate(this.today);
+    this.renderDisplayedEntries();
     this.setState({date: todayStr});
   };
 
   renderParticles = () => {
     const {entryIndex} = this.state;
     if (entryIndex < 0) {
-      this.particles.rotation.x += 0.0002;
-      this.particles.rotation.y += 0.0001;
+      this.particles.rotation.x += 0.0001;
+      this.particles.rotation.y += 0.00008;
     }
     var geometry = this.particles.geometry;
     var attributes = geometry.attributes;
@@ -239,9 +260,13 @@ class Home extends Component {
   };
 
   render() {
+    const today = new Date();
+    const disabledButton = this.today
+      ? JSON.stringify(this.today.toDateString()) ===
+        JSON.stringify(today.toDateString())
+      : false;
     const {entries} = this.props;
-    const {entryIndex, date} = this.state;
-    console.log(entries);
+    const {entryIndex, date, displayedEntries} = this.state;
     return (
       <div style={{position: 'relative'}}>
         <div
@@ -254,56 +279,26 @@ class Home extends Component {
         {/*if entry index is more than 0 (which means some dots were clicked),
         render out message box with entry */}
         {entryIndex >= 0 && entries[0] ? (
-          <div
-            style={{
-              color: 'black',
-              zIndex: 9999,
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              backgroundColor: 'white',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <h1>{entries[entryIndex].content}</h1>
+          <div className="displayedEntry">
+            <h1>{displayedEntries[entryIndex].content}</h1>
           </div>
         ) : (
           ''
         )}
-        <div
-          style={{
-            position: 'absolute',
-            zIndex: 9999,
-            top: '50%',
-            left: 0,
-            transform: 'translate(0, -50%)',
-          }}
-          onClick={evt => this.handleArrowClick(evt, false)}
-        >
-          <img src="prev.png" />
+        <div className="prev">
+          <button onClick={evt => this.handleArrowClick(evt, false)}>
+            <img src="prev.png" />
+          </button>
         </div>
-        <div
-          style={{
-            position: 'absolute',
-            zIndex: 9999,
-            top: '50%',
-            right: 0,
-            transform: 'translate(0, -50%)',
-          }}
-          onClick={evt => this.handleArrowClick(evt, true)}
-        >
-          <img src="next.png" />
+        <div className={`next ${disabledButton ? 'disabled':''}`}>
+          <button
+            onClick={evt => this.handleArrowClick(evt, true)}
+            disabled={disabledButton}
+          >
+            <img src="next.png" />
+          </button>
         </div>
-        <div
-          style={{
-            color: 'white',
-            position: 'absolute',
-            zIndex: 9999,
-            bottom: 0,
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
+        <div className="date">
           <h3>{date}</h3>
         </div>
       </div>
