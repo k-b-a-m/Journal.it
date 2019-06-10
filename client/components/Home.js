@@ -14,6 +14,7 @@ class Home extends Component {
     this.state = {
       entryIndex: -1,
       date: '',
+      entryVisible: true,
     };
   }
 
@@ -230,13 +231,20 @@ class Home extends Component {
           //TODO add pop up message containing entries here
           //set state as current dots index
           if (entryIndex !== this.intersects[0].index) {
-            this.setState({ entryIndex: this.intersects[0].index });
+            this.setState({
+              entryIndex: this.intersects[0].index,
+              entryVisible: true,
+            });
           }
         }
       }
     }
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
+  };
+
+  toggleEntry = () => {
+    this.setState({ entryVisible: !this.state.entryVisible });
   };
 
   render() {
@@ -251,11 +259,12 @@ class Home extends Component {
           ref={mount => {
             this.mount = mount;
           }}
+          onClick={() => this.setState({ entryVisible: true, entryIndex: -1 })}
         />
         {/*if entry index is more than 0 (which means some dots were clicked),
         render out message box with entry */}
-        {entryIndex >= 0 && entries[0] ? (
-          <SingleEntry entryIndex={entryIndex} />
+        {entryIndex >= 0 && entries[0] && this.state.entryVisible ? (
+          <SingleEntry entryIndex={entryIndex} toggleEntry={this.toggleEntry} />
         ) : (
           ''
         )}
