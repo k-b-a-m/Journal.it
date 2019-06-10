@@ -4,7 +4,7 @@ import { updateEntryThunk } from '../redux/store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faTimes } from '@fortawesome/free-solid-svg-icons';
 //styles
-import '../styles/Home.css';
+import '../styles/SingleEntry.css';
 
 class SingleEntry extends Component {
   render() {
