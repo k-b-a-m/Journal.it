@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import * as THREE from 'three';
 import TrackballControls from 'three-trackballcontrols';
 import Stats from 'stats.js';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import SingleEntry from './SingleEntry';
 
 //styles
 import '../styles/Home.css';
@@ -13,6 +14,7 @@ class Home extends Component {
     this.state = {
       entryIndex: -1,
       date: '',
+      entryVisible: true,
     };
   }
 
@@ -21,7 +23,7 @@ class Home extends Component {
     const today = new Date();
     this.today = today;
     const todayStr = this.parseDate(this.today);
-    this.setState({date: todayStr});
+    this.setState({ date: todayStr });
     //bind
     this.today = today;
 
@@ -87,7 +89,7 @@ class Home extends Component {
   };
 
   DrawSphere = (segment, scene, camera, renderer) => {
-    const {entries} = this.props;
+    const { entries } = this.props;
     let stats, geometry, material;
     let particles;
     let PARTICLE_SIZE = 35;
@@ -124,7 +126,7 @@ class Home extends Component {
     material = new THREE.ShaderMaterial({
       uniforms: {
         lights: true,
-        color: {value: new THREE.Color(0xffffff)},
+        color: { value: new THREE.Color(0xffffff) },
         texture: {
           value: new THREE.TextureLoader().load('disc.png'),
         },
@@ -202,11 +204,11 @@ class Home extends Component {
       ? this.today.setDate(this.today.getDate() + 1)
       : this.today.setDate(this.today.getDate() - 1);
     const todayStr = this.parseDate(this.today);
-    this.setState({date: todayStr});
+    this.setState({ date: todayStr });
   };
 
   renderParticles = () => {
-    const {entryIndex} = this.state;
+    const { entryIndex } = this.state;
     if (entryIndex < 0) {
       this.particles.rotation.x += 0.0002;
       this.particles.rotation.y += 0.0001;
@@ -229,7 +231,10 @@ class Home extends Component {
           //TODO add pop up message containing entries here
           //set state as current dots index
           if (entryIndex !== this.intersects[0].index) {
-            this.setState({entryIndex: this.intersects[0].index});
+            this.setState({
+              entryIndex: this.intersects[0].index,
+              entryVisible: true,
+            });
           }
         }
       }
@@ -238,35 +243,28 @@ class Home extends Component {
     this.renderer.render(this.scene, this.camera);
   };
 
+  toggleEntry = () => {
+    this.setState({ entryVisible: !this.state.entryVisible });
+  };
+
   render() {
-    const {entries} = this.props;
-    const {entryIndex, date} = this.state;
-    console.log(entries);
+    const { entries } = this.props;
+    const { entryIndex, date } = this.state;
+
     return (
-      <div style={{position: 'relative'}}>
+      <div style={{ position: 'relative' }}>
         <div
           //this is where all the 3d will mount
 
           ref={mount => {
             this.mount = mount;
           }}
+          onClick={() => this.setState({ entryVisible: true, entryIndex: -1 })}
         />
         {/*if entry index is more than 0 (which means some dots were clicked),
         render out message box with entry */}
-        {entryIndex >= 0 && entries[0] ? (
-          <div
-            style={{
-              color: 'black',
-              zIndex: 9999,
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              backgroundColor: 'white',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <h1>{entries[entryIndex].content}</h1>
-          </div>
+        {entryIndex >= 0 && entries[0] && this.state.entryVisible ? (
+          <SingleEntry entryIndex={entryIndex} toggleEntry={this.toggleEntry} />
         ) : (
           ''
         )}
@@ -312,7 +310,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
-  return {entries: state.entries};
+  return { entries: state.entries };
 };
 
 export default connect(mapStateToProps)(Home);
