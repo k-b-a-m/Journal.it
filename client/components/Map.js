@@ -210,21 +210,27 @@ class Map extends Component {
     initMap();
 
     const getPoints = () => {
-      return this.props.heatmapData.map(
-        entry =>
-          new google.maps.LatLng(
-            Number(entry.latitude),
-            Number(entry.longitude)
-          )
-      );
-    };
+      console.log('in get points')
+      console.log(this.props.heatmapData)
 
-    heatmap = new google.maps.visualization.HeatmapLayer({
-      data: getPoints(),
-      map: map,
-    });
+      return this.props.heatmapData.map(
+        entry =>{
+          const newPoint = new google.maps.LatLng(
+            entry.latitude,
+            entry.longitude
+          )
+          return newPoint
+        }
+      );
+    }; 
+
+    // heatmap = new google.maps.visualization.HeatmapLayer({
+    //   data: getPoints(),
+    //   map: map,
+    // });
 
     google.maps.event.addListener(map, 'bounds_changed', function() {
+      console.log('bounds changed')
       var bounds = map.getBounds();
       var ne = bounds.getNorthEast();
       var sw = bounds.getSouthWest();
@@ -237,9 +243,10 @@ class Map extends Component {
       };
       // console.log(initMap);
       updateHeatMapThunk(coords);
-      // heatmap = new google.maps.visualization.HeatmapLayer({
-      //   data: getPoints(),
-      //   map: map,
+      heatmap = new google.maps.visualization.HeatmapLayer({
+        data: getPoints(),
+        map: map,
+      });
     });
   }
 
@@ -258,7 +265,7 @@ class Map extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.heatmapData !== this.props.heatmapData) {
-      console.log('heatmapData in listener: ', this.props.heatmapData);
+      //console.log('heatmapData in listener: ', this.props.heatmapData);
       // heatmap = new google.maps.visualization.HeatmapLayer({
       //   data: this.getPoints(),
       // });
