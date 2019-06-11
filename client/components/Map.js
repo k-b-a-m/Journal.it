@@ -17,7 +17,7 @@ class Map extends Component {
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 40.6679211, lng: -73.9826607 },
-        zoom: 12,
+        zoom: 18,
         styles: [
           {
             elementType: 'geometry',
@@ -86,105 +86,105 @@ class Map extends Component {
               },
             ],
           },
-          {
-            featureType: 'poi',
-            elementType: 'labels.text.fill',
-            stylers: [
-              {
-                color: '#757575',
-              },
-            ],
-          },
-          {
-            featureType: 'poi.park',
-            elementType: 'geometry',
-            stylers: [
-              {
-                color: '#181818',
-              },
-            ],
-          },
-          {
-            featureType: 'poi.park',
-            elementType: 'labels.text.fill',
-            stylers: [
-              {
-                color: '#616161',
-              },
-            ],
-          },
-          {
-            featureType: 'poi.park',
-            elementType: 'labels.text.stroke',
-            stylers: [
-              {
-                color: '#1b1b1b',
-              },
-            ],
-          },
-          {
-            featureType: 'road',
-            elementType: 'geometry.fill',
-            stylers: [
-              {
-                color: '#2c2c2c',
-              },
-            ],
-          },
-          {
-            featureType: 'road',
-            elementType: 'labels.text.fill',
-            stylers: [
-              {
-                color: '#8a8a8a',
-              },
-            ],
-          },
-          {
-            featureType: 'road.arterial',
-            elementType: 'geometry',
-            stylers: [
-              {
-                color: '#373737',
-              },
-            ],
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'geometry',
-            stylers: [
-              {
-                color: '#3c3c3c',
-              },
-            ],
-          },
-          {
-            featureType: 'road.highway.controlled_access',
-            elementType: 'geometry',
-            stylers: [
-              {
-                color: '#4e4e4e',
-              },
-            ],
-          },
-          {
-            featureType: 'road.local',
-            elementType: 'labels.text.fill',
-            stylers: [
-              {
-                color: '#616161',
-              },
-            ],
-          },
-          {
-            featureType: 'transit',
-            elementType: 'labels.text.fill',
-            stylers: [
-              {
-                color: '#757575',
-              },
-            ],
-          },
+          // {
+          //   featureType: 'poi',
+          //   elementType: 'labels.text.fill',
+          //   stylers: [
+          //     {
+          //       color: '#757575',
+          //     },
+          //   ],
+          // },
+          // {
+          //   featureType: 'poi.park',
+          //   elementType: 'geometry',
+          //   stylers: [
+          //     {
+          //       color: '#181818',
+          //     },
+          //   ],
+          // },
+          // {
+          //   featureType: 'poi.park',
+          //   elementType: 'labels.text.fill',
+          //   stylers: [
+          //     {
+          //       color: '#616161',
+          //     },
+          //   ],
+          // },
+          // {
+          //   featureType: 'poi.park',
+          //   elementType: 'labels.text.stroke',
+          //   stylers: [
+          //     {
+          //       color: '#1b1b1b',
+          //     },
+          //   ],
+          // },
+          // {
+          //   featureType: 'road',
+          //   elementType: 'geometry.fill',
+          //   stylers: [
+          //     {
+          //       color: '#2c2c2c',
+          //     },
+          //   ],
+          // },
+          // {
+          //   featureType: 'road',
+          //   elementType: 'labels.text.fill',
+          //   stylers: [
+          //     {
+          //       color: '#8a8a8a',
+          //     },
+          //   ],
+          // },
+          // {
+          //   featureType: 'road.arterial',
+          //   elementType: 'geometry',
+          //   stylers: [
+          //     {
+          //       color: '#373737',
+          //     },
+          //   ],
+          // },
+          // {
+          //   featureType: 'road.highway',
+          //   elementType: 'geometry',
+          //   stylers: [
+          //     {
+          //       color: '#3c3c3c',
+          //     },
+          //   ],
+          // },
+          // {
+          //   featureType: 'road.highway.controlled_access',
+          //   elementType: 'geometry',
+          //   stylers: [
+          //     {
+          //       color: '#4e4e4e',
+          //     },
+          //   ],
+          // },
+          // {
+          //   featureType: 'road.local',
+          //   elementType: 'labels.text.fill',
+          //   stylers: [
+          //     {
+          //       color: '#616161',
+          //     },
+          //   ],
+          // },
+          // {
+          //   featureType: 'transit',
+          //   elementType: 'labels.text.fill',
+          //   stylers: [
+          //     {
+          //       color: '#757575',
+          //     },
+          //   ],
+          // },
           {
             featureType: 'water',
             elementType: 'geometry',
@@ -194,15 +194,15 @@ class Map extends Component {
               },
             ],
           },
-          {
-            featureType: 'water',
-            elementType: 'labels.text.fill',
-            stylers: [
-              {
-                color: '#3d3d3d  ',
-              },
-            ],
-          },
+          // {
+          //   featureType: 'water',
+          //   elementType: 'labels.text.fill',
+          //   stylers: [
+          //     {
+          //       color: '#3d3d3d  ',
+          //     },
+          //   ],
+          // },
         ],
       });
     }
@@ -224,12 +224,7 @@ class Map extends Component {
       );
     }; 
 
-    // heatmap = new google.maps.visualization.HeatmapLayer({
-    //   data: getPoints(),
-    //   map: map,
-    // });
-
-    google.maps.event.addListener(map, 'bounds_changed', function() {
+    google.maps.event.addListener(map, 'idle', function() {
       console.log('bounds changed')
       var bounds = map.getBounds();
       var ne = bounds.getNorthEast();
@@ -241,7 +236,7 @@ class Map extends Component {
         max: { latitude: ne.lat(), longitude: ne.lng() },
         min: { latitude: sw.lat(), longitude: sw.lng() },
       };
-      // console.log(initMap);
+
       updateHeatMapThunk(coords);
       heatmap = new google.maps.visualization.HeatmapLayer({
         data: getPoints(),
@@ -250,31 +245,8 @@ class Map extends Component {
     });
   }
 
-  // heatmap = new google.maps.visualization.HeatmapLayer({
-  //   data: getPoints(),
-  //   map: this.map,
-  // });
-
-  // getPoints = () => {
-  //   const { heatmapData } = this.props;
-  //   return heatmapData.map(
-  //     entry =>
-  //       new google.maps.LatLng(Number(entry.latitude), Number(entry.longitude))
-  //   );
-  // };
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.heatmapData !== this.props.heatmapData) {
-      //console.log('heatmapData in listener: ', this.props.heatmapData);
-      // heatmap = new google.maps.visualization.HeatmapLayer({
-      //   data: this.getPoints(),
-      // });
-      // heatmap.setMap(map);
-    }
-  }
 
   render() {
-    console.log(this.props.heatmapData);
     return <div id="map" />;
   }
 }
