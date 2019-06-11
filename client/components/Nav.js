@@ -1,16 +1,21 @@
+/* eslint-disable no-unused-expressions */
 import React, {Component} from 'react';
 import {NavLink} from 'react-router-dom';
 import Entry from './Entry';
 import '../styles/Nav.css';
 import {addEntryThunk} from '../redux/store';
 import {connect} from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGlobeAmericas, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import faker from 'faker';
+
 
 class Nav extends React.Component {
   constructor() {
-    super(),
-      (this.state = {
-        entryFormOpen: false,
-      });
+    super();
+    this.state = {
+      entry: '',
+    }
   }
 
   toggleEntryFormOpen = () => {
@@ -19,6 +24,7 @@ class Nav extends React.Component {
   handleChangeInput = evt => {
     const {target} = evt;
     this.setState({entry: target.value});
+    console.log(this.state)
   };
 
   handleSubmit = evt => {
@@ -26,44 +32,38 @@ class Nav extends React.Component {
     navigator.geolocation.getCurrentPosition(position => {
       const {latitude, longitude} = position.coords;
       const newEntry = {
-        content: evt.target.content.value,
+        content: this.state.entry,
         latitude,
         longitude,
+        dateTime: new Date().toString(),
       };
-      this.props.addEntryThunk(newEntry).then(() => {
-        this.props.toggleEntryFormOpen();
-      });
-    });
-    $('#exampleModalCenter').modal('hide');
+      console.log(newEntry);
+      this.props.addEntryThunk(newEntry)
+        .then(() => {
+          $('#exampleModalCenter').modal('hide');
+          this.props.history.push('/home')
+        })
+        .catch(e => console.log(`Error adding Entry:\n${e}`));
+    })
   };
 
   render() {
     const {entryFormOpen} = this.state;
     const {entry} = this.state;
     return (
-      <div className="nav-container" style={{backgroundColor: 'white'}}>
-        <div>
-          <h1 className="logo">Journal.it</h1>
-        </div>
-        <div className="menu-container">
-          <NavLink exact to="/" className="link">
-            <h4 style={{marginLeft: '10px', marginRight: '10px'}}>Home</h4>
-          </NavLink>
-
-          <NavLink to="/map" className="link">
-            <h4 style={{marginLeft: '10px', marginRight: '10px'}}>Map</h4>
-          </NavLink>
-
-          <button
+      <nav className="navbar justify-content-between" style={{background: 'black'}}>
+        <NavLink to="/map" className="link">
+          <FontAwesomeIcon icon={faGlobeAmericas} style={{color: 'white'}}/>
+        </NavLink>
+        <button
             type="button"
-            className="btn btn-primary"
+            className="btn"
             data-toggle="modal"
             data-target="#exampleModalCenter"
-          >
-            Add new Entry
-          </button>
-
-          <div
+        >
+          <FontAwesomeIcon icon={faPlusCircle}  style={{color: 'white'}}/>
+        </button>
+        <div
             className="modal fade"
             id="exampleModalCenter"
             tabIndex="-1"
@@ -87,7 +87,7 @@ class Nav extends React.Component {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form onSubmit={() => this.handleSubmit(event)}>
+                  <form>
                     <div>
                       <label htmlFor="entry">Enter you story here</label>
                       <input
@@ -95,12 +95,13 @@ class Nav extends React.Component {
                         className="form-control"
                         type="textarea"
                         value={entry}
-                        onChange={evt => this.handleChangeInput(evt)}
+                        onChange={() => this.handleChangeInput(event)}
                       />
                     </div>
                     <br />
                     <button
                       type="submit"
+                      onClick={() => this.handleSubmit(event)}
                       className="btn btn-success"
                       disabled={entry === ''}
                     >
@@ -111,8 +112,7 @@ class Nav extends React.Component {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+      </nav>
     );
   }
 }
