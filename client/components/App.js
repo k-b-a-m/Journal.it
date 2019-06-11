@@ -47,6 +47,7 @@ class App extends Component {
     return this.state.key.length ? (
       <div>
         {/* <Nav /> */}
+        <Nav />
         <Route exact path="/" component={Home} />
         <Route path="/homecheck" component={HomeCheck} />
         {/* <Route path="/entry" component={Entry} /> */}
