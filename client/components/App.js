@@ -13,7 +13,7 @@ import Nav from './Nav';
 import Map from './Map';
 
 //redux
-import {fetchNearby} from '../redux/store';
+import {fetchNearby, updateHeatMap} from '../redux/store';
 
 //styles
 import '../styles/App.css';

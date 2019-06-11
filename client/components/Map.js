@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import updateHeatMap from '../redux/store'
 
 class Map extends Component {
   componentDidMount() {
@@ -198,6 +199,7 @@ class Map extends Component {
         ],
       });
 
+      console.log(map.getBounds())
       heatmap = new google.maps.visualization.HeatmapLayer({
         data: getPoints(),
         map: map,
