@@ -8,8 +8,8 @@ import '../styles/SingleEntry.css';
 
 class SingleEntry extends Component {
   render() {
-    const { entries, entryIndex, updateEntry, toggleEntry } = this.props;
-    const entry = entries[entryIndex];
+    const { entries, entryIndex, updateEntry, toggleEntry, displayedEntries } = this.props;
+    const entry = displayedEntries[entryIndex];
 
     return (
       <div id="entry" className="displayedEntry">

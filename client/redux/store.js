@@ -60,7 +60,6 @@ export const addEntryThunk = entry => {
 };
 
 export const updateEntryThunk = entry => {
-  console.log(entry)
   return dispatch => {
     return axios
       .put(`entries/${entry.id}`, entry)

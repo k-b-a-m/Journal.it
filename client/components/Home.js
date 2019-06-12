@@ -92,7 +92,6 @@ class Home extends Component {
         return entry.dateTime.substring(0, 15) === this.today.toDateString();
       })
       .sort((a, b) => a.id - b.id);
-    console.log(displayedEntries);
     this.setState({displayedEntries});
   };
 
@@ -289,7 +288,11 @@ class Home extends Component {
         {/*if entry index is more than 0 (which means some dots were clicked),
         render out message box with entry */}
         {entryIndex >= 0 && entries[0] ? (
-          <SingleEntry entryIndex={entryIndex} toggleEntry={this.toggleEntry} />
+          <SingleEntry
+            displayedEntries={displayedEntries}
+            entryIndex={entryIndex}
+            toggleEntry={this.toggleEntry}
+          />
         ) : (
           ''
         )}

@@ -58,17 +58,11 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/:id', (req, res, next) => {
-  Entry.update(
-    {
-      content: req.body.content,
+  Entry.update(req.body, {
+    where: {
+      id: +req.params.id,
     },
-    {
-      returning: true,
-      where: {
-        id: +req.params.id,
-      },
-    }
-  )
+  })
     .then(() => Entry.findByPk(+req.params.id))
     .then(updatedEntry => res.json(updatedEntry))
     .catch(next);
