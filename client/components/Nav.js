@@ -5,17 +5,16 @@ import Entry from './Entry';
 import '../styles/Nav.css';
 import {addEntryThunk} from '../redux/store';
 import {connect} from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGlobeAmericas, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faGlobeAmericas, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import faker from 'faker';
-
 
 class Nav extends React.Component {
   constructor() {
     super();
     this.state = {
       entry: '',
-    }
+    };
   }
 
   toggleEntryFormOpen = () => {
@@ -24,7 +23,6 @@ class Nav extends React.Component {
   handleChangeInput = evt => {
     const {target} = evt;
     this.setState({entry: target.value});
-    console.log(this.state)
   };
 
   handleSubmit = evt => {
@@ -37,81 +35,82 @@ class Nav extends React.Component {
         longitude,
         dateTime: new Date().toString(),
       };
-      console.log(newEntry);
-      this.props.addEntryThunk(newEntry)
-        .then(() => {
-          $('#exampleModalCenter').modal('hide');
-          this.props.history.push('/home')
-        })
+      this.props
+        .addEntryThunk(newEntry)
+        .then(() => $('#exampleModalCenter').modal('hide'))
+        .then(() => this.setState({entry: ''}))
         .catch(e => console.log(`Error adding Entry:\n${e}`));
-    })
+    });
   };
 
   render() {
     const {entryFormOpen} = this.state;
     const {entry} = this.state;
     return (
-      <nav className="navbar justify-content-between" style={{background: 'black'}}>
+      <nav
+        className="navbar justify-content-between"
+        style={{background: 'black'}}
+      >
         <NavLink to="/map" className="link">
-          <FontAwesomeIcon icon={faGlobeAmericas} style={{color: 'white'}}/>
+          <FontAwesomeIcon icon={faGlobeAmericas} style={{color: 'white'}} />
         </NavLink>
         <button
-            type="button"
-            className="btn"
-            data-toggle="modal"
-            data-target="#exampleModalCenter"
+          type="button"
+          className="btn"
+          data-toggle="modal"
+          data-target="#exampleModalCenter"
         >
-          <FontAwesomeIcon icon={faPlusCircle}  style={{color: 'white'}}/>
+          <FontAwesomeIcon icon={faPlusCircle} style={{color: 'white'}} />
         </button>
         <div
-            className="modal fade"
-            id="exampleModalCenter"
-            tabIndex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalCenterTitle"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog modal-dialog-centered" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="exampleModalCenterTitle">
-                    Contribute with a new Journal
-                  </h5>
+          className="modal fade"
+          id="exampleModalCenter"
+          tabIndex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalCenterTitle">
+                  Contribute with a new Journal
+                </h5>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <form>
+                  <div>
+                    <label htmlFor="entry">Enter you story here</label>
+                    <input
+                      name="content"
+                      className="form-control"
+                      type="textarea"
+                      value={entry}
+                      onChange={() => this.handleChangeInput(event)}
+                    />
+                  </div>
+                  <br />
                   <button
-                    type="button"
-                    className="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
+                    type="submit"
+                    onClick={() => this.handleSubmit(event)}
+                    className="btn btn-success"
+                    disabled={entry === ''}
                   >
-                    <span aria-hidden="true">&times;</span>
+                    Submit
                   </button>
-                </div>
-                <div className="modal-body">
-                  <form>
-                    <div>
-                      <label htmlFor="entry">Enter you story here</label>
-                      <input
-                        name="content"
-                        className="form-control"
-                        type="textarea"
-                        value={entry}
-                        onChange={() => this.handleChangeInput(event)}
-                      />
-                    </div>
-                    <br />
-                    <button
-                      type="submit"
-                      onClick={() => this.handleSubmit(event)}
-                      className="btn btn-success"
-                      disabled={entry === ''}
-                    >
-                      Submit
-                    </button>
-                  </form>
-                </div>
+                </form>
               </div>
             </div>
           </div>
+        </div>
       </nav>
     );
   }

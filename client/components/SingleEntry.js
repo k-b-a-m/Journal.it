@@ -8,9 +8,8 @@ import '../styles/SingleEntry.css';
 
 class SingleEntry extends Component {
   render() {
-    const { entries, entryIndex, updateEntry, toggleEntry } = this.props;
-    const entry = entries[entryIndex];
-    console.log(entry);
+    const { entries, entryIndex, updateEntry, toggleEntry, displayedEntries } = this.props;
+    const entry = displayedEntries[entryIndex];
 
     return (
       <div id="entry" className="displayedEntry">
@@ -24,7 +23,7 @@ class SingleEntry extends Component {
 
         <p
           style={{ textAlign: 'right' }}
-          onClick={() => updateEntry({ entry, likes: ++entry.likes })}
+          onClick={() => updateEntry({...entry, likes: ++entry.likes })}
         >
           <FontAwesomeIcon icon={faHeart} style={{ color: 'red' }} />{' '}
           {entry.likes}

@@ -1,28 +1,27 @@
-const router = require("express").Router();
-const Entry = require("../../db/models/Entry");
-const { Op } = require("sequelize");
-const findNearbyMinMaxCoordinates = require("./utility");
+const router = require('express').Router();
+const Entry = require('../../db/models/Entry');
+const {Op} = require('sequelize');
+const findNearbyMinMaxCoordinates = require('./utility');
 
-
-router.get("/", (req, res, next) => {
+router.get('/', (req, res, next) => {
   Entry.findAll()
     .then(entries => res.json(entries))
     .catch(next);
 });
 
-router.post("/mapmarkers", (req, res, next) => {
-  const { min, max } = req.body;
+router.post('/mapmarkers', (req, res, next) => {
+  const {min, max} = req.body;
   Entry.findAll({
     where: {
       [Op.and]: {
         latitude: {
-          [Op.between]: [min.latitude, max.latitude].sort((a,b)=>a-b)
+          [Op.between]: [min.latitude, max.latitude].sort((a, b) => a - b),
         },
         longitude: {
-          [Op.between]: [min.longitude, max.longitude].sort((a,b)=>a-b)
-        }
-      }
-    }
+          [Op.between]: [min.longitude, max.longitude].sort((a, b) => a - b),
+        },
+      },
+    },
   })
     .then(resp => {
       res.json(resp);
@@ -30,24 +29,21 @@ router.post("/mapmarkers", (req, res, next) => {
     .catch(next);
 });
 
-router.post("/nearby", (req, res, next) => {
-  console.log(req.body)
-  const { coordinate, distance } = req.body;
-  const { min, max } = findNearbyMinMaxCoordinates(coordinate, distance);
-
-  console.log(min)
-  console.log(max)
+router.post('/nearby', (req, res, next) => {
+  console.log(req.body);
+  const {coordinate, distance} = req.body;
+  const {min, max} = findNearbyMinMaxCoordinates(coordinate, distance);
   Entry.findAll({
     where: {
       [Op.and]: {
         latitude: {
-          [Op.between]: [min.latitude, max.latitude].sort((a,b)=>a-b)
+          [Op.between]: [min.latitude, max.latitude].sort((a, b) => a - b),
         },
         longitude: {
-          [Op.between]: [min.longitude, max.longitude].sort((a,b)=>a-b)
-        }
-      }
-    }
+          [Op.between]: [min.longitude, max.longitude].sort((a, b) => a - b),
+        },
+      },
+    },
   })
     .then(resp => {
       res.json(resp);
@@ -55,30 +51,25 @@ router.post("/nearby", (req, res, next) => {
     .catch(next);
 });
 
-router.post("/", (req, res, next) => {
+router.post('/', (req, res, next) => {
   Entry.create(req.body)
     .then(newEntry => res.json(newEntry))
     .catch(next);
 });
 
-router.put("/:id", (req, res, next) => {
-  Entry.update(
-    {
-      content: req.body.content
+router.put('/:id', (req, res, next) => {
+  Entry.update(req.body, {
+    where: {
+      id: +req.params.id,
     },
-    {
-      returning: true,
-      where: {
-        id: req.params.id
-      }
-    }
-  )
+  })
+    .then(() => Entry.findByPk(+req.params.id))
     .then(updatedEntry => res.json(updatedEntry))
     .catch(next);
 });
 
-router.delete("/:id", (req, res, next) => {
-  Entry.destroy({ where: { id: req.params.id } })
+router.delete('/:id', (req, res, next) => {
+  Entry.destroy({where: {id: req.params.id}})
     .then(destroyedEntry => res.json(destroyedEntry))
     .catch(next);
 });

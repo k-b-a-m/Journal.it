@@ -52,7 +52,7 @@ export const addEntryThunk = entry => {
   return dispatch => {
     return axios
       .post(`/entries`, entry)
-      .then(entry => dispatch(addEntry(entry)))
+      .then(entry => dispatch(addEntry(entry.data)))
       .catch(err => {
         throw new Error(err);
       });
@@ -63,7 +63,7 @@ export const updateEntryThunk = entry => {
   return dispatch => {
     return axios
       .put(`entries/${entry.id}`, entry)
-      .then(entry => dispatch(updateEntry(entry)))
+      .then(entry => dispatch(updateEntry(entry.data)))
       .catch(err => {
         throw new Error(err);
       });
