@@ -87,10 +87,12 @@ class Home extends Component {
   }
 
   renderDisplayedEntries = () => {
-    console.log(this.props.entries);
-    const displayedEntries = this.props.entries.filter(entry => {
-      return entry.dateTime.substring(0, 15) === this.today.toDateString();
-    });
+    const displayedEntries = this.props.entries
+      .filter(entry => {
+        return entry.dateTime.substring(0, 15) === this.today.toDateString();
+      })
+      .sort((a, b) => a.id - b.id);
+    console.log(displayedEntries);
     this.setState({displayedEntries});
   };
 
