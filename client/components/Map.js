@@ -16,7 +16,7 @@ class Map extends Component {
 
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 40.6679211, lng: -73.9826607 },
+        center: { lat: 40.705092, lng: -74.009166 },
         zoom: 18,
         styles: [
           {
@@ -95,33 +95,33 @@ class Map extends Component {
           //     },
           //   ],
           // },
-          // {
-          //   featureType: 'poi.park',
-          //   elementType: 'geometry',
-          //   stylers: [
-          //     {
-          //       color: '#181818',
-          //     },
-          //   ],
-          // },
-          // {
-          //   featureType: 'poi.park',
-          //   elementType: 'labels.text.fill',
-          //   stylers: [
-          //     {
-          //       color: '#616161',
-          //     },
-          //   ],
-          // },
-          // {
-          //   featureType: 'poi.park',
-          //   elementType: 'labels.text.stroke',
-          //   stylers: [
-          //     {
-          //       color: '#1b1b1b',
-          //     },
-          //   ],
-          // },
+          {
+            featureType: 'poi.park',
+            elementType: 'geometry',
+            stylers: [
+              {
+                color: '#181818',
+              },
+            ],
+          },
+          {
+            featureType: 'poi.park',
+            elementType: 'labels.text.fill',
+            stylers: [
+              {
+                color: '#616161',
+              },
+            ],
+          },
+          {
+            featureType: 'poi.park',
+            elementType: 'labels.text.stroke',
+            stylers: [
+              {
+                color: '#1b1b1b',
+              },
+            ],
+          },
           // {
           //   featureType: 'road',
           //   elementType: 'geometry.fill',
