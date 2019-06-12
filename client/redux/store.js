@@ -46,7 +46,7 @@ export const addEntryThunk = entry => {
   return dispatch => {
     return axios
       .post(`/entries`, entry)
-      .then(entry => dispatch(addEntry(entry)))
+      .then(entry => dispatch(addEntry(entry.data)))
       .catch(err => {
         throw new Error(err);
       });
