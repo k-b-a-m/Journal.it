@@ -122,69 +122,69 @@ class Map extends Component {
               },
             ],
           },
-          // {
-          //   featureType: 'road',
-          //   elementType: 'geometry.fill',
-          //   stylers: [
-          //     {
-          //       color: '#2c2c2c',
-          //     },
-          //   ],
-          // },
-          // {
-          //   featureType: 'road',
-          //   elementType: 'labels.text.fill',
-          //   stylers: [
-          //     {
-          //       color: '#8a8a8a',
-          //     },
-          //   ],
-          // },
-          // {
-          //   featureType: 'road.arterial',
-          //   elementType: 'geometry',
-          //   stylers: [
-          //     {
-          //       color: '#373737',
-          //     },
-          //   ],
-          // },
-          // {
-          //   featureType: 'road.highway',
-          //   elementType: 'geometry',
-          //   stylers: [
-          //     {
-          //       color: '#3c3c3c',
-          //     },
-          //   ],
-          // },
-          // {
-          //   featureType: 'road.highway.controlled_access',
-          //   elementType: 'geometry',
-          //   stylers: [
-          //     {
-          //       color: '#4e4e4e',
-          //     },
-          //   ],
-          // },
-          // {
-          //   featureType: 'road.local',
-          //   elementType: 'labels.text.fill',
-          //   stylers: [
-          //     {
-          //       color: '#616161',
-          //     },
-          //   ],
-          // },
-          // {
-          //   featureType: 'transit',
-          //   elementType: 'labels.text.fill',
-          //   stylers: [
-          //     {
-          //       color: '#757575',
-          //     },
-          //   ],
-          // },
+          {
+            featureType: 'road',
+            elementType: 'geometry.fill',
+            stylers: [
+              {
+                color: '#2c2c2c',
+              },
+            ],
+          },
+          {
+            featureType: 'road',
+            elementType: 'labels.text.fill',
+            stylers: [
+              {
+                color: '#8a8a8a',
+              },
+            ],
+          },
+          {
+            featureType: 'road.arterial',
+            elementType: 'geometry',
+            stylers: [
+              {
+                color: '#373737',
+              },
+            ],
+          },
+          {
+            featureType: 'road.highway',
+            elementType: 'geometry',
+            stylers: [
+              {
+                color: '#3c3c3c',
+              },
+            ],
+          },
+          {
+            featureType: 'road.highway.controlled_access',
+            elementType: 'geometry',
+            stylers: [
+              {
+                color: '#4e4e4e',
+              },
+            ],
+          },
+          {
+            featureType: 'road.local',
+            elementType: 'labels.text.fill',
+            stylers: [
+              {
+                color: '#616161',
+              },
+            ],
+          },
+          {
+            featureType: 'transit',
+            elementType: 'labels.text.fill',
+            stylers: [
+              {
+                color: '#757575',
+              },
+            ],
+          },
           {
             featureType: 'water',
             elementType: 'geometry',
@@ -210,22 +210,20 @@ class Map extends Component {
     initMap();
 
     const getPoints = () => {
-      console.log('in get points')
-      console.log(this.props.heatmapData)
+      console.log('in get points');
+      console.log(this.props.heatmapData);
 
-      return this.props.heatmapData.map(
-        entry =>{
-          const newPoint = new google.maps.LatLng(
-            entry.latitude,
-            entry.longitude
-          )
-          return newPoint
-        }
-      );
-    }; 
+      return this.props.heatmapData.map(entry => {
+        const newPoint = new google.maps.LatLng(
+          entry.latitude,
+          entry.longitude
+        );
+        return newPoint;
+      });
+    };
 
     google.maps.event.addListener(map, 'idle', function() {
-      console.log('bounds changed')
+      console.log('bounds changed');
       var bounds = map.getBounds();
       var ne = bounds.getNorthEast();
       var sw = bounds.getSouthWest();
@@ -244,7 +242,6 @@ class Map extends Component {
       });
     });
   }
-
 
   render() {
     return <div id="map" />;
