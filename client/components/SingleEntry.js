@@ -11,7 +11,7 @@ class SingleEntry extends Component {
     const { entries, entryIndex, updateEntry, toggleEntry, displayedEntries } = this.props;
     const entry = displayedEntries[entryIndex];
     if(!'/entry/'.includes(entry.spotifyUrl)){
-      entry.spotifyUrl = entry.spotifyUrl.substring(0, 25) + 'embed/' + entry.spotifyUrl.substring(26);
+      entry.spotifyUrl = `${entry.spotifyUrl.substring(0, 25)}embed/${entry.spotifyUrl.substring(25)}`;
     };
     return (
       <div id="entry" className="displayedEntry">
@@ -22,7 +22,7 @@ class SingleEntry extends Component {
           <FontAwesomeIcon icon={faTimes} />
         </p>
         <h1>{entry.content}</h1>
-        <iframe className="mb-4" src={entry.spotifyUrl} width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"/>
+        <iframe className="mb-4" src={entry.spotifyUrl} width="100%" height="80" frameBorder="0" allowTransparency="true" allow="encrypted-media"/>
 
         <p
           style={{ textAlign: 'right' }}
