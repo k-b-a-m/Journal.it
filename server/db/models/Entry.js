@@ -22,6 +22,10 @@ module.exports = conn.define(
     bitcoinAddress: {
       type: Sequelize.STRING,
     },
+    spotifyUrl: {
+      type: Sequelize.STRING,
+      defaultValue: '',
+    }
   },
   {
     indexes: [

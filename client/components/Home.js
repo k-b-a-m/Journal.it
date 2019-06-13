@@ -1,9 +1,13 @@
+/* eslint-disable max-statements */
+/* eslint-disable no-unused-vars */
 import React, {Component} from 'react';
 import * as THREE from 'three';
 import TrackballControls from 'three-trackballcontrols';
 import Stats from 'stats.js';
 import {connect} from 'react-redux';
 import SingleEntry from './SingleEntry';
+import Nav from './Nav';
+import {Fragment} from 'react'
 
 //styles
 import '../styles/Home.css';
@@ -277,7 +281,7 @@ class Home extends Component {
     const {entries} = this.props;
     const {entryIndex, date, displayedEntries} = this.state;
     return (
-      <div style={{position: 'relative'}}>
+      <div style={{position: 'absolute'}}>
         <div
           //this is where all the 3d will mount
 
