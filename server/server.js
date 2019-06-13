@@ -9,18 +9,22 @@ const { syncAndSeed } = require("./db");
 const listeners = require("./listeners");
 const socketio = require("socket.io");
 
-//HTTP Server
-// const httpServer = http
-//   .createServer(app)
-//   .listen(port, () =>
-//     console.log(`HTTP Server listening on: https://localhost:${port}`)
-//   );
 
 const httpServer = app.listen(port, () =>
   console.log(`HTTP Server listening on: https://localhost:${port}`)
 );
 
-//HTTPS Server
+//Enable Websockets on server
+const io = socketio(httpServer);
+listeners(io);
+
+syncAndSeed();
+
+
+
+
+//DEV HTTPS Server with sockets
+// ###############################################################################
 // const httpsServer = https
 //   .createServer(
 //     {
@@ -37,8 +41,9 @@ const httpServer = app.listen(port, () =>
 //     console.log(`HTTPS Server listening on: https://localhost:${portSecure}`)
 //   );
 
-//Enable Websockets on server
-const io = socketio(httpServer);
-listeners(io);
+// const iohttps = socketio(httpsServer);
+// listeners(iohttps)
 
-syncAndSeed();
+// ###############################################################################
+
+

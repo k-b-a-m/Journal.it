@@ -1,33 +1,48 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const path = require('path');
+const path = require("path");
 
 module.exports = app;
 
-//Middleware Needed for PROD to redirect http requests to https
+//PROD Magic middleware specific to heroku to redirect ALL HTTP requests to HTTPS
+//explained here:  https://jaketrent.com/post/https-redirect-node-heroku/
+if (process.env.NODE_ENV === "production") {
+  app.use((req, res, next) => {
+    if (req.header("x-forwarded-proto") !== "https") {
+      res.redirect(`https://${req.header("host")}${req.url}`);
+    } else next();
+  });
+}
+
+//DEV Middleware Needed for to redirect ALL http requests to https
+// NEED TO COMMENT OUT BEFORE DEPLOY req.secure will always be false on heroku
 // app.use((req, res, next) => {
+//   console.log(req.header("x-forwarded-proto"))
+//   console.log(req.secure)
 //   if (req.secure) {
+//     console.log('a')
 //     next();
 //   } else {
-//     res.redirect(`https://localhost:8443`); //For PROD Change this to `https://`+req.headers.host+req.url`
-//     }
+//     console.log('b')
+//     res.redirect("https://localhost:8443/#" + req.url);
+//   }
 // });
 
 //Static middleware
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 //Parsing middleware
-app.use('/', express.json());
+app.use("/", express.json());
 
 //Routes
-app.get('/', (req, res, next) => res.sendFile('index.html'));
-app.get('/app.js', (req, res, next) =>
-  res.sendFile(path.join(__dirname, '..', 'dist', 'main.js'))
+app.get("/", (req, res, next) => res.sendFile("index.html"));
+app.get("/app.js", (req, res, next) =>
+  res.sendFile(path.join(__dirname, "..", "dist", "main.js"))
 );
 
 // API Middleware
-app.use('/googlemaps', require('./api/routes/googlemaps'));
-app.use('/entries', require('./api/routes/entries'));
+app.use("/googlemaps", require("./api/routes/googlemaps"));
+app.use("/entries", require("./api/routes/entries"));
 
 // Parsing Middleware
 app.use(express.json());

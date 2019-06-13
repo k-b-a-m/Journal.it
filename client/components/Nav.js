@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faGlobeAmericas, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import faker from 'faker';
+import socket from './socket';
 
 class Nav extends React.Component {
   constructor() {
@@ -35,6 +36,9 @@ class Nav extends React.Component {
         longitude,
         dateTime: new Date().toString(),
       };
+
+      socket.emit('addNearby', newEntry);
+
       this.props
         .addEntryThunk(newEntry)
         .then(() => $('#exampleModalCenter').modal('hide'))
@@ -73,9 +77,6 @@ class Nav extends React.Component {
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalCenterTitle">
-                  Contribute with a new Journal
-                </h5>
                 <button
                   type="button"
                   className="close"
@@ -88,7 +89,7 @@ class Nav extends React.Component {
               <div className="modal-body">
                 <form>
                   <div>
-                    <label htmlFor="entry">Enter you story here</label>
+                    <label htmlFor="entry">Enter your story here</label>
                     <input
                       name="content"
                       className="form-control"
