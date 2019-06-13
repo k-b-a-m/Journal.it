@@ -2,13 +2,16 @@
 import React, {Component} from 'react';
 import {NavLink} from 'react-router-dom';
 import Entry from './Entry';
-import '../styles/Nav.css';
+
 import {addEntryThunk} from '../redux/store';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faGlobeAmericas, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import faker from 'faker';
 import socket from './socket';
+
+//style
+import '../styles/Nav.css';
 
 class Nav extends React.Component {
   constructor() {
@@ -51,12 +54,12 @@ class Nav extends React.Component {
     const {entryFormOpen} = this.state;
     const {entry} = this.state;
     return (
-      <nav
-        className="navbar justify-content-between"
-        style={{background: 'black'}}
-      >
+      <nav className="nav-container navbar">
         <NavLink to="/map" className="link">
-          <FontAwesomeIcon icon={faGlobeAmericas} style={{color: 'white'}} />
+          <FontAwesomeIcon
+            icon={faGlobeAmericas}
+            style={{color: 'white', fontSize: '40px'}}
+          />
         </NavLink>
         <button
           type="button"
@@ -64,7 +67,10 @@ class Nav extends React.Component {
           data-toggle="modal"
           data-target="#exampleModalCenter"
         >
-          <FontAwesomeIcon icon={faPlusCircle} style={{color: 'white'}} />
+          <FontAwesomeIcon
+            icon={faPlusCircle}
+            style={{color: 'white', fontSize: '40px'}}
+          />
         </button>
         <div
           className="modal fade"
