@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import {createStore, applyMiddleware, combineReducers} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import axios from 'axios';
 
@@ -71,9 +71,9 @@ export const updateEntryThunk = entry => {
 };
 
 export const fetchNearby = obj => async dispatch => {
-  const { coordinate, distance } = obj;
+  const {coordinate, distance} = obj;
   try {
-    const resp = await axios.post('/entries/nearby', { coordinate, distance });
+    const resp = await axios.post('/entries/nearby', {coordinate, distance});
 
     const entries = resp.data;
     return dispatch(setEntries(entries));
@@ -83,7 +83,7 @@ export const fetchNearby = obj => async dispatch => {
 };
 
 export const updateHeatMap = coords => async dispatch => {
-  const { min, max } = coords;
+  const {min, max} = coords;
   console.log(min);
   console.log(max);
   try {
