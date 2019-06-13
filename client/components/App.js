@@ -18,6 +18,8 @@ import { fetchNearby } from '../redux/store';
 //styles
 import '../styles/App.css';
 
+
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -25,11 +27,6 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    var socket = io('http://localhost:3000');
-    socket.on('updateNearby', entry => {
-      console.log(entry);
-    });
-
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
       this.props.fetchNearby({
@@ -46,7 +43,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        {/* <Nav /> */}
         <Nav />
         <Route exact path="/" component={Home} />
         <Route path="/homecheck" component={HomeCheck} />
