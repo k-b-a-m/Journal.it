@@ -6,7 +6,7 @@ import Entry from './Entry';
 import {addEntryThunk} from '../redux/store';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faGlobeAmericas, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
+import {faGlobeAmericas, faPlusCircle, faHome} from '@fortawesome/free-solid-svg-icons';
 import faker from 'faker';
 import socket from './socket';
 
@@ -18,6 +18,7 @@ class Nav extends React.Component {
     super();
     this.state = {
       entry: '',
+      spotifyUrl: '',
     };
   }
 
@@ -26,7 +27,7 @@ class Nav extends React.Component {
   };
   handleChangeInput = evt => {
     const {target} = evt;
-    this.setState({entry: target.value});
+    this.setState({[target.name]: target.value});
   };
 
   handleSubmit = evt => {
@@ -38,6 +39,7 @@ class Nav extends React.Component {
         latitude,
         longitude,
         dateTime: new Date().toString(),
+        spotifyUrl: this.state.spotifyUrl,
       };
 
       socket.emit('addNearby', newEntry);
@@ -48,11 +50,12 @@ class Nav extends React.Component {
         .then(() => this.setState({entry: ''}))
         .catch(e => console.log(`Error adding Entry:\n${e}`));
     });
+    console.log(this.state);
   };
 
   render() {
     const {entryFormOpen} = this.state;
-    const {entry} = this.state;
+    const {entry, spotifyUrl} = this.state;
     return (
       <nav className="nav-container navbar">
         <NavLink to="/map" className="link">
@@ -60,6 +63,9 @@ class Nav extends React.Component {
             icon={faGlobeAmericas}
             style={{color: 'white', fontSize: '40px'}}
           />
+        </NavLink>
+        <NavLink exact to="/" className="link">
+          <FontAwesomeIcon icon={faHome} style={{color: 'white'}} />
         </NavLink>
         <button
           type="button"
@@ -94,25 +100,37 @@ class Nav extends React.Component {
               </div>
               <div className="modal-body">
                 <form>
-                  <div>
-                    <label htmlFor="entry">Enter your story here</label>
-                    <input
-                      name="content"
-                      className="form-control"
-                      type="textarea"
-                      value={entry}
-                      onChange={() => this.handleChangeInput(event)}
-                    />
+                  <div className="form-group">
+                    <div className="mb-2">
+                      <label htmlFor="entry">Enter you story here</label>
+                      <input
+                        name="entry"
+                        className="form-control"
+                        type="text"
+                        value={entry}
+                        onChange={this.handleChangeInput}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="spotifyUrl">Enter spotify song link here!</label>
+                      <input
+                        name="spotifyUrl"
+                        className="form-control"
+                        type="textarea"
+                        value={spotifyUrl}
+                        onChange={this.handleChangeInput}
+                      />
+                    </div>
+                    <br />
+                    <button
+                      type="submit"
+                      onClick={() => this.handleSubmit(event)}
+                      className="btn btn-success"
+                      disabled={entry === ''}
+                    >
+                      Submit
+                    </button>
                   </div>
-                  <br />
-                  <button
-                    type="submit"
-                    onClick={() => this.handleSubmit(event)}
-                    className="btn btn-success"
-                    disabled={entry === ''}
-                  >
-                    Submit
-                  </button>
                 </form>
               </div>
             </div>
