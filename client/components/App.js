@@ -1,7 +1,7 @@
 //libraries
-import React, {Component} from 'react';
-import {Route} from 'react-router-dom';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import ReactDependentScript from 'react-dependent-script';
 //import {GOOGLE_API_KEY} from '../../config';
@@ -13,40 +13,37 @@ import Nav from './Nav';
 import Map from './Map';
 
 //redux
-import {fetchNearby} from '../redux/store';
+import { fetchNearby } from '../redux/store';
 
 //styles
 import '../styles/App.css';
 
+
+
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {key: ''};
+    this.state = { key: '' };
   }
 
   async componentDidMount() {
-    var socket = io('http://localhost:3000');
-    socket.on('updateNearby', entry => {
-      console.log(entry);
-    });
-
     navigator.geolocation.getCurrentPosition(position => {
-      const {latitude, longitude} = position.coords;
+      const { latitude, longitude } = position.coords;
       this.props.fetchNearby({
-        coordinate: {latitude, longitude},
+        coordinate: { latitude, longitude },
         distance: 500,
       }); //distance is in feet 5280ft = 1mi
     });
 
     await axios
       .get('/googlemaps')
-      .then(response => this.setState({key: response.data}));
+      .then(response => this.setState({ key: response.data }));
   }
 
   render() {
-    return this.state.key.length ? (
+    return (
       <div>
-        {/* <Nav /> */}
+        <Nav />
         <Route exact path="/" component={Home} />
         <Route path="/homecheck" component={HomeCheck} />
         {/* <Route path="/entry" component={Entry} /> */}
@@ -66,13 +63,11 @@ class App extends Component {
           )}
         />
       </div>
-    ) : (
-      <div>Loading...</div>
     );
   }
 }
 
 export default connect(
   null,
-  {fetchNearby}
+  { fetchNearby }
 )(App);

@@ -21,7 +21,7 @@ const setEntries = entries => ({
   entries,
 });
 
-const addEntry = entry => ({
+export const addEntry = entry => ({
   type: ADD_ENTRY,
   entry,
 });
@@ -47,6 +47,7 @@ const setHeatMap = entries => ({
 //     throw new Error(err);
 //   }
 // };
+
 
 export const addEntryThunk = entry => {
   return dispatch => {
