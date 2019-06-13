@@ -1,7 +1,7 @@
 {
     "name": "Mnemosphere",
     "short_name" : "Mnemosphere",
-    "start_url": "index.html",
+    "start_url": "/index.html",
     "scope" : "./",
     "icons": [
         {
@@ -15,7 +15,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffee00",
-    "background_color": "#ffee00",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
     "display": "standalone"
 }
