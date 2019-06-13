@@ -10,7 +10,9 @@ class SingleEntry extends Component {
   render() {
     const { entries, entryIndex, updateEntry, toggleEntry, displayedEntries } = this.props;
     const entry = displayedEntries[entryIndex];
-
+    if(!'/entry/'.includes(entry.spotifyUrl)){
+      entry.spotifyUrl = entry.spotifyUrl.substring(0, 25) + 'embed/' + entry.spotifyUrl.substring(26);
+    };
     return (
       <div id="entry" className="displayedEntry">
         <p
@@ -49,3 +51,6 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(SingleEntry);
+
+let varaa = 'https://open.spotify.com/'
+console.log(varaa.length)
