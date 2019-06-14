@@ -77,7 +77,6 @@ class Home extends Component {
       ) {
         this.geometry.setDrawRange(0, this.state.displayedEntries.length);
         console.log('hey2');
-        console.log(this.state.displayedEntries.length);
       } else {
         //render when app first got entries from db after mounting
         console.log('hey3');
@@ -87,9 +86,7 @@ class Home extends Component {
         }
         const selectedObject = this.scene.getObjectByName('memorySphere');
         this.scene.remove(selectedObject);
-        const segment = Math.ceil(
-          Math.sqrt(this.state.displayedEntries.length)
-        );
+        const segment = Math.ceil(Math.sqrt(this.displayedEntries.length));
         this.DrawSphere(segment, this.scene, this.camera, this.renderer);
       }
     }
@@ -112,6 +109,7 @@ class Home extends Component {
         return entry.dateTime.substring(0, 15) === this.today.toDateString();
       })
       .sort((a, b) => a.id - b.id);
+    this.displayedEntries = displayedEntries;
     this.setState({displayedEntries});
   };
 
@@ -177,9 +175,11 @@ class Home extends Component {
       alphaTest: 0.9,
     });
 
-    geometry.setDrawRange(0, this.state.displayedEntries.length - 1);
-    console.log('drawrange');
-    console.log(this.state.displayedEntries.length - 1);
+    const drawCount =
+      this.state.displayedEntries.length > 0
+        ? this.state.displayedEntries.length - 1
+        : this.displayedEntries.length - 1;
+    geometry.setDrawRange(0, drawCount);
     geometry.needsUpdate = true;
     //add particles behind spots
     particles = new THREE.Points(geometry, material);
