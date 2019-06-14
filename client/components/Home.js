@@ -178,8 +178,8 @@ class Home extends Component {
     });
 
     geometry.setDrawRange(0, this.state.displayedEntries.length - 1);
-    console.log('drawrange')
-    console.log(this.state.displayedEntries.length-1)
+    console.log('drawrange');
+    console.log(this.state.displayedEntries.length - 1);
     geometry.needsUpdate = true;
     //add particles behind spots
     particles = new THREE.Points(geometry, material);
@@ -256,7 +256,7 @@ class Home extends Component {
       : this.today.setDate(this.today.getDate() - 1);
     const todayStr = this.parseDate(this.today);
     this.renderDisplayedEntries();
-    this.setState({date: todayStr});
+    this.setState({date: todayStr, entryIndex: -1});
   };
 
   renderParticles = () => {
