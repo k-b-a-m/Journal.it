@@ -151,7 +151,7 @@ class Home extends Component {
     for (var i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
-      color.setHSL(0.08 + 0.1 * (i / l), 1, 0.5);
+      color.setHSL(0.07 + 0.08 * (i / l), 1, 0.5);
       color.toArray(colors, i * 3);
       sizes[i] = PARTICLE_SIZE * 0.5;
     }
