@@ -39,7 +39,6 @@ class Nav extends React.Component {
         longitude,
         dateTime: new Date().toString(),
       };
-
       socket.emit('addNearby', newEntry);
 
       this.props

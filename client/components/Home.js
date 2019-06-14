@@ -63,19 +63,39 @@ class Home extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    //if new entries are different in the redux store
     if (
       JSON.stringify(JSON.stringify(prevProps.entries)) !==
       JSON.stringify(JSON.stringify(this.props.entries))
     ) {
       this.renderDisplayedEntries();
-      while (this.scene.children.length > 0) {
-        this.scene.remove(this.scene.children[0]);
+      console.log('hey1');
+      //just add new dots but don't re-render the whole sphere when new entry is added
+      if (
+        prevProps.entries.length !== 0 &&
+        this.props.entries.length > prevProps.entries.length
+      ) {
+        this.geometry.setDrawRange(0, this.state.displayedEntries.length);
+        console.log('hey2');
+        console.log(this.state.displayedEntries.length);
+      } else {
+        //render when app first got entries from db after mounting
+        console.log('hey3');
+        this.renderDisplayedEntries();
+        while (this.scene.children.length > 0) {
+          this.scene.remove(this.scene.children[0]);
+        }
+        const selectedObject = this.scene.getObjectByName('memorySphere');
+        this.scene.remove(selectedObject);
+        const segment = Math.ceil(
+          Math.sqrt(this.state.displayedEntries.length)
+        );
+        this.DrawSphere(segment, this.scene, this.camera, this.renderer);
       }
-      const selectedObject = this.scene.getObjectByName('memorySphere');
-      this.scene.remove(selectedObject);
-      const segment = Math.ceil(Math.sqrt(this.state.displayedEntries.length));
-      this.DrawSphere(segment, this.scene, this.camera, this.renderer);
-    } else if (prevState.displayedEntries !== this.state.displayedEntries) {
+    }
+    //render when the day is changed which leads to state.displayedEntries changes
+    else if (prevState.date !== this.state.date) {
+      console.log('hey4');
       while (this.scene.children.length > 0) {
         this.scene.remove(this.scene.children[0]);
       }
@@ -114,7 +134,7 @@ class Home extends Component {
     const {displayedEntries} = this.state;
     let stats, geometry, material;
     let particles;
-    let PARTICLE_SIZE = 35;
+    let PARTICLE_SIZE = 50;
     let raycaster, intersects;
     let mouse, INTERSECTED;
 
@@ -130,7 +150,7 @@ class Home extends Component {
     let vertex;
     let color = new THREE.Color();
     // console.log(vertices);
-    for (var i = 0, l = displayedEntries.length; i < l; i++) {
+    for (var i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
       color.setHSL(0.08 + 0.1 * (i / l), 1, 0.5);
@@ -157,6 +177,10 @@ class Home extends Component {
       alphaTest: 0.9,
     });
 
+    geometry.setDrawRange(0, this.state.displayedEntries.length - 1);
+    console.log('drawrange')
+    console.log(this.state.displayedEntries.length-1)
+    geometry.needsUpdate = true;
     //add particles behind spots
     particles = new THREE.Points(geometry, material);
     scene.add(particles);
@@ -168,6 +192,12 @@ class Home extends Component {
     this.PARTICLE_SIZE = PARTICLE_SIZE;
     this.intersects = intersects;
     this.INTERSECTED = INTERSECTED;
+    this.vertices = vertices;
+    this.vertex = vertex;
+    this.positions = positions;
+    this.colors = colors;
+    this.color = color;
+    this.sizes = sizes;
 
     //append all dom elements
     this.mount.appendChild(this.renderer.domElement);
