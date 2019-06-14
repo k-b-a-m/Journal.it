@@ -75,7 +75,7 @@ class Home extends Component {
         prevProps.entries.length !== 0 &&
         this.props.entries.length > prevProps.entries.length
       ) {
-        this.geometry.setDrawRange(0, this.state.displayedEntries.length);
+        this.geometry.setDrawRange(0, this.displayedEntries.length-1);
         console.log('hey2');
       } else {
         //render when app first got entries from db after mounting
@@ -132,7 +132,7 @@ class Home extends Component {
     const {displayedEntries} = this.state;
     let stats, geometry, material;
     let particles;
-    let PARTICLE_SIZE = 50;
+    let PARTICLE_SIZE = 80;
     let raycaster, intersects;
     let mouse, INTERSECTED;
 
@@ -219,7 +219,7 @@ class Home extends Component {
       this.renderer.domElement
     );
     //controls.update() must be called after any manual changes to the camera's transform
-    controls.rotateSpeed = 1.5;
+    controls.rotateSpeed = 1;
     this.controls = controls;
     this.controls.update();
 
@@ -276,13 +276,13 @@ class Home extends Component {
           attributes.size.needsUpdate = true;
           this.INTERSECTED = null;
         } else if (this.INTERSECTED !== this.intersects[0].index) {
-          attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE;
-          this.INTERSECTED = this.intersects[0].index;
-          attributes.size.array[this.INTERSECTED] = 50;
-          attributes.size.needsUpdate = true;
-          //TODO add pop up message containing entries here
-          //set state as current dots index
           if (entryIndex !== this.intersects[0].index) {
+            attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE;
+            this.INTERSECTED = this.intersects[0].index;
+            attributes.size.array[this.INTERSECTED] = 50;
+            attributes.size.needsUpdate = true;
+            //TODO add pop up message containing entries here
+            //set state as current dots index
             this.setState({
               entryIndex: this.intersects[0].index,
             });
