@@ -1,20 +1,19 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const path = require("path");
+const path = require('path');
 
 const compression = require('compression');
 
 module.exports = app;
 
-app.use(compression())
-
+app.use(compression());
 
 //PROD Magic middleware specific to heroku to redirect ALL HTTP requests to HTTPS
 //explained here:  https://jaketrent.com/post/https-redirect-node-heroku/
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === 'production') {
   app.use((req, res, next) => {
-    if (req.header("x-forwarded-proto") !== "https") {
-      res.redirect(`https://${req.header("host")}${req.url}`);
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(`https://${req.header('host')}${req.url}`);
     } else next();
   });
 }
@@ -34,20 +33,21 @@ if (process.env.NODE_ENV === "production") {
 // });
 
 //Static middleware
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Parsing middleware
-app.use("/", express.json());
+app.use('/', express.json());
 
 //Routes
-app.get("/", (req, res, next) => res.sendFile("index.html"));
-app.get("/app.js", (req, res, next) =>
-  res.sendFile(path.join(__dirname, "..", "dist", "main.js"))
+app.get('/', (req, res, next) => res.sendFile('index.html'));
+app.get('/app.js', (req, res, next) =>
+  res.sendFile(path.join(__dirname, '..', 'dist', 'main.js'))
 );
 
 // API Middleware
-app.use("/googlemaps", require("./api/routes/googlemaps"));
-app.use("/entries", require("./api/routes/entries"));
+app.use('/googlemaps', require('./api/routes/googlemaps'));
+app.use('/entries', require('./api/routes/entries'));
+app.use('/facebook', require('./api/routes/facebook'));
 
 // Parsing Middleware
 app.use(express.json());
