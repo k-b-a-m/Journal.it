@@ -10,29 +10,36 @@ class SingleEntry extends Component {
   render() {
     const { entries, entryIndex, updateEntry, toggleEntry, displayedEntries } = this.props;
     const entry = displayedEntries[entryIndex];
-    if(!'/entry/'.includes(entry.spotifyUrl)){
-      entry.spotifyUrl = `${entry.spotifyUrl.substring(0, 25)}embed/${entry.spotifyUrl.substring(25)}`;
-    };
-    return (
-      <div id="entry" className="displayedEntry">
-        <p
-          style={{ textAlign: 'right', fontSize: '2em' }}
-          onClick={toggleEntry}
-        >
-          <FontAwesomeIcon icon={faTimes} />
-        </p>
-        <h1>{entry.content}</h1>
-        <iframe className="mb-4" src={entry.spotifyUrl} width="100%" height="80" frameBorder="0" allowTransparency="true" allow="encrypted-media"/>
+    if(entry){
+      if(!'/entry/'.includes(entry.spotifyUrl)){
+        entry.spotifyUrl = `${entry.spotifyUrl.substring(0, 25)}embed/${entry.spotifyUrl.substring(25)}`;
+      };
+    }
+    if(entry){
 
-        <p
-          style={{ textAlign: 'right' }}
-          onClick={() => updateEntry({...entry, likes: ++entry.likes })}
-        >
-          <FontAwesomeIcon icon={faHeart} style={{ color: 'red' }} />{' '}
-          {entry.likes}
-        </p>
-      </div>
-    );
+      return (
+        <div id="entry" className="displayedEntry">
+          <p
+            style={{ textAlign: 'right', fontSize: '2em' }}
+            onClick={toggleEntry}
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </p>
+          <h1>{entry.content}</h1>
+          <iframe className="mb-4" src={entry.spotifyUrl} width="100%" height="80" frameBorder="0" allowTransparency="true" allow="encrypted-media"/>
+
+          <p
+            style={{ textAlign: 'right' }}
+            onClick={() => updateEntry({...entry, likes: ++entry.likes })}
+          >
+            <FontAwesomeIcon icon={faHeart} style={{ color: 'red' }} />{' '}
+            {entry.likes}
+          </p>
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 
