@@ -7,7 +7,7 @@ import Stats from 'stats.js';
 import {connect} from 'react-redux';
 import SingleEntry from './SingleEntry';
 import Nav from './Nav';
-import {Fragment} from 'react'
+import {Fragment} from 'react';
 
 //styles
 import '../styles/Home.css';
@@ -85,21 +85,16 @@ class Home extends Component {
       }
       //TODO: Don't re-render sphere when like change
       else if (
-        prevState.displayedEntries[entryIndex] &&
-        prevState.displayedEntries[entryIndex].likes >
-          displayedEntries[entryIndex].likes
+        prevState.displayedEntries.length &&
+        prevState.displayedEntries.length === this.state.displayedEntries.length
       ) {
         console.log(prevState.displayedEntries[entryIndex].likes);
         console.log('like');
       } else {
-        if (prevState.displayedEntries[entryIndex]) {
-          console.log(prevState.displayedEntries[entryIndex].likes);
-          console.log(displayedEntries[entryIndex].likes);
-        }
-
         //render when app first got entries from db after mounting
         console.log('hey3');
         this.renderDisplayedEntries();
+        this.setState({displayedEntries: this.displayedEntries});
         while (this.scene.children.length > 0) {
           this.scene.remove(this.scene.children[0]);
         }
@@ -109,7 +104,7 @@ class Home extends Component {
         this.DrawSphere(segment, this.scene, this.camera, this.renderer);
       }
     }
-    //render when the day is changed which leads to state.displayedEntries changes
+    //render when the date is changed which leads to state.displayedEntries changes
     else if (prevState.date !== this.state.date) {
       console.log('hey4');
       while (this.scene.children.length > 0) {
@@ -129,7 +124,6 @@ class Home extends Component {
       })
       .sort((a, b) => a.id - b.id);
     this.displayedEntries = displayedEntries;
-    this.setState({displayedEntries});
   };
 
   parseDate = date => {
@@ -275,7 +269,11 @@ class Home extends Component {
       : this.today.setDate(this.today.getDate() - 1);
     const todayStr = this.parseDate(this.today);
     this.renderDisplayedEntries();
-    this.setState({date: todayStr, entryIndex: -1});
+    this.setState({
+      date: todayStr,
+      entryIndex: -1,
+      displayedEntries: this.displayedEntries,
+    });
   };
 
   renderParticles = () => {

@@ -22,7 +22,7 @@ class SingleEntry extends Component {
           <FontAwesomeIcon icon={faTimes} />
         </p>
         <h1>{entry.content}</h1>
-        <iframe className="mb-4" src={entry.spotifyUrl} width="100%" height="80" frameBorder="0" allowTransparency="true" allow="encrypted-media"/>
+        <iframe className="mb-4" src={entry.spotifyUrl} width="100%" height="80" frameBorder="0" allowtransparency="true" allow="encrypted-media"/>
 
         <p
           style={{ textAlign: 'right' }}
