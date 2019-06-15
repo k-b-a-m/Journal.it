@@ -16,6 +16,7 @@ import { fetchNearby } from '../redux/store';
 
 //styles
 import '../styles/App.css';
+import UserProfile from './UserPage';
 
 class App extends Component {
   constructor(props) {
@@ -40,9 +41,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Nav />
         <Route exact path="/" component={Home} />
         <Route path="/homecheck" component={HomeCheck} />
+        <Route path="/user/:id" render={({match}) => <UserProfile id={match.params.id*1}/>}/>
         <Route
           exact
           path="/map"

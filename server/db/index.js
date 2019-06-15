@@ -1,10 +1,22 @@
 const conn = require('./conn');
-const Entry = require('./models/Entry');
-const entries = require('./seed');
+const {entries, users} = require('./seed');
+const {User, Entry} = require("./models/index");
+const Sequelize = require('sequelize');
+
+User.hasMany(Entry);
 
 const syncAndSeed = () => {
   return conn
     .sync({force: true})
+    .then(() => {
+      return Promise.all(
+        users.map(user =>
+          User.create({
+            name: user.name,
+          })
+        )
+      )
+    })
     .then(() => {
       return Promise.all(
         entries.map(entry =>
@@ -14,11 +26,13 @@ const syncAndSeed = () => {
             longitude: entry.longitude,
             likes: entry.likes,
             dateTime: entry.dateTime,
+            userId: 1,
           })
         )
       );
     })
-    .then(() => console.log('db seeded'));
+    .then(() => console.log('db seeded'))
+    .catch(e => console.log(`Error seeding data:\n${e}`));
 };
 
 module.exports = {

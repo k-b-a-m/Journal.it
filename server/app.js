@@ -48,6 +48,7 @@ app.get("/app.js", (req, res, next) =>
 // API Middleware
 app.use("/googlemaps", require("./api/routes/googlemaps"));
 app.use("/entries", require("./api/routes/entries"));
+app.use('/user', require('./api/routes/users'));
 
 // Parsing Middleware
 app.use(express.json());

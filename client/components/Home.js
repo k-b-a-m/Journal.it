@@ -335,40 +335,43 @@ class Home extends Component {
     const {entries} = this.props;
     const {entryIndex, date, displayedEntries} = this.state;
     return (
-      <div style={{position: 'absolute'}}>
-        <div
-          //this is where all the 3d will mount
+      <div>
+        <Nav className="nav-container"/>
+        <div style={{position: 'absolute'}}>
+          <div
+            //this is where all the 3d will mount
 
-          ref={mount => {
-            this.mount = mount;
-          }}
-        />
-        {/*if entry index is more than 0 (which means some dots were clicked),
-        render out message box with entry */}
-        {entryIndex >= 0 && entries[0] ? (
-          <SingleEntry
-            displayedEntries={displayedEntries}
-            entryIndex={entryIndex}
-            toggleEntry={this.toggleEntry}
+            ref={mount => {
+              this.mount = mount;
+            }}
           />
-        ) : (
-          ''
-        )}
-        <div className="prev">
-          <button onClick={evt => this.handleArrowClick(evt, false)}>
-            <img src="prev.png" />
-          </button>
-        </div>
-        <div className={`next ${disabledButton ? 'disabled' : ''}`}>
-          <button
-            onClick={evt => this.handleArrowClick(evt, true)}
-            disabled={disabledButton}
-          >
-            <img src="next.png" />
-          </button>
-        </div>
-        <div className="date">
-          <h3>{date}</h3>
+          {/*if entry index is more than 0 (which means some dots were clicked),
+          render out message box with entry */}
+          {entryIndex >= 0 && entries[0] ? (
+            <SingleEntry
+              displayedEntries={displayedEntries}
+              entryIndex={entryIndex}
+              toggleEntry={this.toggleEntry}
+            />
+          ) : (
+            ''
+          )}
+          <div className="prev">
+            <button onClick={evt => this.handleArrowClick(evt, false)}>
+              <img src="prev.png" />
+            </button>
+          </div>
+          <div className={`next ${disabledButton ? 'disabled' : ''}`}>
+            <button
+              onClick={evt => this.handleArrowClick(evt, true)}
+              disabled={disabledButton}
+            >
+              <img src="next.png" />
+            </button>
+          </div>
+          <div className="date">
+            <h3>{date}</h3>
+          </div>
         </div>
       </div>
     );
