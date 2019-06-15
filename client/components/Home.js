@@ -105,6 +105,7 @@ class Home extends Component {
     }
     //render when the date is changed which leads to state.displayedEntries changes
     else if (prevState.date !== this.state.date) {
+      console.log(this.particles.geometry.attributes);
       console.log('hey4');
       while (this.scene.children.length > 0) {
         this.scene.remove(this.scene.children[0]);
@@ -148,7 +149,7 @@ class Home extends Component {
     let raycaster, intersects;
     let mouse, INTERSECTED;
 
-    //Creating sphere
+    //Creating sphere vertices
     let vertices = new THREE.SphereGeometry(150, segment, segment).vertices;
     //add in extra vertices if we need more
     if (vertices.length < displayedEntries.length) {
@@ -163,7 +164,8 @@ class Home extends Component {
     for (var i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
-      color.setHSL(0.07 + 0.08 * (i / l), 1, 0.5);
+      // color.setHSL(0.07 + 0.08 * (i / l), 1, 0.5);
+      color.setHSL(0.48 + 0.5 * (i / l), 0.8, 0.7);
       color.toArray(colors, i * 3);
       sizes[i] = PARTICLE_SIZE * 0.5;
     }
@@ -187,6 +189,14 @@ class Home extends Component {
       alphaTest: 0.9,
     });
 
+
+    //create sphere
+    let sphereGeometry = new THREE.SphereGeometry(50, 32, 32);
+    const sphereMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+    const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+    scene.add(sphere);
+
+    //only show the amount of dots = the number of displayed entries
     const drawCount =
       this.state.displayedEntries.length > 0
         ? this.state.displayedEntries.length - 1
@@ -210,6 +220,7 @@ class Home extends Component {
     this.colors = colors;
     this.color = color;
     this.sizes = sizes;
+    this.sphere = sphere;
 
     //append all dom elements
     this.mount.appendChild(this.renderer.domElement);
@@ -282,8 +293,8 @@ class Home extends Component {
       this.particles.rotation.x += 0.0001;
       this.particles.rotation.y += 0.00008;
     }
-    var geometry = this.particles.geometry;
-    var attributes = geometry.attributes;
+    const geometry = this.particles.geometry;
+    const attributes = geometry.attributes;
     this.raycaster.setFromCamera(this.mouse, this.camera);
     this.intersects = this.raycaster.intersectObject(this.particles);
     if (this.mouse.x && this.mouse.y) {
