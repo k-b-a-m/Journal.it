@@ -65,7 +65,7 @@ class Nav extends React.Component {
           />
         </NavLink>
         <NavLink exact to="/" className="link">
-          <FontAwesomeIcon icon={faHome} style={{color: 'white'}} />
+          <FontAwesomeIcon icon={faHome} style={{color: 'white', fontSize: '40px'}} />
         </NavLink>
         <button
           type="button"
