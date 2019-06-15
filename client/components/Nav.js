@@ -1,14 +1,21 @@
 /* eslint-disable no-unused-expressions */
-import React, {Component} from 'react';
-import {NavLink} from 'react-router-dom';
+import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 import Entry from './Entry';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
-import {addEntryThunk} from '../redux/store';
-import {connect} from 'react-redux';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faGlobeAmericas, faPlusCircle, faHome} from '@fortawesome/free-solid-svg-icons';
+import { addEntryThunk } from '../redux/store';
+import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faGlobeAmericas,
+  faPlusCircle,
+  faHome,
+  faSignInAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import faker from 'faker';
 import socket from './socket';
+import axios from 'axios';
 
 //style
 import '../styles/Nav.css';
@@ -23,17 +30,17 @@ class Nav extends React.Component {
   }
 
   toggleEntryFormOpen = () => {
-    this.setState({entryFormOpen: !this.state.entryFormOpen});
+    this.setState({ entryFormOpen: !this.state.entryFormOpen });
   };
   handleChangeInput = evt => {
-    const {target} = evt;
-    this.setState({[target.name]: target.value});
+    const { target } = evt;
+    this.setState({ [target.name]: target.value });
   };
 
   handleSubmit = evt => {
     evt.preventDefault();
     navigator.geolocation.getCurrentPosition(position => {
-      const {latitude, longitude} = position.coords;
+      const { latitude, longitude } = position.coords;
       const newEntry = {
         content: this.state.entry,
         latitude,
@@ -46,25 +53,43 @@ class Nav extends React.Component {
       this.props
         .addEntryThunk(newEntry)
         .then(() => $('#exampleModalCenter').modal('hide'))
-        .then(() => this.setState({entry: ''}))
+        .then(() => this.setState({ entry: '' }))
         .catch(e => console.log(`Error adding Entry:\n${e}`));
     });
     console.log(this.state);
   };
 
   render() {
-    const {entryFormOpen} = this.state;
-    const {entry, spotifyUrl} = this.state;
+    console.log(this.state.FB_APP);
+    const { entryFormOpen, entry, spotifyUrl, FB_APP } = this.state;
+
+    const responseFacebook = response => {
+      console.log(response);
+    };
     return (
       <nav className="nav-container navbar">
+        <FacebookLogin
+          appId={'INSERT_APP_ID_HERE'}
+          fields="name,email,picture"
+          callback={responseFacebook}
+          icon="fa-facebook"
+          render={renderProps => (
+            <button id="fbButton" onClick={renderProps.onClick}>
+              <FontAwesomeIcon icon={faSignInAlt} />
+            </button>
+          )}
+        />
         <NavLink to="/map" className="link">
           <FontAwesomeIcon
             icon={faGlobeAmericas}
-            style={{color: 'white', fontSize: '40px'}}
+            style={{ color: 'white', fontSize: '40px' }}
           />
         </NavLink>
         <NavLink exact to="/" className="link">
-          <FontAwesomeIcon icon={faHome} style={{color: 'white', fontSize: '40px'}} />
+          <FontAwesomeIcon
+            icon={faHome}
+            style={{ color: 'white', fontSize: '40px' }}
+          />
         </NavLink>
         <button
           type="button"
@@ -74,7 +99,7 @@ class Nav extends React.Component {
         >
           <FontAwesomeIcon
             icon={faPlusCircle}
-            style={{color: 'white', fontSize: '40px'}}
+            style={{ color: 'white', fontSize: '40px' }}
           />
         </button>
         <div
@@ -111,7 +136,9 @@ class Nav extends React.Component {
                       />
                     </div>
                     <div>
-                      <label htmlFor="spotifyUrl">Enter spotify song link here!</label>
+                      <label htmlFor="spotifyUrl">
+                        Enter spotify song link here!
+                      </label>
                       <input
                         name="spotifyUrl"
                         className="form-control"
@@ -142,5 +169,5 @@ class Nav extends React.Component {
 
 export default connect(
   null,
-  {addEntryThunk}
+  { addEntryThunk }
 )(Nav);
