@@ -200,7 +200,7 @@ class Home extends Component {
     //create sphere
     //color: 0xffff00
     let sphereGeometry = new THREE.SphereGeometry(40, 32, 32);
-    const sphereTexture = new THREE.TextureLoader().load('white3.png');
+    const sphereTexture = new THREE.TextureLoader().load('white2.png');
     const sphereMaterial = new THREE.MeshBasicMaterial({
       map: sphereTexture,
       color: '#dbfffa',
