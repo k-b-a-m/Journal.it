@@ -15,6 +15,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import faker from 'faker';
 import socket from './socket';
+import axios from 'axios';
 
 //style
 import '../styles/Nav.css';
@@ -59,25 +60,19 @@ class Nav extends React.Component {
   };
 
   render() {
-    const { entryFormOpen } = this.state;
-    const { entry, spotifyUrl } = this.state;
+    console.log(this.state.FB_APP);
+    const { entryFormOpen, entry, spotifyUrl, FB_APP } = this.state;
+
     const responseFacebook = response => {
       console.log(response);
     };
     return (
       <nav className="nav-container navbar">
         <FacebookLogin
-          appId="2336628819983490"
+          appId={'INSERT_APP_ID_HERE'}
           fields="name,email,picture"
           callback={responseFacebook}
           icon="fa-facebook"
-          // render={renderProps => (
-          //   <FontAwesomeIcon
-          //     icon={faSignIn}
-          //     style={{ color: 'white', fontSize: '40px' }}
-          //     onClick={renderProps.onClick}
-          //   />
-          // )}
           render={renderProps => (
             <button id="fbButton" onClick={renderProps.onClick}>
               <FontAwesomeIcon icon={faSignInAlt} />
