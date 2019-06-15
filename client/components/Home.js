@@ -88,7 +88,6 @@ class Home extends Component {
         prevState.displayedEntries.length &&
         prevState.displayedEntries.length === this.state.displayedEntries.length
       ) {
-        console.log(prevState.displayedEntries[entryIndex].likes);
         console.log('like');
       } else {
         //render when app first got entries from db after mounting
@@ -217,6 +216,7 @@ class Home extends Component {
 
     //define mouse and raycaster for mouse picking
     raycaster = new THREE.Raycaster();
+    raycaster.linePrecision = 30;
     mouse = new THREE.Vector2();
     this.raycaster = raycaster;
     this.mouse = mouse;
