@@ -2,7 +2,12 @@ const express = require("express");
 const app = express();
 const path = require("path");
 
+const compression = require('compression');
+
 module.exports = app;
+
+app.use(compression())
+
 
 //PROD Magic middleware specific to heroku to redirect ALL HTTP requests to HTTPS
 //explained here:  https://jaketrent.com/post/https-redirect-node-heroku/

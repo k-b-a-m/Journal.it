@@ -2,7 +2,11 @@ const cacheName = 'cache-v1';
 const precacheResources = [
   '/',
   'index.html',
-  'offline.html'
+  'offline.html',
+  'next.png',
+  'prev.png',
+  'disc.png',
+  
 ];
 
 self.addEventListener('install', event => {
@@ -20,7 +24,7 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  console.log('Fetch intercepted for:', event.request.url);
+  //console.log('Fetch intercepted for:', event.request.url);
   event.respondWith(caches.match(event.request)
     .then(cachedResponse => {
         if (cachedResponse) {

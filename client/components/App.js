@@ -4,7 +4,6 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import ReactDependentScript from 'react-dependent-script';
-//import {GOOGLE_API_KEY} from '../../config';
 
 //components
 import Home from './Home';
@@ -17,8 +16,6 @@ import { fetchNearby } from '../redux/store';
 
 //styles
 import '../styles/App.css';
-
-
 
 class App extends Component {
   constructor(props) {
@@ -46,7 +43,6 @@ class App extends Component {
         <Nav />
         <Route exact path="/" component={Home} />
         <Route path="/homecheck" component={HomeCheck} />
-        {/* <Route path="/entry" component={Entry} /> */}
         <Route
           exact
           path="/map"
