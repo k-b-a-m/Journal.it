@@ -64,6 +64,7 @@ class Home extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     //if new entries are different in the redux store
+    const {displayedEntries, entryIndex} = this.state;
     if (
       JSON.stringify(JSON.stringify(prevProps.entries)) !==
       JSON.stringify(JSON.stringify(this.props.entries))
@@ -75,9 +76,23 @@ class Home extends Component {
         prevProps.entries.length !== 0 &&
         this.props.entries.length > prevProps.entries.length
       ) {
-        this.geometry.setDrawRange(0, this.displayedEntries.length-1);
+        this.geometry.setDrawRange(0, this.displayedEntries.length - 1);
         console.log('hey2');
+      }
+      //TODO: Don't re-render sphere when like change
+      else if (
+        prevState.displayedEntries[entryIndex] &&
+        prevState.displayedEntries[entryIndex].likes >
+          displayedEntries[entryIndex].likes
+      ) {
+        console.log(prevState.displayedEntries[entryIndex].likes);
+        console.log('like');
       } else {
+        if (prevState.displayedEntries[entryIndex]) {
+          console.log(prevState.displayedEntries[entryIndex].likes);
+          console.log(displayedEntries[entryIndex].likes);
+        }
+
         //render when app first got entries from db after mounting
         console.log('hey3');
         this.renderDisplayedEntries();
