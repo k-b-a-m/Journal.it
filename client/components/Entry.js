@@ -20,17 +20,19 @@ class Entry extends Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
+    const date = new Date().toString();
     navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
+      const {latitude, longitude} = position.coords;
       const newEntry = {
         content: evt.target.content.value,
         latitude,
         longitude,
+        dateTime: date,
       };
-      this.props.addEntryThunk(newEntry)
-        .then(() => {
-          this.props.toggleEntryFormOpen();
-        });
+      console.log(newEntry);
+      this.props.addEntryThunk(newEntry).then(() => {
+        this.props.toggleEntryFormOpen();
+      });
     });
   };
 

@@ -41,7 +41,6 @@ class Nav extends React.Component {
         dateTime: new Date().toString(),
         spotifyUrl: this.state.spotifyUrl,
       };
-
       socket.emit('addNearby', newEntry);
 
       this.props

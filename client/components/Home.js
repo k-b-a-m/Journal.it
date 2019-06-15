@@ -7,7 +7,7 @@ import Stats from 'stats.js';
 import {connect} from 'react-redux';
 import SingleEntry from './SingleEntry';
 import Nav from './Nav';
-import {Fragment} from 'react'
+import {Fragment} from 'react';
 
 //styles
 import '../styles/Home.css';
@@ -67,19 +67,46 @@ class Home extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    //if new entries are different in the redux store
+    const {displayedEntries, entryIndex} = this.state;
     if (
       JSON.stringify(JSON.stringify(prevProps.entries)) !==
       JSON.stringify(JSON.stringify(this.props.entries))
     ) {
       this.renderDisplayedEntries();
-      while (this.scene.children.length > 0) {
-        this.scene.remove(this.scene.children[0]);
+      console.log('hey1');
+      //just add new dots but don't re-render the whole sphere when new entry is added
+      if (
+        prevProps.entries.length !== 0 &&
+        this.props.entries.length > prevProps.entries.length
+      ) {
+        this.geometry.setDrawRange(0, this.displayedEntries.length - 1);
+        console.log('hey2');
       }
-      const selectedObject = this.scene.getObjectByName('memorySphere');
-      this.scene.remove(selectedObject);
-      const segment = Math.ceil(Math.sqrt(this.state.displayedEntries.length));
-      this.DrawSphere(segment, this.scene, this.camera, this.renderer);
-    } else if (prevState.displayedEntries !== this.state.displayedEntries) {
+      //TODO: Don't re-render sphere when like change
+      else if (
+        prevState.displayedEntries.length &&
+        prevState.displayedEntries.length === this.state.displayedEntries.length
+      ) {
+        console.log('like');
+      } else {
+        //render when app first got entries from db after mounting
+        console.log('hey3');
+        this.renderDisplayedEntries();
+        this.setState({displayedEntries: this.displayedEntries});
+        while (this.scene.children.length > 0) {
+          this.scene.remove(this.scene.children[0]);
+        }
+        const selectedObject = this.scene.getObjectByName('memorySphere');
+        this.scene.remove(selectedObject);
+        const segment = Math.ceil(Math.sqrt(this.displayedEntries.length));
+        this.DrawSphere(segment, this.scene, this.camera, this.renderer);
+      }
+    }
+    //render when the date is changed which leads to state.displayedEntries changes
+    else if (prevState.date !== this.state.date) {
+      console.log(this.particles.geometry.attributes);
+      console.log('hey4');
       while (this.scene.children.length > 0) {
         this.scene.remove(this.scene.children[0]);
       }
@@ -96,7 +123,7 @@ class Home extends Component {
         return entry.dateTime.substring(0, 15) === this.today.toDateString();
       })
       .sort((a, b) => a.id - b.id);
-    this.setState({displayedEntries});
+    this.displayedEntries = displayedEntries;
   };
 
   parseDate = date => {
@@ -118,11 +145,11 @@ class Home extends Component {
     const {displayedEntries} = this.state;
     let stats, geometry, material;
     let particles;
-    let PARTICLE_SIZE = 35;
+    let PARTICLE_SIZE = 80;
     let raycaster, intersects;
     let mouse, INTERSECTED;
 
-    //Creating sphere
+    //Creating sphere vertices
     let vertices = new THREE.SphereGeometry(150, segment, segment).vertices;
     //add in extra vertices if we need more
     if (vertices.length < displayedEntries.length) {
@@ -134,10 +161,11 @@ class Home extends Component {
     let vertex;
     let color = new THREE.Color();
     // console.log(vertices);
-    for (var i = 0, l = displayedEntries.length; i < l; i++) {
+    for (var i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
-      color.setHSL(0.08 + 0.1 * (i / l), 1, 0.5);
+      // color.setHSL(0.07 + 0.08 * (i / l), 1, 0.5);
+      color.setHSL(0.48 + 0.5 * (i / l), 0.8, 0.7);
       color.toArray(colors, i * 3);
       sizes[i] = PARTICLE_SIZE * 0.5;
     }
@@ -161,6 +189,20 @@ class Home extends Component {
       alphaTest: 0.9,
     });
 
+
+    //create sphere
+    let sphereGeometry = new THREE.SphereGeometry(50, 32, 32);
+    const sphereMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+    const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+    scene.add(sphere);
+
+    //only show the amount of dots = the number of displayed entries
+    const drawCount =
+      this.state.displayedEntries.length > 0
+        ? this.state.displayedEntries.length - 1
+        : this.displayedEntries.length - 1;
+    geometry.setDrawRange(0, drawCount);
+    geometry.needsUpdate = true;
     //add particles behind spots
     particles = new THREE.Points(geometry, material);
     scene.add(particles);
@@ -172,12 +214,20 @@ class Home extends Component {
     this.PARTICLE_SIZE = PARTICLE_SIZE;
     this.intersects = intersects;
     this.INTERSECTED = INTERSECTED;
+    this.vertices = vertices;
+    this.vertex = vertex;
+    this.positions = positions;
+    this.colors = colors;
+    this.color = color;
+    this.sizes = sizes;
+    this.sphere = sphere;
 
     //append all dom elements
     this.mount.appendChild(this.renderer.domElement);
 
     //define mouse and raycaster for mouse picking
     raycaster = new THREE.Raycaster();
+    raycaster.linePrecision = 30;
     mouse = new THREE.Vector2();
     this.raycaster = raycaster;
     this.mouse = mouse;
@@ -193,7 +243,7 @@ class Home extends Component {
       this.renderer.domElement
     );
     //controls.update() must be called after any manual changes to the camera's transform
-    controls.rotateSpeed = 1.5;
+    controls.rotateSpeed = 1;
     this.controls = controls;
     this.controls.update();
 
@@ -230,7 +280,11 @@ class Home extends Component {
       : this.today.setDate(this.today.getDate() - 1);
     const todayStr = this.parseDate(this.today);
     this.renderDisplayedEntries();
-    this.setState({date: todayStr});
+    this.setState({
+      date: todayStr,
+      entryIndex: -1,
+      displayedEntries: this.displayedEntries,
+    });
   };
 
   renderParticles = () => {
@@ -239,8 +293,8 @@ class Home extends Component {
       this.particles.rotation.x += 0.0001;
       this.particles.rotation.y += 0.00008;
     }
-    var geometry = this.particles.geometry;
-    var attributes = geometry.attributes;
+    const geometry = this.particles.geometry;
+    const attributes = geometry.attributes;
     this.raycaster.setFromCamera(this.mouse, this.camera);
     this.intersects = this.raycaster.intersectObject(this.particles);
     if (this.mouse.x && this.mouse.y) {
@@ -250,13 +304,13 @@ class Home extends Component {
           attributes.size.needsUpdate = true;
           this.INTERSECTED = null;
         } else if (this.INTERSECTED !== this.intersects[0].index) {
-          attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE;
-          this.INTERSECTED = this.intersects[0].index;
-          attributes.size.array[this.INTERSECTED] = 50;
-          attributes.size.needsUpdate = true;
-          //TODO add pop up message containing entries here
-          //set state as current dots index
           if (entryIndex !== this.intersects[0].index) {
+            attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE;
+            this.INTERSECTED = this.intersects[0].index;
+            attributes.size.array[this.INTERSECTED] = 50;
+            attributes.size.needsUpdate = true;
+            //TODO add pop up message containing entries here
+            //set state as current dots index
             this.setState({
               entryIndex: this.intersects[0].index,
             });
