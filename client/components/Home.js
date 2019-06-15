@@ -81,9 +81,17 @@ class Home extends Component {
         this.props.entries.length > prevProps.entries.length
       ) {
         this.geometry.setDrawRange(0, this.displayedEntries.length - 1);
+        //TODO: change the color of newly added entry/ glow
+        // this.previousColor = this.particles.geometry.attributes.customColor.array[
+        //   this.displayedEntries.length - 1
+        // ];
+        // this.particles.geometry.attributes.customColor.array[
+        //   this.displayedEntries.length - 1
+        // ] = new THREE.Color(0xffffff);
+        // console.log(this.particles.geometry.attributes.customColor.array);
         console.log('hey2');
       }
-      //TODO: Don't re-render sphere when like change
+      //don't re-render the whole orb on like change
       else if (
         prevState.displayedEntries.length &&
         prevState.displayedEntries.length === this.state.displayedEntries.length
@@ -105,7 +113,6 @@ class Home extends Component {
     }
     //render when the date is changed which leads to state.displayedEntries changes
     else if (prevState.date !== this.state.date) {
-      console.log(this.particles.geometry.attributes);
       console.log('hey4');
       while (this.scene.children.length > 0) {
         this.scene.remove(this.scene.children[0]);
@@ -167,7 +174,7 @@ class Home extends Component {
       // color.setHSL(0.07 + 0.08 * (i / l), 1, 0.5);
       color.setHSL(0.48 + 0.5 * (i / l), 0.8, 0.7);
       color.toArray(colors, i * 3);
-      sizes[i] = PARTICLE_SIZE * 0.5;
+      sizes[i] = PARTICLE_SIZE;
     }
 
     //add dots texture
@@ -189,11 +196,15 @@ class Home extends Component {
       alphaTest: 0.9,
     });
 
-
     //create sphere
-    let sphereGeometry = new THREE.SphereGeometry(50, 32, 32);
-    const sphereMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-    const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+    //color: 0xffff00
+    let sphereGeometry = new THREE.SphereGeometry(40, 32, 32);
+    const sphereTexture = new THREE.TextureLoader().load('white3.png');
+    const sphereMaterial = new THREE.MeshBasicMaterial({
+      map: sphereTexture,
+      color: '#dbfffa',
+    });
+    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     scene.add(sphere);
 
     //only show the amount of dots = the number of displayed entries
@@ -227,7 +238,7 @@ class Home extends Component {
 
     //define mouse and raycaster for mouse picking
     raycaster = new THREE.Raycaster();
-    raycaster.linePrecision = 30;
+    raycaster.linePrecision = 10000;
     mouse = new THREE.Vector2();
     this.raycaster = raycaster;
     this.mouse = mouse;
@@ -292,9 +303,12 @@ class Home extends Component {
     if (entryIndex < 0) {
       this.particles.rotation.x += 0.0001;
       this.particles.rotation.y += 0.00008;
+      this.sphere.rotation.x += 0.0008;
+      this.sphere.rotation.y += 0.002;
     }
     const geometry = this.particles.geometry;
     const attributes = geometry.attributes;
+
     this.raycaster.setFromCamera(this.mouse, this.camera);
     this.intersects = this.raycaster.intersectObject(this.particles);
     if (this.mouse.x && this.mouse.y) {
@@ -307,7 +321,7 @@ class Home extends Component {
           if (entryIndex !== this.intersects[0].index) {
             attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE;
             this.INTERSECTED = this.intersects[0].index;
-            attributes.size.array[this.INTERSECTED] = 50;
+            attributes.size.array[this.INTERSECTED] = 120;
             attributes.size.needsUpdate = true;
             //TODO add pop up message containing entries here
             //set state as current dots index
