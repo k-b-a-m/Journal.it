@@ -342,6 +342,7 @@ class Home extends Component {
   };
 
   render() {
+    console.log(this.displayedEntries);
     const today = new Date();
     const disabledButton = this.today
       ? JSON.stringify(this.today.toDateString()) ===

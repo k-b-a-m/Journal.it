@@ -1,4 +1,4 @@
-.displayedEntry {
+/* .displayedEntry {
   font-family: courier;
   color: black;
   position: absolute;
@@ -9,4 +9,32 @@
   background-color: white;
   transform: translate(-50%, -50%);
   z-index: 9999;
+} */
+
+.entry-container {
+  position: absolute;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: black;
+  color: white;
+  width: 50vw;
+  height: 50vh;
+  border-radius: 25px;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+.entry {
+  position: relative;
+  border-radius: 10px;
+  width: 40vw;
+  height: 40vh;
+  text-align: center;
+}
+
+.entry p{
+  position: relative;
+  border-radius: 50%;
 }
