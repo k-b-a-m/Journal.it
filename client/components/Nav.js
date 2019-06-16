@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import Entry from './Entry';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
-import { addEntryThunk } from '../redux/store';
+import { addEntryThunk, getOrCreateUser } from '../redux/store';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -16,6 +16,7 @@ import {
 import faker from 'faker';
 import socket from './socket';
 import axios from 'axios';
+import session from 'express-session';
 
 //style
 import '../styles/Nav.css';
@@ -64,12 +65,14 @@ class Nav extends React.Component {
     const { entryFormOpen, entry, spotifyUrl, FB_APP } = this.state;
 
     const responseFacebook = response => {
-      console.log(response);
+      this.props.getOrCreateUser(response.userID, response)
+        .then(() => this.props.history.push(`/user/${response.userID}`))
+        .catch(e => console.log(`Error gettingOrCreating Facebook User:\n${e}`));
     };
     return (
       <nav className="nav-container navbar">
         <FacebookLogin
-          appId={'INSERT_APP_ID_HERE'}
+          appId={'2336628819983490'}
           fields="name,email,picture"
           callback={responseFacebook}
           icon="fa-facebook"
@@ -167,7 +170,7 @@ class Nav extends React.Component {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   null,
-  { addEntryThunk }
-)(Nav);
+  { addEntryThunk, getOrCreateUser }
+)(Nav));

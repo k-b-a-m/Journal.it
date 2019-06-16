@@ -42,7 +42,7 @@ class App extends Component {
       <div>
         <Route exact path="/" component={Home} />
         <Route path="/homecheck" component={HomeCheck} />
-        <Route path="/user/:id" render={({match}) => <UserProfile id={match.params.id*1}/>}/>
+        <Route path="/user/:fbUserId" render={({match}) => <UserProfile fbUserId={match.params.fbUserId}/>}/>
         <Route
           exact
           path="/map"
