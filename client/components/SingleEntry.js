@@ -27,6 +27,7 @@ class SingleEntry extends Component {
                 <FontAwesomeIcon icon={faTimes} />
               </p>
               <Card.Text>{entry.content}</Card.Text>
+              
               <iframe className="mb-4" src={entry.spotifyUrl} width="100%" height="80" frameBorder="0" allowTransparency="true" allow="encrypted-media"/>
               <p
                 style={{ textAlign: 'right' }}
@@ -35,6 +36,7 @@ class SingleEntry extends Component {
                 <FontAwesomeIcon icon={faHeart} style={{ color: 'red' }} />{' '}
                 {entry.likes}
               </p>
+              <Card.Text>Expires:{entry.expireDate.slice(0, 15)} {entry.expireDate.slice(15,21)}</Card.Text>
             </Card.Body>
           </Card>
       );

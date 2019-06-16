@@ -42,12 +42,14 @@ class Nav extends React.Component {
     evt.preventDefault();
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
+      const newDate = new Date().toString()
       const newEntry = {
         content: this.state.entry,
         latitude,
         longitude,
-        dateTime: new Date().toString(),
+        dateTime: newDate,
         spotifyUrl: this.state.spotifyUrl,
+        expireDate: new Date(Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000).toString()
       };
       socket.emit('addNearby', newEntry);
 

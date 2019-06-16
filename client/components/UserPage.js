@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 /* eslint-disable react/button-has-type */
 import React, {Component, Fragment} from 'react';
 import {Col, Row, Container, Card, Button} from 'react-bootstrap';
 import {fetchUser} from '../redux/store';
+=======
+import React, {Component} from 'react';
+import {Col, Row, Container, ListGroup, Card} from 'react-bootstrap';
+import Nav from './Nav';
+import {fetchUser, updateEntryThunk} from '../redux/store';
+>>>>>>> e4558284defecd2f31f8601aebe518df1e45718a
 import {connect} from 'react-redux';
 import '../styles/UserPage.css';
 
@@ -11,6 +18,13 @@ class UserProfile extends Component {
     this.state = {
       user: {},
     }
+  }
+  renew(){
+    const {updateEntryThunk} = this.props
+    const updatedEntry = {
+      expireDate: new Date(Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000).toString()
+    }
+    updateEntryThunk(updatedEntry)
   }
   componentDidMount(){
     this.props.fetchUser(this.props.fbUserId)
@@ -45,6 +59,7 @@ class UserProfile extends Component {
                     </Card.Text>
                   </Card.Body>
                 </Card>
+<<<<<<< HEAD
                 {user.user.entries.length > 0 ?
                   <Fragment>
                     {user.user.entries.map(entry =>
@@ -59,6 +74,20 @@ class UserProfile extends Component {
                     )}
                   </Fragment>
                 : <h2>Sorry you don't have any entries. Go make some!</h2>}
+=======
+                {user.user.entries.length > 0
+                }
+                {user.user.entries.map(entry =>
+                  <Card key={entry.id} style={{color: 'black'}} className="mb-3">
+                    <Card.Body>
+                      <Card.Text>
+                        {entry.content}
+                      </Card.Text>
+                      <button onClick = {this.renew}className="btn btn-warning">Renew Entry</button>
+                    </Card.Body>
+                  </Card>
+                )}
+>>>>>>> e4558284defecd2f31f8601aebe518df1e45718a
               </div>
               : null}
             </Col>
@@ -71,7 +100,12 @@ class UserProfile extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+<<<<<<< HEAD
     fetchUser: (fbUserId, fbUser) => dispatch(fetchUser(fbUserId, fbUser)),
+=======
+    fetchUser: (id) => dispatch(fetchUser(id)),
+    updateEntryThunk: (entry) => dispatch(updateEntryThunk(entry))
+>>>>>>> e4558284defecd2f31f8601aebe518df1e45718a
   }
 }
 
