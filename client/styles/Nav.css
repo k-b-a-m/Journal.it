@@ -23,21 +23,31 @@
   border-top: solid 1px lightgray;
 }
 
+button {
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
 .link {
   text-decoration: none;
-  color: black;
   margin-right: 10px;
   margin-left: 10px;
+  opacity: 0.5;
 }
 
 .link:hover {
   text-decoration: none;
-  color: black;
-  border-bottom: 1px solid black;
+  opacity: 1;
+}
+
+.active {
+  text-decoration: none;
+  opacity: 1;
 }
 
 .menu-container .active {
-  border-bottom: 1px solid black;
+  opacity: 1;
 }
 
 .logo {

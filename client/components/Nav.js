@@ -1,19 +1,18 @@
 /* eslint-disable no-unused-expressions */
-import React, { Component } from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import React, {Component} from 'react';
+import {NavLink, withRouter} from 'react-router-dom';
 import Entry from './Entry';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
-import { addEntryThunk, getOrCreateUser } from '../redux/store';
-import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {addEntryThunk, getOrCreateUser} from '../redux/store';
+import {connect} from 'react-redux';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
   faGlobeAmericas,
   faPlusCircle,
   faHome,
   faSignInAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import faker from 'faker';
 import socket from './socket';
 import axios from 'axios';
 import session from 'express-session';
@@ -31,17 +30,17 @@ class Nav extends React.Component {
   }
 
   toggleEntryFormOpen = () => {
-    this.setState({ entryFormOpen: !this.state.entryFormOpen });
+    this.setState({entryFormOpen: !this.state.entryFormOpen});
   };
   handleChangeInput = evt => {
-    const { target } = evt;
-    this.setState({ [target.name]: target.value });
+    const {target} = evt;
+    this.setState({[target.name]: target.value});
   };
 
   handleSubmit = evt => {
     evt.preventDefault();
     navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
+      const {latitude, longitude} = position.coords;
       const newEntry = {
         content: this.state.entry,
         latitude,
@@ -54,20 +53,21 @@ class Nav extends React.Component {
       this.props
         .addEntryThunk(newEntry)
         .then(() => $('#exampleModalCenter').modal('hide'))
-        .then(() => this.setState({ entry: '' }))
+        .then(() => this.setState({entry: ''}))
         .catch(e => console.log(`Error adding Entry:\n${e}`));
     });
-    console.log(this.state);
   };
 
   render() {
-    console.log(this.state.FB_APP);
-    const { entryFormOpen, entry, spotifyUrl, FB_APP } = this.state;
+    const {entryFormOpen, entry, spotifyUrl, FB_APP} = this.state;
 
     const responseFacebook = response => {
-      this.props.getOrCreateUser(response.userID, response)
+      this.props
+        .getOrCreateUser(response.userID, response)
         .then(() => this.props.history.push(`/user/${response.userID}`))
-        .catch(e => console.log(`Error gettingOrCreating Facebook User:\n${e}`));
+        .catch(e =>
+          console.log(`Error gettingOrCreating Facebook User:\n${e}`)
+        );
     };
     return (
       <nav className="nav-container navbar">
@@ -77,34 +77,33 @@ class Nav extends React.Component {
           callback={responseFacebook}
           icon="fa-facebook"
           render={renderProps => (
-            <button id="fbButton" onClick={renderProps.onClick}>
+            <div id="fbButton" onClick={renderProps.onClick} className="link">
               <FontAwesomeIcon icon={faSignInAlt} />
-            </button>
+            </div>
           )}
         />
         <NavLink to="/map" className="link">
           <FontAwesomeIcon
             icon={faGlobeAmericas}
-            style={{ color: 'white', fontSize: '40px' }}
+            style={{color: 'white', fontSize: '40px'}}
           />
         </NavLink>
         <NavLink exact to="/" className="link">
           <FontAwesomeIcon
             icon={faHome}
-            style={{ color: 'white', fontSize: '40px' }}
+            style={{color: 'white', fontSize: '40px'}}
           />
         </NavLink>
-        <button
-          type="button"
-          className="btn"
+        <div
+          className="link"
           data-toggle="modal"
           data-target="#exampleModalCenter"
         >
           <FontAwesomeIcon
             icon={faPlusCircle}
-            style={{ color: 'white', fontSize: '40px' }}
+            style={{color: 'white', fontSize: '40px'}}
           />
-        </button>
+        </div>
         <div
           className="modal fade"
           id="exampleModalCenter"
@@ -129,7 +128,7 @@ class Nav extends React.Component {
                 <form>
                   <div className="form-group">
                     <div className="mb-2">
-                      <label htmlFor="entry">Enter you story here</label>
+                      <label htmlFor="entry">Enter your story here</label>
                       <input
                         name="entry"
                         className="form-control"
@@ -170,7 +169,9 @@ class Nav extends React.Component {
   }
 }
 
-export default withRouter(connect(
-  null,
-  { addEntryThunk, getOrCreateUser }
-)(Nav));
+export default withRouter(
+  connect(
+    null,
+    {addEntryThunk, getOrCreateUser}
+  )(Nav)
+);
