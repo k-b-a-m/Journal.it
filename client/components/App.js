@@ -47,15 +47,7 @@ class App extends Component {
           exact
           path="/map"
           render={() => (
-            <ReactDependentScript
-              scripts={[
-                `https://maps.googleapis.com/maps/api/js?key=${
-                  this.state.key
-                }&libraries=visualization`,
-              ]}
-            >
               <Map />
-            </ReactDependentScript>
           )}
         />
         <Route exact path="/map" component={Map} />
