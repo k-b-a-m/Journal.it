@@ -27,7 +27,7 @@ class SingleEntry extends Component {
       return (
         <div id="entry" className="entry-container" style={{height: '50vh'}}>
           <div className="entry">
-            <p onClick={toggleEntry}>
+            <p onClick={toggleEntry} className="x-out">
               <FontAwesomeIcon icon={faTimes} />
             </p>
             <p>{entry.content}</p>
