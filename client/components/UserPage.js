@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Col, Row, Container, ListGroup, Card} from 'react-bootstrap';
 import Nav from './Nav';
-import {fetchUser} from '../redux/store';
+import {fetchUser, updateEntryThunk} from '../redux/store';
 import {connect} from 'react-redux';
 
 class UserProfile extends Component {
@@ -10,6 +10,13 @@ class UserProfile extends Component {
     this.state = {
       user: {},
     }
+  }
+  renew(){
+    const {updateEntryThunk} = this.props
+    const updatedEntry = {
+      expireDate: new Date(Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000).toString()
+    }
+    updateEntryThunk(updatedEntry)
   }
   componentDidMount(){
     this.props.fetchUser(this.props.id)
@@ -45,7 +52,7 @@ class UserProfile extends Component {
                       <Card.Text>
                         {entry.content}
                       </Card.Text>
-                      <button className="btn btn-warning">Renew Entry</button>
+                      <button onClick = {this.renew}className="btn btn-warning">Renew Entry</button>
                     </Card.Body>
                   </Card>
                 )}
@@ -62,6 +69,7 @@ class UserProfile extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchUser: (id) => dispatch(fetchUser(id)),
+    updateEntryThunk: (entry) => dispatch(updateEntryThunk(entry))
   }
 }
 
