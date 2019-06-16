@@ -45,7 +45,7 @@ class Nav extends React.Component {
         content: this.state.entry,
         latitude,
         longitude,
-        dateTime: new Date().toString(),
+        dateTime: new Date(),
         spotifyUrl: this.state.spotifyUrl,
       };
       socket.emit('addNearby', newEntry);
@@ -69,7 +69,7 @@ class Nav extends React.Component {
     return (
       <nav className="nav-container navbar">
         <FacebookLogin
-          appId={'INSERT_APP_ID_HERE'}
+          appId={'2336628819983490'}
           fields="name,email,picture"
           callback={responseFacebook}
           icon="fa-facebook"

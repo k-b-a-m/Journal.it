@@ -14,18 +14,18 @@ module.exports = conn.define(
       type: Sequelize.DECIMAL(11, 8),
     },
     dateTime: {
-      type: Sequelize.STRING,
+      type: Sequelize.DATE,
     },
     likes: {
       type: Sequelize.INTEGER,
     },
-    bitcoinAddress: {
-      type: Sequelize.STRING,
-    },
     spotifyUrl: {
       type: Sequelize.STRING,
       defaultValue: '',
-    }
+    },
+    expireDate: {
+      type: Sequelize.DATE
+    } 
   },
   {
     indexes: [
