@@ -35,13 +35,22 @@ const getUser = user => ({
   user,
 });
 
-export const fetchUser = id => {
+export const fetchUser = (fbUserId) => {
   return dispatch => {
-    return axios.get(`/user/${id}`)
+    return axios.get(`/user/${fbUserId}`)
       .then(res => dispatch(getUser(res.data)))
       .catch(e => console.log(`Error fetching user:\n${e}`));
   };
 };
+
+export const getOrCreateUser = (fbUserId, fbUser) => {
+  return dispatch => {
+    console.log(`thunk getOrCreate:`, fbUser);
+    return axios.post(`/user/getOrCreate/${fbUserId}`, fbUser)
+      .then(res => dispatch(getUser(res.data)))
+      .catch(e => console.log(`Error fetching or creating user:\n${e}`));
+  }
+}
 
 export const addEntry = entry => ({
   type: ADD_ENTRY,

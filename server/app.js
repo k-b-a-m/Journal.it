@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-
+const session = require('express-session');
 const compression = require('compression');
 
 module.exports = app;
@@ -31,6 +31,11 @@ if (process.env.NODE_ENV === 'production') {
 //     res.redirect("https://localhost:8443/#" + req.url);
 //   }
 // });
+
+//Session Setup
+app.use(session({
+  secret: 'njaoaso230889a7as78o78o&*OTB',
+}))
 
 //Static middleware
 app.use(express.static(path.join(__dirname, 'public')));

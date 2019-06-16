@@ -42,20 +42,12 @@ class App extends Component {
       <div>
         <Route exact path="/" component={Home} />
         <Route path="/homecheck" component={HomeCheck} />
-        <Route path="/user/:id" render={({match}) => <UserProfile id={match.params.id*1}/>}/>
+        <Route path="/user/:fbUserId" render={({match}) => <UserProfile fbUserId={match.params.fbUserId}/>}/>
         <Route
           exact
           path="/map"
           render={() => (
-            <ReactDependentScript
-              scripts={[
-                `https://maps.googleapis.com/maps/api/js?key=${
-                  this.state.key
-                }&libraries=visualization`,
-              ]}
-            >
               <Map />
-            </ReactDependentScript>
           )}
         />
         <Route exact path="/map" component={Map} />
