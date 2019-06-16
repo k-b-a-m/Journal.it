@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateHeatMap } from "../redux/store";
+import Nav from './Nav';
 import { GoogleApiWrapper } from "google-maps-react";
 
 class Map extends Component {
@@ -231,9 +232,7 @@ class Map extends Component {
   }
 
   render() {
-    return (
-      <div id="map" />
-    );
+    return <div><Nav className="nav-container"/><div id="map" /></div>;
   }
 }
 

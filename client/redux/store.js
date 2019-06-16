@@ -1,18 +1,21 @@
-import { createStore, applyMiddleware, combineReducers } from "redux";
-import thunkMiddleware from "redux-thunk";
-import axios from "axios";
+import {createStore, applyMiddleware, combineReducers} from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import axios from 'axios';
+import { PathActions } from 'three';
 
 //initialState
 const initialState = {
-  entries: []
-};
+  entries: [],
+  user: {},
+}
 
 //ACTION TYPES
 
-const SET_ENTRIES = "SET_ENTRIES";
-const ADD_ENTRY = "ADD_ENTRY`";
-const UPDATE_ENTRY = "UPDATE_ENTRY";
-const SET_HEATMAP = "SET_HEATMAP";
+const SET_ENTRIES = 'SET_ENTRIES';
+const ADD_ENTRY = 'ADD_ENTRY`';
+const UPDATE_ENTRY = 'UPDATE_ENTRY';
+const SET_HEATMAP = 'SET_HEATMAP';
+const GET_USER = 'GET_USER';
 const SET_GOOGKEY = "SET_GOOGKEY";
 
 //ACTION CREATORS
@@ -26,6 +29,19 @@ const setGoogKey = key => ({
   type: SET_GOOGKEY,
   key
 });
+
+const getUser = user => ({
+  type: GET_USER,
+  user,
+});
+
+export const fetchUser = id => {
+  return dispatch => {
+    return axios.get(`/user/${id}`)
+      .then(res => dispatch(getUser(res.data)))
+      .catch(e => console.log(`Error fetching user:\n${e}`));
+  };
+};
 
 export const addEntry = entry => ({
   type: ADD_ENTRY,
@@ -136,6 +152,14 @@ const heatmapReducer = (state = [], action) => {
   }
 };
 
+const userReducer = (state = [], action) => {
+  switch(action.type) {
+    case GET_USER:
+      return [...state, action.user];
+    default:
+      return state;
+  }
+}
 const googKeyReducer = (state = "", action) => {
   switch (action.type) {
     case SET_GOOGKEY:
@@ -147,7 +171,8 @@ const googKeyReducer = (state = "", action) => {
 
 const rootReducer = combineReducers({
   entries: entriesReducer,
-  heatmap: heatmapReducer
+  heatmap: heatmapReducer,
+  user: userReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));

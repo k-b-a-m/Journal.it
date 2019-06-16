@@ -14,7 +14,8 @@ import Map from "./Map";
 import { fetchNearby } from "../redux/store";
 
 //styles
-import "../styles/App.css";
+import '../styles/App.css';
+import UserProfile from './UserPage';
 
 class App extends Component {
   // constructor(props) {
@@ -39,9 +40,24 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Nav />
         <Route exact path="/" component={Home} />
         <Route path="/homecheck" component={HomeCheck} />
+        <Route path="/user/:id" render={({match}) => <UserProfile id={match.params.id*1}/>}/>
+        <Route
+          exact
+          path="/map"
+          render={() => (
+            <ReactDependentScript
+              scripts={[
+                `https://maps.googleapis.com/maps/api/js?key=${
+                  this.state.key
+                }&libraries=visualization`,
+              ]}
+            >
+              <Map />
+            </ReactDependentScript>
+          )}
+        />
         <Route exact path="/map" component={Map} />
       </div>
     );

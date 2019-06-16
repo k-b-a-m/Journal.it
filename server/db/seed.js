@@ -42,9 +42,15 @@ const makeFakeEntry = () => {
 };
 
 const entries = [];
+const users = [
+  {name: 'Mariano'},
+  {name: 'Bao'},
+  {name: 'Kyle'},
+  {name: 'Alex'},
+];
 
 for (let i = 0; i < 5000; i++) {
   entries.push(makeFakeEntry());
 }
 
-module.exports = entries;
+module.exports = {entries, users};
