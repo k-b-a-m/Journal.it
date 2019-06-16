@@ -123,7 +123,7 @@ class Nav extends React.Component {
                 <form>
                   <div className="form-group">
                     <div className="mb-2">
-                      <label htmlFor="entry">Enter you story here</label>
+                      <label htmlFor="entry">Enter your story here</label>
                       <input
                         name="entry"
                         className="form-control"
