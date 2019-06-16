@@ -8,18 +8,6 @@ import {faHeart, faTimes} from '@fortawesome/free-solid-svg-icons';
 import '../styles/SingleEntry.css';
 
 class SingleEntry extends Component {
-  componentDidMount() {
-    const {entryIndex, displayedEntries} = this.props;
-    const entry = displayedEntries[entryIndex];
-    if (entry) {
-      if (!'/entry/'.includes(entry.spotifyUrl)) {
-        entry.spotifyUrl = `${entry.spotifyUrl.substring(
-          0,
-          25
-        )}embed/${entry.spotifyUrl.substring(25)}`;
-      }
-    }
-  }
   render() {
     const {
       entries,
@@ -29,6 +17,12 @@ class SingleEntry extends Component {
       displayedEntries,
     } = this.props;
     const entry = displayedEntries[entryIndex];
+    if (entry && !entry.spotifyUrl.includes('embed')) {
+      entry.spotifyUrl = `${entry.spotifyUrl.substring(
+        0,
+        25
+      )}embed/${entry.spotifyUrl.substring(25)}`;
+    }
     if (entry) {
       return (
         <div id="entry" className="entry-container" style={{height: '50vh'}}>
@@ -37,17 +31,17 @@ class SingleEntry extends Component {
               <FontAwesomeIcon icon={faTimes} />
             </p>
             <p>{entry.content}</p>
-            <div className="spotify">
-              <iframe
-                className="mb-4"
-                src={entry.spotifyUrl}
-                width="100%"
-                height="80px"
-                frameBorder="0"
-                allowtransparency="true"
-                allow="encrypted-media"
-              />
-            </div>
+          </div>
+          <div className="spotify">
+            <iframe
+              className="mb-4"
+              src={entry.spotifyUrl}
+              width="100%"
+              height="80px"
+              frameBorder="0"
+              allowtransparency="true"
+              allow="encrypted-media"
+            />
           </div>
           <p
             style={{textAlign: 'right'}}
