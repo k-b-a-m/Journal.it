@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
-import {Col, Row, Container, ListGroup, Card} from 'react-bootstrap';
-import Nav from './Nav';
+/* eslint-disable react/button-has-type */
+import React, {Component, Fragment} from 'react';
+import {Col, Row, Container, Card, Button} from 'react-bootstrap';
 import {fetchUser} from '../redux/store';
 import {connect} from 'react-redux';
+import '../styles/UserPage.css';
 
 class UserProfile extends Component {
   constructor(){
@@ -12,17 +13,24 @@ class UserProfile extends Component {
     }
   }
   componentDidMount(){
-    this.props.fetchUser(this.props.id)
+    this.props.fetchUser(this.props.fbUserId)
       .then(user => this.setState({user}));
   }
+  componentDidUpdate(prevProps){
+    if(prevProps !== this.props){
+      this.props.fetchUser(this.props.fbUserId)
+        .then(user => this.setState({user}));
+    }
+  }
   render(){
-    const {user} = this.state;
-    console.log(user.user);
+    let {user} = this.state;
+    console.log(this.state);
+    console.log(`Facebook user!\n${user}`);
     return(
-      <div style={{backgroundColor: 'black', color: 'white'}}>
+      <div style={{backgroundColor: 'black', color: 'white', minHeight: '100%'}}>
         <Container>
           <Row>
-            <Col>
+            <Col className="mt-2">
               <h5>User Profile Page</h5>
               {user.user ?
               <div>
@@ -37,18 +45,20 @@ class UserProfile extends Component {
                     </Card.Text>
                   </Card.Body>
                 </Card>
-                {user.user.entries.length > 0
-                }
-                {user.user.entries.map(entry =>
-                  <Card key={entry.id} style={{color: 'black'}} className="mb-3">
-                    <Card.Body>
-                      <Card.Text>
-                        {entry.content}
-                      </Card.Text>
-                      <button className="btn btn-warning">Renew Entry</button>
-                    </Card.Body>
-                  </Card>
-                )}
+                {user.user.entries.length > 0 ?
+                  <Fragment>
+                    {user.user.entries.map(entry =>
+                      <Card class="profileCard" key={entry.id} style={{color: 'black'}} className="mb-3">
+                        <Card.Body>
+                          <Card.Text>
+                            {entry.content}
+                          </Card.Text>
+                          <Button variant="warning">Renew Entry</Button>
+                        </Card.Body>
+                      </Card>
+                    )}
+                  </Fragment>
+                : <h2>Sorry you don't have any entries. Go make some!</h2>}
               </div>
               : null}
             </Col>
@@ -61,7 +71,7 @@ class UserProfile extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUser: (id) => dispatch(fetchUser(id)),
+    fetchUser: (fbUserId, fbUser) => dispatch(fetchUser(fbUserId, fbUser)),
   }
 }
 
