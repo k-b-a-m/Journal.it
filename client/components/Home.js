@@ -82,13 +82,13 @@ class Home extends Component {
       ) {
         this.geometry.setDrawRange(0, this.displayedEntries.length - 1);
         //TODO: change the color of newly added entry/ glow
-        this.previousColor = this.particles.geometry.attributes.customColor.array[
-          this.displayedEntries.length - 1
-        ];
-        this.particles.geometry.attributes.customColor.array[
-          this.displayedEntries.length - 1
-        ] = new THREE.Color(0xffffff);
-        this.particles.geometry.attributes.customColor.needsUpdate = true;
+        // this.previousColor = this.particles.geometry.attributes.customColor.array[
+        //   this.displayedEntries.length - 1
+        // ];
+        // this.particles.geometry.attributes.customColor.array[
+        //   this.displayedEntries.length - 1
+        // ] = new THREE.Color(0xffffff);
+        // this.particles.geometry.attributes.customColor.needsUpdate = true;
         console.log(this.particles.geometry.attributes.customColor.array);
         console.log('hey2');
       }
@@ -342,7 +342,6 @@ class Home extends Component {
   };
 
   render() {
-    console.log(this.displayedEntries);
     const today = new Date();
     const disabledButton = this.today
       ? JSON.stringify(this.today.toDateString()) ===
