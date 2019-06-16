@@ -82,13 +82,14 @@ class Home extends Component {
       ) {
         this.geometry.setDrawRange(0, this.displayedEntries.length - 1);
         //TODO: change the color of newly added entry/ glow
-        // this.previousColor = this.particles.geometry.attributes.customColor.array[
-        //   this.displayedEntries.length - 1
-        // ];
-        // this.particles.geometry.attributes.customColor.array[
-        //   this.displayedEntries.length - 1
-        // ] = new THREE.Color(0xffffff);
-        // console.log(this.particles.geometry.attributes.customColor.array);
+        this.previousColor = this.particles.geometry.attributes.customColor.array[
+          this.displayedEntries.length - 1
+        ];
+        this.particles.geometry.attributes.customColor.array[
+          this.displayedEntries.length - 1
+        ] = new THREE.Color(0xffffff);
+        this.particles.geometry.attributes.customColor.needsUpdate = true;
+        console.log(this.particles.geometry.attributes.customColor.array);
         console.log('hey2');
       }
       //don't re-render the whole orb on like change
@@ -127,7 +128,6 @@ class Home extends Component {
   renderDisplayedEntries = () => {
     const displayedEntries = this.props.entries
       .filter(entry => {
-        console.log(entry)
         return entry.dateTime.substring(0, 15) === this.today.toDateString();
       })
       .sort((a, b) => a.id - b.id);
@@ -153,7 +153,7 @@ class Home extends Component {
     const {displayedEntries} = this.state;
     let stats, geometry, material;
     let particles;
-    let PARTICLE_SIZE = 80;
+    let PARTICLE_SIZE = 120;
     let raycaster, intersects;
     let mouse, INTERSECTED;
 
@@ -175,7 +175,7 @@ class Home extends Component {
       // color.setHSL(0.07 + 0.08 * (i / l), 1, 0.5);
       color.setHSL(0.48 + 0.5 * (i / l), 0.8, 0.7);
       color.toArray(colors, i * 3);
-      sizes[i] = PARTICLE_SIZE;
+      sizes[i] = PARTICLE_SIZE * 0.5;
     }
 
     //add dots texture
@@ -351,7 +351,7 @@ class Home extends Component {
     const {entryIndex, date, displayedEntries} = this.state;
     return (
       <div>
-        <Nav className="nav-container"/>
+        <Nav className="nav-container" />
         <div style={{position: 'absolute'}}>
           <div
             //this is where all the 3d will mount

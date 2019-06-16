@@ -27,7 +27,7 @@ class SingleEntry extends Component {
                 <FontAwesomeIcon icon={faTimes} />
               </p>
               <Card.Text>{entry.content}</Card.Text>
-              <iframe className="mb-4" src={entry.spotifyUrl} width="100%" height="80" frameBorder="0" allowTransparency="true" allow="encrypted-media"/>
+              <iframe className="mb-4" src={entry.spotifyUrl} width="100%" height="80" frameBorder="0" allowtransparency="true" allow="encrypted-media"/>
               <p
                 style={{ textAlign: 'right' }}
                 onClick={() => updateEntry({...entry, likes: ++entry.likes })}

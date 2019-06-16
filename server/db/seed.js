@@ -1,9 +1,10 @@
-const faker = require("faker");
-const fs = require("fs");
-const path = require("path");
+const faker = require('faker');
+const fs = require('fs');
+const path = require('path');
 
-
-const warAndPeace = fs.readFileSync(path.join(__dirname + "/war_and_peace.txt"), 'utf8').split(". ")
+const warAndPeace = fs
+  .readFileSync(path.join(__dirname + '/war_and_peace.txt'), 'utf8')
+  .split('. ');
 
 const makeFakeEntry = () => {
   const points = [
@@ -13,13 +14,14 @@ const makeFakeEntry = () => {
     [40.720909, -74.000678],
     [40.731208, -73.99747],
     [40.757863, -73.985554],
-    [40.774226, -73.971878]
+    [40.774226, -73.971878],
+    [40.745086, -73.976254],
   ];
   const randomIdx = Math.floor(Math.random() * points.length);
   const coords = points[randomIdx];
 
   return {
-    content: warAndPeace[Math.floor(Math.random()*16035)],
+    content: warAndPeace[Math.floor(Math.random() * 16035)],
     //Faking loads of fake data around NYC
     //Unfortunately faker.address.latitude/longitude returns strings
 
@@ -41,8 +43,8 @@ const makeFakeEntry = () => {
     ),
     likes: faker.random.number({
       min: 0,
-      max: 100
-    })
+      max: 100,
+    }),
   };
 };
 
@@ -54,7 +56,7 @@ const users = [
   {name: 'Alex'},
 ];
 
-for (let i = 0; i < 5000; i++) {
+for (let i = 0; i < 7000; i++) {
   entries.push(makeFakeEntry());
 }
 
