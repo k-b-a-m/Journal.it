@@ -2,15 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateHeatMap } from "../redux/store";
 import Nav from './Nav';
+import { GoogleApiWrapper } from "google-maps-react";
 
 class Map extends Component {
-  // constructor() {
-  //   super();
-  //   state: {
-  //     heatmap: null;
-  //   }
-  // }
-
   componentDidMount() {
     const { heatmapData, updateHeatMapThunk } = this.props;
     let map, heatmap;
@@ -232,7 +226,7 @@ class Map extends Component {
 
       heatmap = new google.maps.visualization.HeatmapLayer({
         data: getPoints(),
-        map: map,
+        map: map
       });
     });
   }
@@ -255,7 +249,12 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Map);
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyDU3C_l0COpEISg44ejBmRNgYZkW_CX32g",
+  libraries: ["visualization"]
+})(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Map)
+);

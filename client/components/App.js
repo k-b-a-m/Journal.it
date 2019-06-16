@@ -1,41 +1,40 @@
 //libraries
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import axios from 'axios';
-import ReactDependentScript from 'react-dependent-script';
+import React, { Component } from "react";
+import { Route } from "react-router-dom";
+import { connect } from "react-redux";
+import axios from "axios";
 
 //components
-import Home from './Home';
-import HomeCheck from './Home-Check';
-import Nav from './Nav';
-import Map from './Map';
+import Home from "./Home";
+import HomeCheck from "./Home-Check";
+import Nav from "./Nav";
+import Map from "./Map";
 
 //redux
-import { fetchNearby } from '../redux/store';
+import { fetchNearby } from "../redux/store";
 
 //styles
 import '../styles/App.css';
 import UserProfile from './UserPage';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { key: '' };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = { key: '' };
+  // }
 
   async componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
       this.props.fetchNearby({
         coordinate: { latitude, longitude },
-        distance: 500,
+        distance: 500
       }); //distance is in feet 5280ft = 1mi
     });
 
-    await axios
-      .get('/googlemaps')
-      .then(response => this.setState({ key: response.data }));
+    // await axios
+    //   .get('/googlemaps')
+    //   .then(response => this.setState({ key: response.data }));
   }
 
   render() {
@@ -59,6 +58,7 @@ class App extends Component {
             </ReactDependentScript>
           )}
         />
+        <Route exact path="/map" component={Map} />
       </div>
     );
   }
