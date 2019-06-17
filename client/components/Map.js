@@ -16,6 +16,7 @@ class Map extends Component {
     let map, heatmap, marker, markerImage, circle;
 
     let self = this;
+    const locationUpdateInterval = 10000;
 
     setInterval(function() {
       navigator.geolocation.getCurrentPosition(position => {
@@ -27,48 +28,9 @@ class Map extends Component {
         });
       });
 
-      console.log('first console.log of marker: ', marker !== undefined);
-
-      if (marker === undefined) {
-        markerImage = new google.maps.MarkerImage(
-          'bluedotsm.png',
-          new google.maps.Size(15, 15),
-          new google.maps.Point(0, 0),
-          new google.maps.Point(7.5, 7.5)
-        );
-
-        marker = new google.maps.Marker({
-          position: self.state.currentPosition,
-          map: map,
-          icon: markerImage,
-        });
-
-        circle = new google.maps.Circle({
-          strokeColor: 'blue',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: 'blue',
-          fillOpacity: 0.35,
-          map: map,
-          center: self.state.currentPosition,
-          radius: 152.4,
-        });
-
-        setInterval(function() {
-          circle.setOptions({ fillColor: 'white', strokeColor: 'white' });
-        }, 2500);
-
-        setInterval(function() {
-          circle.setOptions({ fillColor: 'blue', strokeColor: 'blue' });
-        }, 5000);
-      } else {
-        console.log('marker: ', marker);
-        marker.setOptions({ position: self.state.currentPosition });
-        circle.setOptions({ center: self.state.currentPosition });
-      }
-
-      console.log('this is currentPosition: ', currentPosition);
-    }, 5000);
+      marker.setOptions({ position: self.state.currentPosition });
+      circle.setOptions({ center: self.state.currentPosition });
+    }, locationUpdateInterval);
 
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
@@ -267,11 +229,61 @@ class Map extends Component {
 
     initMap();
 
+    markerImage = new google.maps.MarkerImage(
+      'bluedotsm.png',
+      new google.maps.Size(15, 15),
+      new google.maps.Point(0, 0),
+      new google.maps.Point(7.5, 7.5)
+    );
+
+    marker = new google.maps.Marker({
+      position: self.state.currentPosition,
+      map: map,
+      icon: markerImage,
+    });
+
+    circle = new google.maps.Circle({
+      strokeColor: 'blue',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: 'blue',
+      fillOpacity: 0.35,
+      map: map,
+      center: self.state.currentPosition,
+      radius: 152.4,
+    });
+
+    setInterval(function() {
+      circle.setOptions({ fillColor: 'white', strokeColor: 'white' });
+    }, 2500);
+
+    setInterval(function() {
+      circle.setOptions({ fillColor: 'blue', strokeColor: 'blue' });
+    }, 5000);
+
     const getPoints = () => {
       return this.props.heatmapData.map(entry => {
         return new google.maps.LatLng(entry.latitude, entry.longitude);
       });
     };
+
+    google.maps.event.addListenerOnce(map, 'tilesloaded', function() {
+      var bounds = map.getBounds();
+      var ne = bounds.getNorthEast();
+      var sw = bounds.getSouthWest();
+
+      const coords = {
+        max: { latitude: ne.lat(), longitude: ne.lng() },
+        min: { latitude: sw.lat(), longitude: sw.lng() },
+      };
+
+      updateHeatMapThunk(coords);
+
+      heatmap = new google.maps.visualization.HeatmapLayer({
+        data: getPoints(),
+        map: map,
+      });
+    });
 
     google.maps.event.addListener(map, 'idle', function() {
       var bounds = map.getBounds();
