@@ -1,87 +1,148 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { updateHeatMap } from "../redux/store";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { updateHeatMap } from '../redux/store';
 import Nav from './Nav';
-import { GoogleApiWrapper } from "google-maps-react";
+import { GoogleApiWrapper } from 'google-maps-react';
 
 class Map extends Component {
+  constructor() {
+    super();
+    this.state = { currentPosition: { lat: 40.705092, lng: -74.009166 } };
+  }
+
   componentDidMount() {
     const { heatmapData, updateHeatMapThunk } = this.props;
-    let map, heatmap;
+    const { currentPosition } = this.state;
+    let map, heatmap, marker, markerImage, circle;
+
+    let self = this;
+
+    setInterval(function() {
+      navigator.geolocation.getCurrentPosition(position => {
+        self.setState({
+          currentPosition: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          },
+        });
+      });
+
+      console.log('first console.log of marker: ', marker !== undefined);
+
+      if (marker === undefined) {
+        markerImage = new google.maps.MarkerImage(
+          'bluedotsm.png',
+          new google.maps.Size(15, 15),
+          new google.maps.Point(0, 0),
+          new google.maps.Point(7.5, 7.5)
+        );
+
+        marker = new google.maps.Marker({
+          position: self.state.currentPosition,
+          map: map,
+          icon: markerImage,
+        });
+
+        circle = new google.maps.Circle({
+          strokeColor: 'blue',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: 'blue',
+          fillOpacity: 0.35,
+          map: map,
+          center: self.state.currentPosition,
+          radius: 152.4,
+        });
+
+        setInterval(function() {
+          circle.setOptions({ fillColor: 'white', strokeColor: 'white' });
+        }, 2500);
+
+        setInterval(function() {
+          circle.setOptions({ fillColor: 'blue', strokeColor: 'blue' });
+        }, 5000);
+      } else {
+        console.log('marker: ', marker);
+        marker.setOptions({ position: self.state.currentPosition });
+        circle.setOptions({ center: self.state.currentPosition });
+      }
+
+      console.log('this is currentPosition: ', currentPosition);
+    }, 5000);
 
     function initMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
+      map = new google.maps.Map(document.getElementById('map'), {
         disableDefaultUI: true,
         zoomControl: true,
-        center: { lat: 40.705092, lng: -74.009166 },
+        center: currentPosition,
         zoom: 14,
         styles: [
           {
-            elementType: "geometry",
+            elementType: 'geometry',
             stylers: [
               {
-                color: "#212121"
-              }
-            ]
+                color: '#212121',
+              },
+            ],
           },
           {
-            elementType: "labels.icon",
+            elementType: 'labels.icon',
             stylers: [
               {
-                visibility: "off"
-              }
-            ]
+                visibility: 'off',
+              },
+            ],
           },
           {
-            elementType: "labels.text.fill",
+            elementType: 'labels.text.fill',
             stylers: [
               {
-                color: "#757575"
-              }
-            ]
+                color: '#757575',
+              },
+            ],
           },
           {
-            elementType: "labels.text.stroke",
+            elementType: 'labels.text.stroke',
             stylers: [
               {
-                color: "#212121"
-              }
-            ]
+                color: '#212121',
+              },
+            ],
           },
           {
-            featureType: "administrative",
-            elementType: "geometry",
+            featureType: 'administrative',
+            elementType: 'geometry',
             stylers: [
               {
-                color: "#757575"
-              }
-            ]
+                color: '#757575',
+              },
+            ],
           },
           {
-            featureType: "administrative.country",
-            elementType: "labels.text.fill",
+            featureType: 'administrative.country',
+            elementType: 'labels.text.fill',
             stylers: [
               {
-                color: "#9e9e9e"
-              }
-            ]
+                color: '#9e9e9e',
+              },
+            ],
           },
           {
-            featureType: "administrative.land_parcel",
+            featureType: 'administrative.land_parcel',
             stylers: [
               {
-                visibility: "off"
-              }
-            ]
+                visibility: 'off',
+              },
+            ],
           },
           {
-            featureType: "administrative.locality",
-            elementType: "labels.text.fill",
+            featureType: 'administrative.locality',
+            elementType: 'labels.text.fill',
             stylers: [
               {
-                color: "#bdbdbd"
-              }
-            ]
+                color: '#bdbdbd',
+              },
+            ],
           },
           // {
           //   featureType: 'poi',
@@ -93,104 +154,104 @@ class Map extends Component {
           //   ],
           // },
           {
-            featureType: "poi.park",
-            elementType: "geometry",
+            featureType: 'poi.park',
+            elementType: 'geometry',
             stylers: [
               {
-                color: "#181818"
-              }
-            ]
+                color: '#181818',
+              },
+            ],
           },
           {
-            featureType: "poi.park",
-            elementType: "labels.text.fill",
+            featureType: 'poi.park',
+            elementType: 'labels.text.fill',
             stylers: [
               {
-                color: "#616161"
-              }
-            ]
+                color: '#616161',
+              },
+            ],
           },
           {
-            featureType: "poi.park",
-            elementType: "labels.text.stroke",
+            featureType: 'poi.park',
+            elementType: 'labels.text.stroke',
             stylers: [
               {
-                color: "#1b1b1b"
-              }
-            ]
+                color: '#1b1b1b',
+              },
+            ],
           },
           {
-            featureType: "road",
-            elementType: "geometry.fill",
+            featureType: 'road',
+            elementType: 'geometry.fill',
             stylers: [
               {
-                color: "#2c2c2c"
-              }
-            ]
+                color: '#2c2c2c',
+              },
+            ],
           },
           {
-            featureType: "road",
-            elementType: "labels.text.fill",
+            featureType: 'road',
+            elementType: 'labels.text.fill',
             stylers: [
               {
-                color: "#8a8a8a"
-              }
-            ]
+                color: '#8a8a8a',
+              },
+            ],
           },
           {
-            featureType: "road.arterial",
-            elementType: "geometry",
+            featureType: 'road.arterial',
+            elementType: 'geometry',
             stylers: [
               {
-                color: "#373737"
-              }
-            ]
+                color: '#373737',
+              },
+            ],
           },
           {
-            featureType: "road.highway",
-            elementType: "geometry",
+            featureType: 'road.highway',
+            elementType: 'geometry',
             stylers: [
               {
-                color: "#3c3c3c"
-              }
-            ]
+                color: '#3c3c3c',
+              },
+            ],
           },
           {
-            featureType: "road.highway.controlled_access",
-            elementType: "geometry",
+            featureType: 'road.highway.controlled_access',
+            elementType: 'geometry',
             stylers: [
               {
-                color: "#4e4e4e"
-              }
-            ]
+                color: '#4e4e4e',
+              },
+            ],
           },
           {
-            featureType: "road.local",
-            elementType: "labels.text.fill",
+            featureType: 'road.local',
+            elementType: 'labels.text.fill',
             stylers: [
               {
-                color: "#616161"
-              }
-            ]
+                color: '#616161',
+              },
+            ],
           },
           {
-            featureType: "transit",
-            elementType: "labels.text.fill",
+            featureType: 'transit',
+            elementType: 'labels.text.fill',
             stylers: [
               {
-                color: "#757575"
-              }
-            ]
+                color: '#757575',
+              },
+            ],
           },
           {
-            featureType: "water",
-            elementType: "geometry",
+            featureType: 'water',
+            elementType: 'geometry',
             stylers: [
               {
-                color: "#000000"
-              }
-            ]
-          }
+                color: '#000000',
+              },
+            ],
+          },
           // {
           //   featureType: 'water',
           //   elementType: 'labels.text.fill',
@@ -200,7 +261,7 @@ class Map extends Component {
           //     },
           //   ],
           // },
-        ]
+        ],
       });
     }
 
@@ -212,46 +273,55 @@ class Map extends Component {
       });
     };
 
-    google.maps.event.addListener(map, "idle", function() {
+    google.maps.event.addListener(map, 'idle', function() {
       var bounds = map.getBounds();
       var ne = bounds.getNorthEast();
       var sw = bounds.getSouthWest();
 
       const coords = {
         max: { latitude: ne.lat(), longitude: ne.lng() },
-        min: { latitude: sw.lat(), longitude: sw.lng() }
+        min: { latitude: sw.lat(), longitude: sw.lng() },
       };
 
       updateHeatMapThunk(coords);
 
       heatmap = new google.maps.visualization.HeatmapLayer({
         data: getPoints(),
-        map: map
+        map: map,
       });
     });
   }
 
+  componentWillUnmount() {
+    clearInterval();
+  }
+
   render() {
-    return <div><Nav className="nav-container"/><div id="map" /></div>;
+    return (
+      <div>
+        <Nav className="nav-container" />
+        <div id="map" />
+      </div>
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
     entries: state.entries,
-    heatmapData: state.heatmap
+    heatmapData: state.heatmap,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateHeatMapThunk: coords => dispatch(updateHeatMap(coords))
+    updateHeatMapThunk: coords => dispatch(updateHeatMap(coords)),
   };
 };
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyDU3C_l0COpEISg44ejBmRNgYZkW_CX32g",
-  libraries: ["visualization"]
+  apiKey: 'AIzaSyDU3C_l0COpEISg44ejBmRNgYZkW_CX32g',
+  libraries: ['visualization'],
 })(
   connect(
     mapStateToProps,
