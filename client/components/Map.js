@@ -15,22 +15,18 @@ class Map extends Component {
     const { currentPosition } = this.state;
     let map, heatmap, marker, markerImage, circle;
 
+    const locationUpdateInterval = 3000;
     let self = this;
-    const locationUpdateInterval = 10000;
 
-    setInterval(function() {
-      navigator.geolocation.getCurrentPosition(position => {
-        self.setState({
-          currentPosition: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          },
-        });
-      });
-
-      marker.setOptions({ position: self.state.currentPosition });
-      circle.setOptions({ center: self.state.currentPosition });
-    }, locationUpdateInterval);
+    // navigator.geolocation.getCurrentPosition(position => {
+    //   const pos = {
+    //     lat: position.coords.latitude,
+    //     lng: position.coords.longitude,
+    //   };
+    //   self.setState({
+    //     currentPosition: pos,
+    //   });
+    // });
 
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
@@ -228,6 +224,34 @@ class Map extends Component {
     }
 
     initMap();
+
+    map.setCenter(currentPosition);
+
+    setInterval(function() {
+      let pos;
+      navigator.geolocation.getCurrentPosition(position => {
+        pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+
+        //checking if user has moved more than ~500ft since last position update,
+        //and setting map center if they have.
+        if (
+          Math.abs(pos.lat - self.state.currentPosition.lat) > 0.00137826 ||
+          Math.abs(pos.lng - self.state.currentPosition.lng) > 0.00137826
+        ) {
+          map.setCenter(pos);
+        }
+
+        self.setState({
+          currentPosition: pos,
+        });
+      });
+
+      marker.setOptions({ position: self.state.currentPosition });
+      circle.setOptions({ center: self.state.currentPosition });
+    }, locationUpdateInterval);
 
     markerImage = new google.maps.MarkerImage(
       'bluedotsm.png',
