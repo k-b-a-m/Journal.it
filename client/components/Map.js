@@ -244,7 +244,7 @@ class Map extends Component {
       circle = new google.maps.Circle({
         strokeColor: 'blue',
         strokeOpacity: 0.8,
-        strokeWeight: 2,
+        strokeWeight: 0.6,
         fillColor: 'blue',
         fillOpacity: 0.35,
         map: map,
@@ -267,7 +267,7 @@ class Map extends Component {
           Math.abs(pos.lat - self.state.currentPosition.lat) > 0.00137826 ||
           Math.abs(pos.lng - self.state.currentPosition.lng) > 0.00137826
         ) {
-          map.setCenter(pos);
+          map.panTo(pos);
         }
 
         self.setState({
