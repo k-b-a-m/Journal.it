@@ -252,32 +252,6 @@ class Map extends Component {
       });
     });
 
-    map.setCenter(currentPosition);
-
-    markerImage = new google.maps.MarkerImage(
-      'bluedotsm.png',
-      new google.maps.Size(15, 15),
-      new google.maps.Point(0, 0),
-      new google.maps.Point(7.5, 7.5)
-    );
-
-    marker = new google.maps.Marker({
-      position: self.state.currentPosition,
-      map: map,
-      icon: markerImage,
-    });
-
-    circle = new google.maps.Circle({
-      strokeColor: 'blue',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: 'blue',
-      fillOpacity: 0.35,
-      map: map,
-      center: self.state.currentPosition,
-      radius: 152.4,
-    });
-
     setInterval(function() {
       let pos;
       navigator.geolocation.getCurrentPosition(position => {
