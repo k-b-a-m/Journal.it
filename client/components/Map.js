@@ -15,18 +15,8 @@ class Map extends Component {
     const { currentPosition } = this.state;
     let map, heatmap, marker, markerImage, circle;
 
-    const locationUpdateInterval = 3000;
+    const locationUpdateInterval = 10000;
     let self = this;
-
-    // navigator.geolocation.getCurrentPosition(position => {
-    //   const pos = {
-    //     lat: position.coords.latitude,
-    //     lng: position.coords.longitude,
-    //   };
-    //   self.setState({
-    //     currentPosition: pos,
-    //   });
-    // });
 
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
@@ -225,7 +215,68 @@ class Map extends Component {
 
     initMap();
 
+    navigator.geolocation.getCurrentPosition(position => {
+      let pos;
+      pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+
+      self.setState({
+        currentPosition: pos,
+      });
+
+      map.setCenter(pos);
+      markerImage = new google.maps.MarkerImage(
+        'bluedotsm.png',
+        new google.maps.Size(15, 15),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(7.5, 7.5)
+      );
+
+      marker = new google.maps.Marker({
+        position: self.state.currentPosition,
+        map: map,
+        icon: markerImage,
+      });
+
+      circle = new google.maps.Circle({
+        strokeColor: 'blue',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: 'blue',
+        fillOpacity: 0.35,
+        map: map,
+        center: self.state.currentPosition,
+        radius: 152.4,
+      });
+    });
+
     map.setCenter(currentPosition);
+
+    markerImage = new google.maps.MarkerImage(
+      'bluedotsm.png',
+      new google.maps.Size(15, 15),
+      new google.maps.Point(0, 0),
+      new google.maps.Point(7.5, 7.5)
+    );
+
+    marker = new google.maps.Marker({
+      position: self.state.currentPosition,
+      map: map,
+      icon: markerImage,
+    });
+
+    circle = new google.maps.Circle({
+      strokeColor: 'blue',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: 'blue',
+      fillOpacity: 0.35,
+      map: map,
+      center: self.state.currentPosition,
+      radius: 152.4,
+    });
 
     setInterval(function() {
       let pos;
@@ -252,30 +303,6 @@ class Map extends Component {
       marker.setOptions({ position: self.state.currentPosition });
       circle.setOptions({ center: self.state.currentPosition });
     }, locationUpdateInterval);
-
-    markerImage = new google.maps.MarkerImage(
-      'bluedotsm.png',
-      new google.maps.Size(15, 15),
-      new google.maps.Point(0, 0),
-      new google.maps.Point(7.5, 7.5)
-    );
-
-    marker = new google.maps.Marker({
-      position: self.state.currentPosition,
-      map: map,
-      icon: markerImage,
-    });
-
-    circle = new google.maps.Circle({
-      strokeColor: 'blue',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: 'blue',
-      fillOpacity: 0.35,
-      map: map,
-      center: self.state.currentPosition,
-      radius: 152.4,
-    });
 
     setInterval(function() {
       circle.setOptions({ fillColor: 'white', strokeColor: 'white' });
@@ -306,6 +333,11 @@ class Map extends Component {
       heatmap = new google.maps.visualization.HeatmapLayer({
         data: getPoints(),
         map: map,
+        // gradient: [
+        //   'rgba(0,0,0,0)',
+        //   'rgba(255,0,0,1)',
+        //   'rgba(255,255,0,1)',
+        // ],
       });
     });
 
@@ -320,11 +352,11 @@ class Map extends Component {
       };
 
       updateHeatMapThunk(coords);
-
-      heatmap = new google.maps.visualization.HeatmapLayer({
-        data: getPoints(),
-        map: map,
-      });
+      if (heatmap !== undefined) {
+        heatmap.setOptions({
+          data: getPoints(),
+        });
+      }
     });
   }
 
@@ -333,12 +365,7 @@ class Map extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <Nav className="nav-container" />
-        <div id="map" />
-      </div>
-    );
+    return <div id="map" />;
   }
 }
 
