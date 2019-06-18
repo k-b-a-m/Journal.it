@@ -279,12 +279,12 @@ class Map extends Component {
     }, locationUpdateInterval);
 
     setInterval(function() {
-      circle.setOptions({ fillColor: 'white', strokeColor: 'white' });
+      if (circle.fillColor === 'blue') {
+        circle.setOptions({ fillColor: 'white', strokeColor: 'white' });
+      } else {
+        circle.setOptions({ fillColor: 'blue', strokeColor: 'blue' });
+      }
     }, 2500);
-
-    setInterval(function() {
-      circle.setOptions({ fillColor: 'blue', strokeColor: 'blue' });
-    }, 5000);
 
     const getPoints = () => {
       return this.props.heatmapData.map(entry => {
