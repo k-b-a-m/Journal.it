@@ -1,17 +1,18 @@
 //libraries
-import React, { Component } from "react";
-import { Route } from "react-router-dom";
-import { connect } from "react-redux";
-import axios from "axios";
+import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import axios from 'axios';
 
 //components
-import Home from "./Home";
-import HomeCheck from "./Home-Check";
-import Nav from "./Nav";
-import Map from "./Map";
+import Home from './Home';
+import HomeCheck from './Home-Check';
+import Nav from './Nav';
+import Map from './Map';
+import PrivacyPolicy from './PrivacyPolicy';
 
 //redux
-import { fetchNearby } from "../redux/store";
+import { fetchNearby } from '../redux/store';
 
 //styles
 import '../styles/App.css';
@@ -23,12 +24,12 @@ class App extends Component {
   //   this.state = { key: '' };
   // }
 
-  async componentDidMount() {
+  componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
       this.props.fetchNearby({
         coordinate: { latitude, longitude },
-        distance: 500
+        distance: 500,
       }); //distance is in feet 5280ft = 1mi
     });
 
@@ -42,15 +43,15 @@ class App extends Component {
       <div>
         <Route exact path="/" component={Home} />
         <Route path="/homecheck" component={HomeCheck} />
-        <Route path="/user/:fbUserId" render={({match}) => <UserProfile fbUserId={match.params.fbUserId}/>}/>
         <Route
-          exact
-          path="/map"
-          render={() => (
-              <Map />
+          path="/user/:fbUserId"
+          render={({ match }) => (
+            <UserProfile fbUserId={match.params.fbUserId} />
           )}
         />
+        <Route exact path="/map" render={() => <Map />} />
         <Route exact path="/map" component={Map} />
+        <Route path="/privacypolicy" component={PrivacyPolicy} />
       </div>
     );
   }
