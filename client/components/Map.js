@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { updateHeatMap } from '../redux/store';
-import Nav from './Nav';
 import { GoogleApiWrapper } from 'google-maps-react';
+
+import '../styles/App.css';
 
 class Map extends Component {
   constructor() {

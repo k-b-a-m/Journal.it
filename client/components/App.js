@@ -50,7 +50,6 @@ class App extends Component {
             <UserProfile fbUserId={match.params.fbUserId} />
           )}
         />
-        <Route exact path="/map" render={() => <Map />} />
         <Route exact path="/map" component={Map} />
         <Route path="/privacypolicy" component={PrivacyPolicy} />
       </div>
