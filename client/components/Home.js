@@ -33,6 +33,7 @@ class Home extends Component {
 
     //set displayed entries to be only today
     this.renderDisplayedEntries();
+    this.setState({displayedEntries: this.displayedEntries});
 
     //initialize scene and camera
     const scene = new THREE.Scene();
