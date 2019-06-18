@@ -153,7 +153,10 @@ class Home extends Component {
     const {displayedEntries} = this.state;
     let stats, geometry, material;
     let particles;
-    let PARTICLE_SIZE = 120;
+    let PARTICLE_SIZE = 140;
+    if (window.screen.width <= 479) {
+      PARTICLE_SIZE = 500;
+    }
     let raycaster, intersects;
     let mouse, INTERSECTED;
 
@@ -322,7 +325,14 @@ class Home extends Component {
           if (entryIndex !== this.intersects[0].index) {
             attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE;
             this.INTERSECTED = this.intersects[0].index;
-            attributes.size.array[this.INTERSECTED] = 120;
+            if (
+              attributes.size.array[this.INTERSECTED] !==
+              this.PARTICLE_SIZE * 1.5
+            ) {
+              attributes.size.array[this.INTERSECTED] =
+                this.PARTICLE_SIZE * 1.5;
+            }
+
             attributes.size.needsUpdate = true;
             //TODO add pop up message containing entries here
             //set state as current dots index
@@ -351,7 +361,6 @@ class Home extends Component {
     const {entryIndex, date, displayedEntries} = this.state;
     return (
       <div>
-        <Nav className="nav-container" />
         <div style={{position: 'absolute'}}>
           <div
             //this is where all the 3d will mount

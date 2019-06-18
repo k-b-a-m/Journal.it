@@ -29,7 +29,6 @@ class Entry extends Component {
         longitude,
         dateTime: date,
       };
-      console.log(newEntry);
       this.props.addEntryThunk(newEntry).then(() => {
         this.props.toggleEntryFormOpen();
       });

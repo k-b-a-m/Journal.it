@@ -1,17 +1,17 @@
 //libraries
-import React, { Component } from "react";
-import { Route } from "react-router-dom";
-import { connect } from "react-redux";
-import axios from "axios";
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
+import {connect} from 'react-redux';
+import axios from 'axios';
 
 //components
-import Home from "./Home";
-import HomeCheck from "./Home-Check";
-import Nav from "./Nav";
-import Map from "./Map";
+import Home from './Home';
+import HomeCheck from './Home-Check';
+import Nav from './Nav';
+import Map from './Map';
 
 //redux
-import { fetchNearby } from "../redux/store";
+import {fetchNearby} from '../redux/store';
 
 //styles
 import '../styles/App.css';
@@ -25,10 +25,10 @@ class App extends Component {
 
   async componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
+      const {latitude, longitude} = position.coords;
       this.props.fetchNearby({
-        coordinate: { latitude, longitude },
-        distance: 500
+        coordinate: {latitude, longitude},
+        distance: 500,
       }); //distance is in feet 5280ft = 1mi
     });
 
@@ -40,17 +40,19 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Route exact path="/" component={Home} />
-        <Route path="/homecheck" component={HomeCheck} />
-        <Route path="/user/:fbUserId" render={({match}) => <UserProfile fbUserId={match.params.fbUserId}/>}/>
-        <Route
-          exact
-          path="/map"
-          render={() => (
-              <Map />
-          )}
-        />
-        <Route exact path="/map" component={Map} />
+        <Nav className="nav-container" />
+        <div>
+          <Route exact path="/" component={Home} />
+          <Route path="/homecheck" component={HomeCheck} />
+          <Route
+            path="/user/:fbUserId"
+            render={({match}) => (
+              <UserProfile fbUserId={match.params.fbUserId} />
+            )}
+          />
+          <Route exact path="/map" render={() => <Map />} />
+          <Route exact path="/map" component={Map} />
+        </div>
       </div>
     );
   }
@@ -58,5 +60,5 @@ class App extends Component {
 
 export default connect(
   null,
-  { fetchNearby }
+  {fetchNearby}
 )(App);
