@@ -48,6 +48,7 @@ class Nav extends React.Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
+    console.log('New Entry user', this.props.user);
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
       const newDate = new Date().toString();
@@ -60,6 +61,7 @@ class Nav extends React.Component {
         expireDate: new Date(
           Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000
         ).toString(),
+        userId: this.props.user.id || null,
       };
       socket.emit('addNearby', newEntry);
 
@@ -79,9 +81,6 @@ class Nav extends React.Component {
       this.props.logout();
       this.props.history.push('/');
     };
-
-    console.log('user?????: ', JSON.stringify(user));
-    console.log('!user[0] :', !user[0]);
 
     const responseFacebook = response => {
       this.props
@@ -117,7 +116,7 @@ class Nav extends React.Component {
             style={{ color: 'white', fontSize: '40px' }}
           />
         </div>
-        {!user.length ? (
+        {!user.facebookId ? (
           <FacebookLogin
             appId={'2336628819983490'}
             fields="name,email,picture"
@@ -131,7 +130,7 @@ class Nav extends React.Component {
           />
         ) : (
           <Fragment>
-            <NavLink to={`/user/${user[0].facebookId}`} className="link">
+            <NavLink to={`/user/${user.facebookId}`} className="link">
               <FontAwesomeIcon
                 icon={faUser}
                 style={{ color: 'white', fontSize: '40px' }}
@@ -190,7 +189,7 @@ class Nav extends React.Component {
                     <br />
                     <button
                       type="submit"
-                      onClick={() => this.handleSubmit(event)}
+                      onClick={this.handleSubmit}
                       className="btn btn-success"
                       disabled={entry === ''}
                     >
@@ -208,9 +207,8 @@ class Nav extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { user } = state;
   return {
-    user,
+    user: state.user,
   };
 };
 
