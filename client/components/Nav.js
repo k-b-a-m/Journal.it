@@ -70,7 +70,7 @@ class Nav extends React.Component {
         );
     };
     return (
-      <nav className="nav-container navbar">
+      <nav className="nav-container navbar" style={{backgroundColor: 'none'}}>
         <FacebookLogin
           appId={'2336628819983490'}
           fields="name,email,picture"
