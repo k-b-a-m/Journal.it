@@ -92,11 +92,7 @@ class Nav extends React.Component {
         );
     };
     return (
-      <nav
-        className="nav-container navbar"
-        //TODO: change backgroundColor back to 'none' and delete this comment before pushing
-        style={{ backgroundColor: 'black' }}
-      >
+      <nav className="nav-container navbar" style={{ backgroundColor: 'none' }}>
         <NavLink exact to="/" className="link">
           <FontAwesomeIcon
             icon={faHome}
