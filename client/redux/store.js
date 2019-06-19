@@ -1,4 +1,4 @@
-import {createStore, applyMiddleware, combineReducers} from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import axios from 'axios';
 import { PathActions } from 'three';
@@ -7,7 +7,7 @@ import { PathActions } from 'three';
 const initialState = {
   entries: [],
   user: {},
-}
+};
 
 //ACTION TYPES
 
@@ -16,18 +16,19 @@ const ADD_ENTRY = 'ADD_ENTRY`';
 const UPDATE_ENTRY = 'UPDATE_ENTRY';
 const SET_HEATMAP = 'SET_HEATMAP';
 const GET_USER = 'GET_USER';
-const SET_GOOGKEY = "SET_GOOGKEY";
+const REMOVE_USER = 'REMOVE_USER';
+const SET_GOOGKEY = 'SET_GOOGKEY';
 
 //ACTION CREATORS
 
 const setEntries = entries => ({
   type: SET_ENTRIES,
-  entries
+  entries,
 });
 
 const setGoogKey = key => ({
   type: SET_GOOGKEY,
-  key
+  key,
 });
 
 const getUser = user => ({
@@ -35,9 +36,14 @@ const getUser = user => ({
   user,
 });
 
-export const fetchUser = (fbUserId) => {
+const removeUser = () => ({
+  type: REMOVE_USER,
+});
+
+export const fetchUser = fbUserId => {
   return dispatch => {
-    return axios.get(`/user/${fbUserId}`)
+    return axios
+      .get(`/user/${fbUserId}`)
       .then(res => dispatch(getUser(res.data)))
       .catch(e => console.log(`Error fetching user:\n${e}`));
   };
@@ -46,25 +52,32 @@ export const fetchUser = (fbUserId) => {
 export const getOrCreateUser = (fbUserId, fbUser) => {
   return dispatch => {
     console.log(`thunk getOrCreate:`, fbUser);
-    return axios.post(`/user/getOrCreate/${fbUserId}`, fbUser)
+    return axios
+      .post(`/user/getOrCreate/${fbUserId}`, fbUser)
       .then(res => dispatch(getUser(res.data)))
       .catch(e => console.log(`Error fetching or creating user:\n${e}`));
-  }
-}
+  };
+};
+
+export const logout = () => {
+  return dispatch => {
+    return dispatch(removeUser());
+  };
+};
 
 export const addEntry = entry => ({
   type: ADD_ENTRY,
-  entry
+  entry,
 });
 
 const updateEntry = entry => ({
   type: UPDATE_ENTRY,
-  entry
+  entry,
 });
 
 const setHeatMap = entries => ({
   type: SET_HEATMAP,
-  entries
+  entries,
 });
 
 //THUNK CREATORS
@@ -82,7 +95,7 @@ const setHeatMap = entries => ({
 export const fetchGoogKey = key => {
   return dispatch => {
     return axios
-      .get("/googlemaps")
+      .get('/googlemaps')
       .then(response => dispatch(setGoogKey(response.data)));
   };
 };
@@ -112,7 +125,7 @@ export const updateEntryThunk = entry => {
 export const fetchNearby = obj => async dispatch => {
   const { coordinate, distance } = obj;
   try {
-    const resp = await axios.post("/entries/nearby", { coordinate, distance });
+    const resp = await axios.post('/entries/nearby', { coordinate, distance });
 
     const entries = resp.data;
     return dispatch(setEntries(entries));
@@ -126,7 +139,7 @@ export const updateHeatMap = coords => async dispatch => {
   console.log(min);
   console.log(max);
   try {
-    const resp = await axios.post("/entries/mapmarkers", coords);
+    const resp = await axios.post('/entries/mapmarkers', coords);
     const entries = resp.data;
     return dispatch(setHeatMap(entries));
   } catch (err) {
@@ -145,7 +158,7 @@ const entriesReducer = (state = [], action) => {
     case UPDATE_ENTRY:
       return [
         ...state.filter(entry => entry.id !== action.entry.id),
-        action.entry
+        action.entry,
       ];
     default:
       return state;
@@ -162,19 +175,21 @@ const heatmapReducer = (state = [], action) => {
 };
 
 const userReducer = (state = [], action) => {
-  switch(action.type) {
+  switch (action.type) {
     case GET_USER:
-      return [...state, action.user];
+      return [action.user];
+    case REMOVE_USER:
+      return [];
     default:
       return state;
   }
-}
-const googKeyReducer = (state = "", action) => {
+};
+const googKeyReducer = (state = '', action) => {
   switch (action.type) {
     case SET_GOOGKEY:
       return action.key;
     default:
-      return state
+      return state;
   }
 };
 
