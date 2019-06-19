@@ -1,12 +1,12 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-unused-vars */
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as THREE from 'three';
 import TrackballControls from 'three-trackballcontrols';
 import Stats from 'stats.js';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import SingleEntry from './SingleEntry';
-import { Fragment } from 'react';
+import {Fragment} from 'react';
 
 //styles
 import '../styles/Home.css';
@@ -26,7 +26,7 @@ class Home extends Component {
     const today = new Date();
     this.today = today;
     const todayStr = this.parseDate(this.today);
-    this.setState({ date: todayStr });
+    this.setState({date: todayStr});
     //bind
     this.today = today;
 
@@ -71,7 +71,7 @@ class Home extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     //if new entries are different in the redux store
-    const { displayedEntries, entryIndex } = this.state;
+    const {displayedEntries, entryIndex} = this.state;
     if (
       JSON.stringify(JSON.stringify(prevProps.entries)) !==
       JSON.stringify(JSON.stringify(this.props.entries))
@@ -83,7 +83,7 @@ class Home extends Component {
         prevProps.entries.length !== 0 &&
         this.props.entries.length > prevProps.entries.length
       ) {
-        this.geometry.setDrawRange(0, this.displayedEntries.length - 1);
+        this.geometry.setDrawRange(0, this.displayedEntries.length);
         //TODO: change the color of newly added entry/ glow
         // this.previousColor = this.particles.geometry.attributes.customColor.array[
         //   this.displayedEntries.length - 1
@@ -105,7 +105,7 @@ class Home extends Component {
         //render when app first got entries from db after mounting
         console.log('hey3');
         this.renderDisplayedEntries();
-        this.setState({ displayedEntries: this.displayedEntries });
+        this.setState({displayedEntries: this.displayedEntries});
         while (this.scene.children.length > 0) {
           this.scene.remove(this.scene.children[0]);
         }
@@ -152,8 +152,8 @@ class Home extends Component {
   };
 
   DrawSphere = (segment, scene, camera, renderer) => {
-    const { entries } = this.props;
-    const { displayedEntries } = this.state;
+    const {entries} = this.props;
+    const {displayedEntries} = this.state;
     let stats, geometry, material;
     let particles;
     let PARTICLE_SIZE = 140;
@@ -193,7 +193,7 @@ class Home extends Component {
     material = new THREE.ShaderMaterial({
       uniforms: {
         lights: true,
-        color: { value: new THREE.Color(0xffffff) },
+        color: {value: new THREE.Color(0xffffff)},
         texture: {
           value: new THREE.TextureLoader().load('disc.png'),
         },
@@ -217,8 +217,8 @@ class Home extends Component {
     //only show the amount of dots = the number of displayed entries
     const drawCount =
       this.state.displayedEntries.length > 0
-        ? this.state.displayedEntries.length - 1
-        : this.displayedEntries.length - 1;
+        ? this.state.displayedEntries.length
+        : this.displayedEntries.length;
     geometry.setDrawRange(0, drawCount);
     geometry.needsUpdate = true;
     //add particles behind spots
@@ -306,12 +306,12 @@ class Home extends Component {
   };
 
   renderParticles = () => {
-    const { entryIndex } = this.state;
+    const {entryIndex} = this.state;
     if (entryIndex < 0) {
       this.particles.rotation.x += 0.0001;
       this.particles.rotation.y += 0.00008;
-      this.sphere.rotation.x += 0.0008;
-      this.sphere.rotation.y += 0.002;
+      this.sphere.rotation.x += 0.0004;
+      this.sphere.rotation.y += 0.00016;
     }
     const geometry = this.particles.geometry;
     const attributes = geometry.attributes;
@@ -339,6 +339,8 @@ class Home extends Component {
             attributes.size.needsUpdate = true;
             //TODO add pop up message containing entries here
             //set state as current dots index
+            console.log(this.intersects[0].index)
+            console.log(this.displayedEntries);
             this.setState({
               entryIndex: this.intersects[0].index,
             });
@@ -351,7 +353,7 @@ class Home extends Component {
   };
 
   toggleEntry = () => {
-    this.setState({ entryIndex: -1 });
+    this.setState({entryIndex: -1});
   };
 
   render() {
@@ -360,11 +362,11 @@ class Home extends Component {
       ? JSON.stringify(this.today.toDateString()) ===
         JSON.stringify(today.toDateString())
       : false;
-    const { entries } = this.props;
-    const { entryIndex, date, displayedEntries } = this.state;
+    const {entries} = this.props;
+    const {entryIndex, date, displayedEntries} = this.state;
     return (
       <div>
-        <div style={{ position: 'absolute' }}>
+        <div style={{position: 'absolute'}}>
           <div
             //this is where all the 3d will mount
 
@@ -376,7 +378,7 @@ class Home extends Component {
           render out message box with entry */}
           {entryIndex >= 0 && entries[0] ? (
             <SingleEntry
-              displayedEntries={displayedEntries}
+              displayedEntries={this.displayedEntries}
               entryIndex={entryIndex}
               toggleEntry={this.toggleEntry}
             />
@@ -406,7 +408,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
-  return { entries: state.entries };
+  return {entries: state.entries};
 };
 
 export default connect(mapStateToProps)(Home);

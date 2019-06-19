@@ -1,8 +1,8 @@
 /* eslint-disable react/button-has-type */
-import React, { Component, Fragment } from 'react';
-import { Col, Row, Container, Card, Button } from 'react-bootstrap';
-import { fetchUser } from '../redux/store';
-import { connect } from 'react-redux';
+import React, {Component, Fragment} from 'react';
+import {Col, Row, Container, Card, Button} from 'react-bootstrap';
+import {fetchUser} from '../redux/store';
+import {connect} from 'react-redux';
 import '../styles/UserPage.css';
 
 class UserProfile extends Component {
@@ -12,26 +12,29 @@ class UserProfile extends Component {
       user: {},
     };
   }
-  renew(){
-    const {updateEntryThunk} = this.props
+  renew() {
+    const {updateEntryThunk} = this.props;
     const updatedEntry = {
-      expireDate: new Date(Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000).toString()
-    }
-    updateEntryThunk(updatedEntry)
+      expireDate: new Date(
+        Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000
+      ).toString(),
+    };
+    updateEntryThunk(updatedEntry);
   }
-  componentDidMount(){
-    this.props.fetchUser(this.props.fbUserId)
+  componentDidMount() {
+    this.props
+      .fetchUser(this.props.fbUserId)
       .then(user => this.setState({user}));
   }
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.props
         .fetchUser(this.props.fbUserId)
-        .then(user => this.setState({ user }));
+        .then(user => this.setState({user}));
     }
   }
   render() {
-    let { user } = this.state;
+    let {user} = this.state;
     console.log(this.state);
     console.log(`Facebook user!\n${user}`);
     return (
@@ -40,43 +43,44 @@ class UserProfile extends Component {
           backgroundColor: 'black',
           color: 'white',
           minHeight: '100%',
-          position: 'relative',
-          top: '60px',
         }}
       >
-        <Container>
+        <Container style={{paddingTop: '10vh'}}>
           <Row>
             <Col className="mt-2">
               <h5>User Profile Page</h5>
-              {user.user ?
-              <div>
-                <Card style={{color: 'black'}} className="mb-3">
-                  <Card.Body>
-                    <Card.Text>
-                      Hello {user.user.name}!
-                    </Card.Text>
-                    <hr/>
-                    <Card.Text>
-                      Here are all your stories!
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                {user.user.entries.length > 0 ?
-                  <Fragment>
-                    {user.user.entries.map(entry =>
-                      <Card class="profileCard" key={entry.id} style={{color: 'black'}} className="mb-3">
-                        <Card.Body>
-                          <Card.Text>
-                            {entry.content}
-                          </Card.Text>
-                          <Button onClick = {this.renew} variant="warning">Renew Entry</Button>
-                        </Card.Body>
-                      </Card>
-                    )}
-                  </Fragment>
-                : <h2>Sorry you don't have any entries. Go make some!</h2>}
-              </div>
-              : null}
+              {user.user ? (
+                <div>
+                  <Card style={{color: 'black'}} className="mb-3">
+                    <Card.Body>
+                      <Card.Text>Hello {user.user.name}!</Card.Text>
+                      <hr />
+                      <Card.Text>Here are all your stories!</Card.Text>
+                    </Card.Body>
+                  </Card>
+                  {user.user.entries.length > 0 ? (
+                    <Fragment>
+                      {user.user.entries.map(entry => (
+                        <Card
+                          class="profileCard"
+                          key={entry.id}
+                          style={{color: 'black'}}
+                          className="mb-3"
+                        >
+                          <Card.Body>
+                            <Card.Text>{entry.content}</Card.Text>
+                            <Button onClick={this.renew} variant="warning">
+                              Renew Entry
+                            </Button>
+                          </Card.Body>
+                        </Card>
+                      ))}
+                    </Fragment>
+                  ) : (
+                    <h2>Sorry you don't have any entries. Go make some!</h2>
+                  )}
+                </div>
+              ) : null}
             </Col>
           </Row>
         </Container>
@@ -88,9 +92,9 @@ class UserProfile extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     fetchUser: (fbUserId, fbUser) => dispatch(fetchUser(fbUserId, fbUser)),
-    updateEntryThunk: (entry) => dispatch(updateEntryThunk(entry))
-  }
-}
+    updateEntryThunk: entry => dispatch(updateEntryThunk(entry)),
+  };
+};
 
 export default connect(
   null,
