@@ -40,12 +40,8 @@ class Nav extends React.Component {
   handleSubmit = evt => {
     evt.preventDefault();
     navigator.geolocation.getCurrentPosition(position => {
-<<<<<<< HEAD
-      const {latitude, longitude} = position.coords;
-=======
       const { latitude, longitude } = position.coords;
       const newDate = new Date().toString()
->>>>>>> c18450299cb935e28831408183ad60b78012fd70
       const newEntry = {
         content: this.state.entry,
         latitude,

@@ -45,14 +45,9 @@ const makeFakeEntry = () => {
     ),
     likes: faker.random.number({
       min: 0,
-<<<<<<< HEAD
-      max: 100,
-    }),
-=======
       max: 100
     }),
     expireDate: new Date(Date.parse(fakeDateTime) + 30 * 24 * 60 * 60 * 1000).toString()
->>>>>>> c18450299cb935e28831408183ad60b78012fd70
   };
 };
 
@@ -64,12 +59,8 @@ const users = [
   { name: 'Alex' },
 ];
 
-<<<<<<< HEAD
-for (let i = 0; i < 7000; i++) {
-=======
 
-for (let i = 0; i < 5000; i++) {
->>>>>>> c18450299cb935e28831408183ad60b78012fd70
+for (let i = 0; i < 7000; i++) {
   entries.push(makeFakeEntry());
 }
 

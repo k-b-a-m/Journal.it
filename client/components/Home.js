@@ -43,6 +43,9 @@ class Home extends Component {
       10000
     );
     camera.position.z = 450;
+    if (window.screen.width <= 479) {
+      camera.position.z = 750;
+    }
 
     //config renderer
     const renderer = new THREE.WebGLRenderer();

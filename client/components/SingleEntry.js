@@ -25,7 +25,6 @@ class SingleEntry extends Component {
     }
     if (entry) {
       return (
-<<<<<<< HEAD
         <div id="entry" className="entry-container" style={{height: '50vh'}}>
           <div className="entry">
             <p onClick={toggleEntry} className="x-out">
@@ -52,29 +51,6 @@ class SingleEntry extends Component {
             {entry.likes}
           </p>
         </div>
-=======
-          <Card id="entry" className="displayedEntry">
-            <Card.Body>
-              <p
-                style={{ textAlign: 'right', fontSize: '2em' }}
-                onClick={toggleEntry}
-              >
-                <FontAwesomeIcon icon={faTimes} />
-              </p>
-              <Card.Text>{entry.content}</Card.Text>
-              
-              <iframe className="mb-4" src={entry.spotifyUrl} width="100%" height="80" frameBorder="0" allowTransparency="true" allow="encrypted-media"/>
-              <p
-                style={{ textAlign: 'right' }}
-                onClick={() => updateEntry({...entry, likes: ++entry.likes })}
-              >
-                <FontAwesomeIcon icon={faHeart} style={{ color: 'red' }} />{' '}
-                {entry.likes}
-              </p>
-              <Card.Text>Expires:{entry.expireDate.slice(0, 15)} {entry.expireDate.slice(15,21)}</Card.Text>
-            </Card.Body>
-          </Card>
->>>>>>> c18450299cb935e28831408183ad60b78012fd70
       );
     } else {
       return null;
