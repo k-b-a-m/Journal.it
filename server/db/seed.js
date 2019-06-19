@@ -20,6 +20,7 @@ const makeFakeEntry = () => {
   ];
   const randomIdx = Math.floor(Math.random() * points.length);
   const coords = points[randomIdx];
+  const fakeDateTime = faker.date.recent(15)
 
   return {
     content: warAndPeace[Math.floor(Math.random() * 16035)],
@@ -31,7 +32,7 @@ const makeFakeEntry = () => {
     // longitude: faker.finance.amount(-180,180, 10),
 
     //Around NYC
-    dateTime: faker.date.recent(15).toString(),
+    dateTime: fakeDateTime.toString(),
     latitude: faker.finance.amount(
       coords[0] - Math.random() * 0.005,
       coords[0] + Math.random() * 0.005,
@@ -44,8 +45,14 @@ const makeFakeEntry = () => {
     ),
     likes: faker.random.number({
       min: 0,
+<<<<<<< HEAD
       max: 100,
     }),
+=======
+      max: 100
+    }),
+    expireDate: new Date(Date.parse(fakeDateTime) + 30 * 24 * 60 * 60 * 1000).toString()
+>>>>>>> c18450299cb935e28831408183ad60b78012fd70
   };
 };
 
@@ -57,7 +64,12 @@ const users = [
   { name: 'Alex' },
 ];
 
+<<<<<<< HEAD
 for (let i = 0; i < 7000; i++) {
+=======
+
+for (let i = 0; i < 5000; i++) {
+>>>>>>> c18450299cb935e28831408183ad60b78012fd70
   entries.push(makeFakeEntry());
 }
 

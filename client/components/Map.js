@@ -1,17 +1,9 @@
-<<<<<<< HEAD
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {updateHeatMap} from '../redux/store';
-import Nav from './Nav';
-import {GoogleApiWrapper} from 'google-maps-react';
-=======
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { updateHeatMap } from '../redux/store';
 import { GoogleApiWrapper } from 'google-maps-react';
 
 import '../styles/App.css';
->>>>>>> 4e20fddba1589a3ed39a3c23e00ea353bfb74386
 
 class Map extends Component {
   constructor() {
@@ -20,27 +12,18 @@ class Map extends Component {
   }
 
   componentDidMount() {
-<<<<<<< HEAD
-    const {heatmapData, updateHeatMapThunk} = this.props;
-    let map, heatmap;
-=======
     const { heatmapData, updateHeatMapThunk } = this.props;
     const { currentPosition } = this.state;
     let map, heatmap, marker, markerImage, circle;
 
     const locationUpdateInterval = 10000;
     let self = this;
->>>>>>> 4e20fddba1589a3ed39a3c23e00ea353bfb74386
 
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
         disableDefaultUI: true,
         zoomControl: true,
-<<<<<<< HEAD
-        center: {lat: 40.705092, lng: -74.009166},
-=======
         center: currentPosition,
->>>>>>> 4e20fddba1589a3ed39a3c23e00ea353bfb74386
         zoom: 14,
         styles: [
           {
@@ -310,23 +293,14 @@ class Map extends Component {
       });
     };
 
-<<<<<<< HEAD
-    google.maps.event.addListener(map, 'idle', function() {
-=======
     google.maps.event.addListenerOnce(map, 'tilesloaded', function() {
->>>>>>> 4e20fddba1589a3ed39a3c23e00ea353bfb74386
       var bounds = map.getBounds();
       var ne = bounds.getNorthEast();
       var sw = bounds.getSouthWest();
 
       const coords = {
-<<<<<<< HEAD
-        max: {latitude: ne.lat(), longitude: ne.lng()},
-        min: {latitude: sw.lat(), longitude: sw.lng()},
-=======
         max: { latitude: ne.lat(), longitude: ne.lng() },
         min: { latitude: sw.lat(), longitude: sw.lng() },
->>>>>>> 4e20fddba1589a3ed39a3c23e00ea353bfb74386
       };
 
       updateHeatMapThunk(coords);
@@ -334,15 +308,12 @@ class Map extends Component {
       heatmap = new google.maps.visualization.HeatmapLayer({
         data: getPoints(),
         map: map,
-<<<<<<< HEAD
-=======
         gradient: [
           'rgba(0,0,0,0)',
           'rgba(255,0,255,1)',
           'rgba(0,255,255,1)',
           'rgba(255,255,255,1)',
         ],
->>>>>>> 4e20fddba1589a3ed39a3c23e00ea353bfb74386
       });
     });
 

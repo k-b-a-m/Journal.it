@@ -361,11 +361,7 @@ class Home extends Component {
     const { entryIndex, date, displayedEntries } = this.state;
     return (
       <div>
-<<<<<<< HEAD
-        <div style={{position: 'absolute'}}>
-=======
         <div style={{ position: 'absolute' }}>
->>>>>>> 4e20fddba1589a3ed39a3c23e00ea353bfb74386
           <div
             //this is where all the 3d will mount
 
