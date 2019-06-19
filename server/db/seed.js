@@ -16,6 +16,7 @@ const makeFakeEntry = () => {
     [40.757863, -73.985554],
     [40.774226, -73.971878],
     [40.745086, -73.976254],
+    [40.668159, -73.982455],
   ];
   const randomIdx = Math.floor(Math.random() * points.length);
   const coords = points[randomIdx];
@@ -50,14 +51,14 @@ const makeFakeEntry = () => {
 
 const entries = [];
 const users = [
-  {name: 'Mariano'},
-  {name: 'Bao'},
-  {name: 'Kyle'},
-  {name: 'Alex'},
+  { name: 'Mariano' },
+  { name: 'Bao' },
+  { name: 'Kyle' },
+  { name: 'Alex' },
 ];
 
 for (let i = 0; i < 7000; i++) {
   entries.push(makeFakeEntry());
 }
 
-module.exports = {entries, users};
+module.exports = { entries, users };
