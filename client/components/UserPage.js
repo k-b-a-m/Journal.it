@@ -69,6 +69,25 @@ class UserProfile extends Component {
                           <Card.Text>
                             {entry.content}
                           </Card.Text>
+                          {entry.spotifyUrl !== '' ?
+                          <div>
+                            {!entry.spotifyUrl.includes('embed') ?
+                              entry.spotifyUrl = `${entry.spotifyUrl.substring(0,25)}embed/${entry.spotifyUrl.substring(25)}`
+                            : <div/>}
+                            <iframe
+                              className="mb-4"
+                              src={entry.spotifyUrl}
+                              width="100%"
+                              height="80px"
+                              frameBorder="0"
+                              allowtransparency="true"
+                              allow="encrypted-media"
+                            />
+                          </div>
+                          : <div/>}
+                          <Card.Text>
+                            {entry.expireDate ? entry.expireDate : null}
+                          </Card.Text>
                           <Button onClick = {this.renew} variant="warning">Renew Entry</Button>
                         </Card.Body>
                       </Card>

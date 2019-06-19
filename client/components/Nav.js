@@ -39,6 +39,7 @@ class Nav extends React.Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
+    console.log('New Entry user', this.props.user);
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
       const newDate = new Date().toString()
@@ -48,7 +49,8 @@ class Nav extends React.Component {
         longitude,
         dateTime: newDate,
         spotifyUrl: this.state.spotifyUrl,
-        expireDate: new Date(Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000).toString()
+        expireDate: new Date(Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000).toString(),
+        userId: this.props.user.id || null,
       };
       socket.emit('addNearby', newEntry);
 
@@ -154,7 +156,7 @@ class Nav extends React.Component {
                     <br />
                     <button
                       type="submit"
-                      onClick={() => this.handleSubmit(event)}
+                      onClick={this.handleSubmit}
                       className="btn btn-success"
                       disabled={entry === ''}
                     >
@@ -171,9 +173,15 @@ class Nav extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  }
+};
+
 export default withRouter(
   connect(
-    null,
+    mapStateToProps,
     {addEntryThunk, getOrCreateUser}
   )(Nav)
 );

@@ -161,10 +161,10 @@ const heatmapReducer = (state = [], action) => {
   }
 };
 
-const userReducer = (state = [], action) => {
+const userReducer = (state = {}, action) => {
   switch(action.type) {
     case GET_USER:
-      return [...state, action.user];
+      return action.user;
     default:
       return state;
   }
