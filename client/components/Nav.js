@@ -40,13 +40,15 @@ class Nav extends React.Component {
   handleSubmit = evt => {
     evt.preventDefault();
     navigator.geolocation.getCurrentPosition(position => {
-      const {latitude, longitude} = position.coords;
+      const { latitude, longitude } = position.coords;
+      const newDate = new Date().toString()
       const newEntry = {
         content: this.state.entry,
         latitude,
         longitude,
-        dateTime: new Date().toString(),
+        dateTime: newDate,
         spotifyUrl: this.state.spotifyUrl,
+        expireDate: new Date(Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000).toString()
       };
       socket.emit('addNearby', newEntry);
 
@@ -70,7 +72,7 @@ class Nav extends React.Component {
         );
     };
     return (
-      <nav className="nav-container navbar">
+      <nav className="nav-container navbar" style={{backgroundColor: 'none'}}>
         <FacebookLogin
           appId={'2336628819983490'}
           fields="name,email,picture"

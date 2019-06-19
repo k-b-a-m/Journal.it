@@ -32,6 +32,7 @@ class Home extends Component {
 
     //set displayed entries to be only today
     this.renderDisplayedEntries();
+    this.setState({displayedEntries: this.displayedEntries});
 
     //initialize scene and camera
     const scene = new THREE.Scene();
@@ -42,6 +43,9 @@ class Home extends Component {
       10000
     );
     camera.position.z = 450;
+    if (window.screen.width <= 479) {
+      camera.position.z = 750;
+    }
 
     //config renderer
     const renderer = new THREE.WebGLRenderer();
@@ -152,7 +156,10 @@ class Home extends Component {
     const { displayedEntries } = this.state;
     let stats, geometry, material;
     let particles;
-    let PARTICLE_SIZE = 120;
+    let PARTICLE_SIZE = 140;
+    if (window.screen.width <= 479) {
+      PARTICLE_SIZE = 500;
+    }
     let raycaster, intersects;
     let mouse, INTERSECTED;
 
@@ -321,7 +328,14 @@ class Home extends Component {
           if (entryIndex !== this.intersects[0].index) {
             attributes.size.array[this.INTERSECTED] = this.PARTICLE_SIZE;
             this.INTERSECTED = this.intersects[0].index;
-            attributes.size.array[this.INTERSECTED] = 120;
+            if (
+              attributes.size.array[this.INTERSECTED] !==
+              this.PARTICLE_SIZE * 1.5
+            ) {
+              attributes.size.array[this.INTERSECTED] =
+                this.PARTICLE_SIZE * 1.5;
+            }
+
             attributes.size.needsUpdate = true;
             //TODO add pop up message containing entries here
             //set state as current dots index

@@ -26,7 +26,7 @@ class App extends Component {
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
+      const {latitude, longitude} = position.coords;
       this.props.fetchNearby({
         coordinate: { latitude, longitude },
         distance: 500,
@@ -59,5 +59,5 @@ class App extends Component {
 
 export default connect(
   null,
-  { fetchNearby }
+  {fetchNearby}
 )(App);
