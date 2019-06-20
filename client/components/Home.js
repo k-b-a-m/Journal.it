@@ -85,19 +85,38 @@ class Home extends Component {
       ) {
         this.geometry.setDrawRange(0, this.displayedEntries.length);
         //TODO: change the color of newly added entry/ glow
-        // console.log(this.displayedEntries);
-        // this.previousColor = this.particles.geometry.attributes.customColor.array[
-        //   this.displayedEntries.length - 1
-        // ];
-        // this.particles.geometry.attributes.customColor.array[
-        //   this.displayedEntries.length - 1
-        // ] = 0;
-        // this.particles.geometry.attributes.customColor.needsUpdate = true;
-        // console.log(this.particles.geometry);
-        // console.log(this.particles.geometry.attributes.customColor.array);
-        // console.log('hey2');
-        console.log(this.particles.material.uniforms);
-        console.log(this.particles);
+
+        this.prevColorArr = [
+          this.particles.geometry.attributes.customColor.array[
+            (this.displayedEntries.length - 1) * 3
+          ],
+          this.particles.geometry.attributes.customColor.array[
+            (this.displayedEntries.length - 1) * 3 + 1
+          ],
+          this.particles.geometry.attributes.customColor.array[
+            (this.displayedEntries.length - 1) * 3 + 2
+          ],
+        ];
+
+        let color = new THREE.Color();
+        let colors = new Float32Array(3);
+        for (let i = 0; i <= 3; i++) {
+          color.setHSL(0.5, 0.8, 0.7);
+          color.toArray(colors, i * 3);
+        }
+        this.particles.geometry.attributes.customColor.array[
+          (this.displayedEntries.length - 1) * 3
+        ] = 1;
+        this.particles.geometry.attributes.customColor.array[
+          (this.displayedEntries.length - 1) * 3 + 1
+        ] = 1;
+        this.particles.geometry.attributes.customColor.array[
+          (this.displayedEntries.length - 1) * 3 + 2
+        ] = 1;
+        this.particles.geometry.attributes.customColor.needsUpdate = true;
+        console.log(this.particles.geometry);
+        console.log(this.particles.geometry.attributes.customColor.array);
+        console.log(this.displayedEntries);
       }
       //don't re-render the whole orb on like change
       else if (
@@ -179,7 +198,7 @@ class Home extends Component {
     let vertex;
     let color = new THREE.Color();
     // console.log(vertices);
-    for (var i = 0, l = vertices.length; i < l; i++) {
+    for (let i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
       // color.setHSL(0.07 + 0.08 * (i / l), 1, 0.5);
