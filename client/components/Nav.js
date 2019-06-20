@@ -12,6 +12,8 @@ import {
   faPlusCircle,
   faHome,
   faSignInAlt,
+  faHeart,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import socket from './socket';
 import axios from 'axios';
@@ -41,15 +43,17 @@ class Nav extends React.Component {
     evt.preventDefault();
     console.log('New Entry user', this.props.user);
     navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
-      const newDate = new Date().toString()
+      const {latitude, longitude} = position.coords;
+      const newDate = new Date().toString();
       const newEntry = {
         content: this.state.entry,
         latitude,
         longitude,
         dateTime: newDate,
         spotifyUrl: this.state.spotifyUrl,
-        expireDate: new Date(Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000).toString(),
+        expireDate: new Date(
+          Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000
+        ).toString(),
         userId: this.props.user.id || null,
       };
       socket.emit('addNearby', newEntry);
@@ -117,28 +121,37 @@ class Nav extends React.Component {
           aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
+            <div className="modal-content addentry-container">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">
+                  <FontAwesomeIcon
+                    icon={faTimes}
+                    style={{
+                      color: 'white',
+                      fontSize: '20px',
+                      paddingTop: '5px',
+                    }}
+                  />
+                </span>
+              </button>
               <div className="modal-body">
                 <form>
-                  <div className="form-group">
-                    <div className="mb-2">
+                  <div className="form-container">
+                    <div>
                       <label htmlFor="entry">Enter your story here</label>
-                      <input
+                      <textarea
                         name="entry"
-                        className="form-control"
+                        className="input-form"
                         type="text"
                         value={entry}
                         onChange={this.handleChangeInput}
+                        cols="50"
+                        rows="5"
                       />
                     </div>
                     <div>
@@ -147,17 +160,16 @@ class Nav extends React.Component {
                       </label>
                       <input
                         name="spotifyUrl"
-                        className="form-control"
+                        className="input-form"
                         type="textarea"
                         value={spotifyUrl}
                         onChange={this.handleChangeInput}
                       />
                     </div>
-                    <br />
                     <button
                       type="submit"
                       onClick={this.handleSubmit}
-                      className="btn btn-success"
+                      className="submit-button"
                       disabled={entry === ''}
                     >
                       Submit
@@ -173,10 +185,10 @@ class Nav extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     user: state.user,
-  }
+  };
 };
 
 export default withRouter(

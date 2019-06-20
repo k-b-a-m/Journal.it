@@ -29,6 +29,13 @@ button {
   border: none;
   background: none;
   box-shadow: none;
+  text-shadow: none;
+  opacity: 0.5;
+  width: 20px;
+}
+
+button:hover {
+  opacity: 1;
 }
 
 .link {
@@ -62,4 +69,60 @@ button {
   border-width: 0px;
   -webkit-box-shadow: 0px 0px;
   box-shadow: 0px 0px;
+}
+
+/*add entry
+==============*/
+.addentry-container {
+  position: absolute;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  width: 50vw;
+  height: 50vh;
+  border-radius: 7%;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.9;
+}
+
+.modal-body {
+  flex: none;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40vw;
+  padding: 10px;
+}
+
+.input-form{
+  width:40vw;
+  padding: 10px;
+}
+
+.submit-button {
+  color: white;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  border-radius: 6px;
+  width: 100px;
+  margin-top:30px;
+}
+
+input{
+  border-radius: 5px;
+}
+
+textarea{
+  border-radius: 5px;
 }
