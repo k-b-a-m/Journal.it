@@ -97,9 +97,9 @@ class UserProfile extends Component {
                               <Card.Text>
                                 {entry.expireDate ? entry.expireDate : null}
                               </Card.Text>
-                              <Button onClick={this.renew} variant="warning">
+                              {/* <Button onClick={this.renew} variant="warning">
                                 Renew Entry
-                              </Button>
+                              </Button> */}
                             </Card.Body>
                           </Card>
                         ))}
