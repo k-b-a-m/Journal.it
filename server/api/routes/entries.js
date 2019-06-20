@@ -30,7 +30,6 @@ router.post('/mapmarkers', (req, res, next) => {
 });
 
 router.post('/nearby', (req, res, next) => {
-  console.log(req.body);
   const {coordinate, distance} = req.body;
   const {min, max} = findNearbyMinMaxCoordinates(coordinate, distance);
   Entry.findAll({

@@ -38,68 +38,82 @@ class UserProfile extends Component {
     console.log(this.state);
     console.log(`Facebook user!\n${user}`);
     return (
-      <div
-        style={{
-          backgroundColor: 'black',
-          color: 'white',
-          minHeight: '100%',
-        }}
-      >
-        <Container style={{paddingTop: '10vh'}}>
-          <Row>
-            <Col className="mt-2">
-              <h5>User Profile Page</h5>
-              {user.user ?
-              <div>
-                <Card style={{color: 'black'}} className="mb-3">
-                  <Card.Body>
-                    <Card.Text>
-                      Hello {user.user.name}!
-                    </Card.Text>
-                    <hr/>
-                    <Card.Text>
-                      Here are all your stories!
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                {user.user.entries.length > 0 ?
-                  <Fragment>
-                    {user.user.entries.map(entry =>
-                      <Card class="profileCard" key={entry.id} style={{color: 'black'}} className="mb-3">
-                        <Card.Body>
-                          <Card.Text>
-                            {entry.content}
-                          </Card.Text>
-                          {entry.spotifyUrl !== '' ?
-                          <div>
-                            {!entry.spotifyUrl.includes('embed') ?
-                              entry.spotifyUrl = `${entry.spotifyUrl.substring(0,25)}embed/${entry.spotifyUrl.substring(25)}`
-                            : <div/>}
-                            <iframe
-                              className="mb-4"
-                              src={entry.spotifyUrl}
-                              width="100%"
-                              height="80px"
-                              frameBorder="0"
-                              allowtransparency="true"
-                              allow="encrypted-media"
-                            />
-                          </div>
-                          : <div/>}
-                          <Card.Text>
-                            {entry.expireDate ? entry.expireDate : null}
-                          </Card.Text>
-                          <Button onClick = {this.renew} variant="warning">Renew Entry</Button>
-                        </Card.Body>
-                      </Card>
+      <div style={{ backgroundColor: 'black' }}>
+        <div
+          style={{
+            backgroundColor: 'black',
+            color: 'white',
+            minHeight: '100%',
+            position: 'relative',
+            top: '60px',
+          }}
+        >
+          <Container>
+            <Row>
+              <Col className="mt-2">
+                <h5>User Profile Page</h5>
+                {user.user ? (
+                  <div>
+                    <Card style={{ color: 'black' }} className="mb-3">
+                      <Card.Body>
+                        <Card.Text>Hello {user.user.name}!</Card.Text>
+                        <hr />
+                        <Card.Text>Here are all your stories!</Card.Text>
+                      </Card.Body>
+                    </Card>
+                    {user.user.entries.length > 0 ? (
+                      <Fragment>
+                        {user.user.entries.map(entry => (
+                          <Card
+                            class="profileCard"
+                            key={entry.id}
+                            style={{ color: 'black' }}
+                            className="mb-3"
+                          >
+                            <Card.Body>
+                              <Card.Text>{entry.content}</Card.Text>
+                              {entry.spotifyUrl !== '' ? (
+                                <div>
+                                  {!entry.spotifyUrl.includes('embed') ? (
+                                    (entry.spotifyUrl = `${entry.spotifyUrl.substring(
+                                      0,
+                                      25
+                                    )}embed/${entry.spotifyUrl.substring(25)}`)
+                                  ) : (
+                                    <div />
+                                  )}
+                                  <iframe
+                                    className="mb-4"
+                                    src={entry.spotifyUrl}
+                                    width="100%"
+                                    height="80px"
+                                    frameBorder="0"
+                                    allowtransparency="true"
+                                    allow="encrypted-media"
+                                  />
+                                </div>
+                              ) : (
+                                <div />
+                              )}
+                              <Card.Text>
+                                {entry.expireDate ? entry.expireDate : null}
+                              </Card.Text>
+                              <Button onClick={this.renew} variant="warning">
+                                Renew Entry
+                              </Button>
+                            </Card.Body>
+                          </Card>
+                        ))}
+                      </Fragment>
+                    ) : (
+                      <h2>Sorry you don't have any entries. Go make some!</h2>
                     )}
-                  </Fragment>
-                : <h2>Sorry you don't have any entries. Go make some!</h2>}
-              </div>
-              : null}
-            </Col>
-          </Row>
-        </Container>
+                  </div>
+                ) : null}
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     );
   }

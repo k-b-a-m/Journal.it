@@ -15,6 +15,15 @@
   font-size: 40px;
 }
 
+#logout {
+  color: gray;
+  font-size: 40px;
+}
+
+#logout svg:hover {
+  color: white;
+}
+
 .menu-container {
   display: flex;
   justify-content: center;

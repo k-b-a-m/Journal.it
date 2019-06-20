@@ -85,17 +85,19 @@ class Home extends Component {
       ) {
         this.geometry.setDrawRange(0, this.displayedEntries.length);
         //TODO: change the color of newly added entry/ glow
-        console.log(this.displayedEntries);
-        this.previousColor = this.particles.geometry.attributes.customColor.array[
-          this.displayedEntries.length - 1
-        ];
-        this.particles.geometry.attributes.customColor.array[
-          this.displayedEntries.length - 1
-        ] = 0;
-        this.particles.geometry.attributes.customColor.needsUpdate = true;
-        console.log(this.particles.geometry);
-        console.log(this.particles.geometry.attributes.customColor.array);
-        console.log('hey2');
+        // console.log(this.displayedEntries);
+        // this.previousColor = this.particles.geometry.attributes.customColor.array[
+        //   this.displayedEntries.length - 1
+        // ];
+        // this.particles.geometry.attributes.customColor.array[
+        //   this.displayedEntries.length - 1
+        // ] = 0;
+        // this.particles.geometry.attributes.customColor.needsUpdate = true;
+        // console.log(this.particles.geometry);
+        // console.log(this.particles.geometry.attributes.customColor.array);
+        // console.log('hey2');
+        console.log(this.particles.material.uniforms);
+        console.log(this.particles);
       }
       //don't re-render the whole orb on like change
       else if (
@@ -158,7 +160,7 @@ class Home extends Component {
     const {displayedEntries} = this.state;
     let stats, geometry, material;
     let particles;
-    let PARTICLE_SIZE = 140;
+    let PARTICLE_SIZE = 80;
     if (window.screen.width <= 479) {
       PARTICLE_SIZE = 500;
     }
@@ -207,8 +209,8 @@ class Home extends Component {
 
     //create sphere
     //color: 0xffff00
-    let sphereGeometry = new THREE.SphereGeometry(40, 32, 32);
-    const sphereTexture = new THREE.TextureLoader().load('white2.png');
+    let sphereGeometry = new THREE.SphereGeometry(30, 32, 32);
+    const sphereTexture = new THREE.TextureLoader().load('white1.jpg');
     const sphereMaterial = new THREE.MeshBasicMaterial({
       map: sphereTexture,
       color: '#dbfffa',
@@ -341,8 +343,6 @@ class Home extends Component {
             attributes.size.needsUpdate = true;
             //TODO add pop up message containing entries here
             //set state as current dots index
-            console.log(this.intersects[0].index);
-            console.log(this.displayedEntries);
             this.setState({
               entryIndex: this.intersects[0].index,
             });

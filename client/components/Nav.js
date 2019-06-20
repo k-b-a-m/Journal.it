@@ -1,10 +1,15 @@
 /* eslint-disable no-unused-expressions */
-import React, {Component} from 'react';
-import {NavLink, withRouter} from 'react-router-dom';
+import React, {Fragment, Component} from 'react';
+import {NavLink, withRouter, Link} from 'react-router-dom';
 import Entry from './Entry';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
-import {addEntryThunk, getOrCreateUser} from '../redux/store';
+import {
+  addEntryThunk,
+  getOrCreateUser,
+  logout,
+  fetchUser,
+} from '../redux/store';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
@@ -12,12 +17,15 @@ import {
   faPlusCircle,
   faHome,
   faSignInAlt,
-  faHeart,
+  faSignOutAlt,
+  faUser,
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import socket from './socket';
 import axios from 'axios';
 import session from 'express-session';
+
+//TODO add conditional render of Link to UserPage
 
 //style
 import '../styles/Nav.css';
@@ -68,6 +76,12 @@ class Nav extends React.Component {
 
   render() {
     const {entryFormOpen, entry, spotifyUrl, FB_APP} = this.state;
+    const {user} = this.props;
+
+    const handleLogout = () => {
+      this.props.logout();
+      this.props.history.push('/');
+    };
 
     const responseFacebook = response => {
       this.props
@@ -79,29 +93,20 @@ class Nav extends React.Component {
     };
     return (
       <nav className="nav-container navbar" style={{backgroundColor: 'none'}}>
-        <FacebookLogin
-          appId={'2336628819983490'}
-          fields="name,email,picture"
-          callback={responseFacebook}
-          icon="fa-facebook"
-          render={renderProps => (
-            <div id="fbButton" onClick={renderProps.onClick} className="link">
-              <FontAwesomeIcon icon={faSignInAlt} />
-            </div>
-          )}
-        />
-        <NavLink to="/map" className="link">
-          <FontAwesomeIcon
-            icon={faGlobeAmericas}
-            style={{color: 'white', fontSize: '40px'}}
-          />
-        </NavLink>
         <NavLink exact to="/" className="link">
           <FontAwesomeIcon
             icon={faHome}
             style={{color: 'white', fontSize: '40px'}}
           />
         </NavLink>
+
+        <NavLink to="/map" className="link">
+          <FontAwesomeIcon
+            icon={faGlobeAmericas}
+            style={{color: 'white', fontSize: '40px'}}
+          />
+        </NavLink>
+
         <div
           className="link"
           data-toggle="modal"
@@ -112,6 +117,31 @@ class Nav extends React.Component {
             style={{color: 'white', fontSize: '40px'}}
           />
         </div>
+        {!user.facebookId ? (
+          <FacebookLogin
+            appId={'2336628819983490'}
+            fields="name,email,picture"
+            callback={responseFacebook}
+            icon="fa-facebook"
+            render={renderProps => (
+              <div id="fbButton" onClick={renderProps.onClick} className="link">
+                <FontAwesomeIcon icon={faSignInAlt} />
+              </div>
+            )}
+          />
+        ) : (
+          <Fragment>
+            <NavLink to={`/user/${user.facebookId}`} className="link">
+              <FontAwesomeIcon
+                icon={faUser}
+                style={{color: 'white', fontSize: '40px'}}
+              />
+            </NavLink>
+            <NavLink onClick={handleLogout} id="logout">
+              <FontAwesomeIcon icon={faSignOutAlt} />
+            </NavLink>
+          </Fragment>
+        )}
         <div
           className="modal fade"
           id="exampleModalCenter"
@@ -194,6 +224,6 @@ const mapStateToProps = state => {
 export default withRouter(
   connect(
     mapStateToProps,
-    {addEntryThunk, getOrCreateUser}
+    {addEntryThunk, getOrCreateUser, logout, fetchUser}
   )(Nav)
 );
