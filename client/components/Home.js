@@ -367,7 +367,22 @@ class Home extends Component {
                 this.PARTICLE_SIZE * 1.25;
             }
 
+            //change color after read
+            let pcolors = new Float32Array(3);
+            let pcolor = new THREE.Color();
+            pcolor.setHSL(
+              0.48 + 0.5 * (this.INTERSECTED / this.vertices.length),
+              0.8,
+              0.7
+            );
+            pcolor.toArray(pcolors, 0);
+
+            attributes.customColor.array[this.INTERSECTED * 3] = pcolors[0];
+            attributes.customColor.array[this.INTERSECTED * 3 + 1] = pcolors[1];
+            attributes.customColor.array[this.INTERSECTED * 3 + 2] = pcolors[2];
+
             attributes.size.needsUpdate = true;
+            attributes.customColor.needsUpdate = true;
             //TODO add pop up message containing entries here
             //set state as current dots index
             this.setState({
