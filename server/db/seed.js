@@ -84,7 +84,7 @@ const users = [
   { name: 'Alex' },
 ];
 
-for (let i = 0; i < 20000; i++) {
+for (let i = 0; i < 8000; i++) {
   entries.push(makeFakeEntry());
 }
 
