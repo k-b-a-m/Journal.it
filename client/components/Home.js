@@ -185,7 +185,7 @@ class Home extends Component {
     const {displayedEntries} = this.state;
     let stats, geometry, material;
     let particles;
-    let PARTICLE_SIZE = 80;
+    let PARTICLE_SIZE = 70;
     if (window.screen.width <= 479) {
       PARTICLE_SIZE = 500;
     }
@@ -361,10 +361,10 @@ class Home extends Component {
             this.INTERSECTED = this.intersects[0].index;
             if (
               attributes.size.array[this.INTERSECTED] !==
-              this.PARTICLE_SIZE * 1.5
+              this.PARTICLE_SIZE * 1.25
             ) {
               attributes.size.array[this.INTERSECTED] =
-                this.PARTICLE_SIZE * 1.5;
+                this.PARTICLE_SIZE * 1.25;
             }
 
             attributes.size.needsUpdate = true;
