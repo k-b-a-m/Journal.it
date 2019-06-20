@@ -20,12 +20,14 @@ const syncAndSeed = () => {
     .then(() => {
       return Promise.all(
         entries.map(entry =>
-          Entry.create({
+          Entry.create(
+            {
             content: entry.content,
             latitude: entry.latitude,
             longitude: entry.longitude,
             likes: entry.likes,
             dateTime: entry.dateTime,
+            spotifyUrl: entry.spotifyUrl,
             userId: 1,
           })
         )

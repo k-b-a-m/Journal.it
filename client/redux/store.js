@@ -115,6 +115,7 @@ export const fetchNearby = obj => async dispatch => {
     const resp = await axios.post("/entries/nearby", { coordinate, distance });
 
     const entries = resp.data;
+    console.log(entries[0])
     return dispatch(setEntries(entries));
   } catch (err) {
     throw new Error(err);
