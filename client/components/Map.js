@@ -280,10 +280,12 @@ class Map extends Component {
     }, locationUpdateInterval);
 
     setInterval(function() {
-      if (circle.fillColor === 'blue') {
-        circle.setOptions({ fillColor: 'white', strokeColor: 'white' });
-      } else {
-        circle.setOptions({ fillColor: 'blue', strokeColor: 'blue' });
+      if (circle) {
+        if (circle.fillColor === 'blue') {
+          circle.setOptions({ fillColor: 'white', strokeColor: 'white' });
+        } else {
+          circle.setOptions({ fillColor: 'blue', strokeColor: 'blue' });
+        }
       }
     }, 2500);
 
