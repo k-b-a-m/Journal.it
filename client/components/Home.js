@@ -77,7 +77,6 @@ class Home extends Component {
       JSON.stringify(JSON.stringify(this.props.entries))
     ) {
       this.renderDisplayedEntries();
-      console.log('hey1');
       //just add new dots but don't re-render the whole sphere when new entry is added
       if (
         prevProps.entries.length !== 0 &&
@@ -119,10 +118,6 @@ class Home extends Component {
           (this.displayedEntries.length - 1) * 3 + 2
         ] = 1;
         this.particles.geometry.attributes.customColor.needsUpdate = true;
-        console.log(this.particles.geometry);
-        console.log(this.particles.geometry.attributes.customColor.array);
-        console.log(this.displayedEntries);
-        console.log(this.particles.rotation);
       }
       //don't re-render the whole orb on like change
       else if (
@@ -132,7 +127,6 @@ class Home extends Component {
         console.log('like');
       } else {
         //render when app first got entries from db after mounting
-        console.log('hey3');
         this.renderDisplayedEntries();
         this.setState({displayedEntries: this.displayedEntries});
         while (this.scene.children.length > 0) {
@@ -146,7 +140,6 @@ class Home extends Component {
     }
     //render when the date is changed which leads to state.displayedEntries changes
     else if (prevState.date !== this.state.date) {
-      console.log('hey4');
       while (this.scene.children.length > 0) {
         this.scene.remove(this.scene.children[0]);
       }
@@ -204,7 +197,6 @@ class Home extends Component {
     let sizes = new Float32Array(vertices.length);
     let vertex;
     let color = new THREE.Color();
-    // console.log(vertices);
     for (let i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
@@ -367,7 +359,22 @@ class Home extends Component {
                 this.PARTICLE_SIZE * 1.25;
             }
 
+            //change color after read
+            let pcolors = new Float32Array(3);
+            let pcolor = new THREE.Color();
+            pcolor.setHSL(
+              0.48 + 0.5 * (this.INTERSECTED / this.vertices.length),
+              0.8,
+              0.7
+            );
+            pcolor.toArray(pcolors, 0);
+
+            attributes.customColor.array[this.INTERSECTED * 3] = pcolors[0];
+            attributes.customColor.array[this.INTERSECTED * 3 + 1] = pcolors[1];
+            attributes.customColor.array[this.INTERSECTED * 3 + 2] = pcolors[2];
+
             attributes.size.needsUpdate = true;
+            attributes.customColor.needsUpdate = true;
             //TODO add pop up message containing entries here
             //set state as current dots index
             this.setState({

@@ -35,7 +35,6 @@ class UserProfile extends Component {
   }
   render() {
     let {user} = this.state;
-    console.log(this.state);
     console.log(`Facebook user!\n${user}`);
     return (
       <div style={{ backgroundColor: 'black' }}>

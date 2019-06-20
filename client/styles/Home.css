@@ -18,8 +18,8 @@
 
 .next {
   position: absolute;
-  top: 50%;
-  right: 0;
+  top: 49.7%;
+  right: 40px;
   transform: translate(0, -50%);
   z-index: 9999;
 }
