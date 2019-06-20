@@ -22,11 +22,8 @@ class SingleEntry extends Component {
         0,
         25
       )}embed/${entry.spotifyUrl.substring(25)}`;
-
-      console.log(entry.spotifyUrl)
     }
     if (entry) {
-      console.log(entry)
       return (
         <div id="entry" className="entry-container" style={{height: '50vh'}}>
           <p onClick={toggleEntry} className="x-out">
@@ -78,4 +75,3 @@ export default connect(
 )(SingleEntry);
 
 let varaa = 'https://open.spotify.com/';
-console.log(varaa.length);
