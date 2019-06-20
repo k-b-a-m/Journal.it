@@ -56,8 +56,8 @@ class Home extends Component {
     this.scene = scene;
     this.camera = camera;
     this.renderer = renderer;
-    const segment = this.props.entries.length
-      ? Math.ceil(Math.sqrt(this.props.entries.length))
+    const segment = this.displayedEntries.length
+      ? Math.ceil(Math.sqrt(this.displayedEntries.length))
       : 0;
 
     //add light
@@ -86,6 +86,17 @@ class Home extends Component {
         this.geometry.setDrawRange(0, this.displayedEntries.length);
         //TODO: change the color of newly added entry/ glow
 
+        //render a new bigger sphere if there are no more dots to show
+        if (this.displayedEntries.length > this.vertices.length) {
+          this.rotationx = this.particles.rotation.x;
+          this.rotationy = this.particles.rotation.y;
+          while (this.scene.children.length > 0) {
+            this.scene.remove(this.scene.children[0]);
+          }
+          const segment = Math.ceil(Math.sqrt(this.displayedEntries.length));
+          this.DrawSphere(segment, this.scene, this.camera, this.renderer);
+        }
+
         this.prevColorArr = [
           this.particles.geometry.attributes.customColor.array[
             (this.displayedEntries.length - 1) * 3
@@ -98,12 +109,6 @@ class Home extends Component {
           ],
         ];
 
-        let color = new THREE.Color();
-        let colors = new Float32Array(3);
-        for (let i = 0; i <= 3; i++) {
-          color.setHSL(0.5, 0.8, 0.7);
-          color.toArray(colors, i * 3);
-        }
         this.particles.geometry.attributes.customColor.array[
           (this.displayedEntries.length - 1) * 3
         ] = 1;
@@ -117,6 +122,7 @@ class Home extends Component {
         console.log(this.particles.geometry);
         console.log(this.particles.geometry.attributes.customColor.array);
         console.log(this.displayedEntries);
+        console.log(this.particles.rotation);
       }
       //don't re-render the whole orb on like change
       else if (
@@ -189,8 +195,9 @@ class Home extends Component {
     //Creating sphere vertices
     let vertices = new THREE.SphereGeometry(150, segment, segment).vertices;
     //add in extra vertices if we need more
-    if (vertices.length < displayedEntries.length) {
-      vertices = new THREE.SphereGeometry(150, segment + 1, segment).vertices;
+    if (vertices.length < this.displayedEntries.length) {
+      vertices = new THREE.SphereGeometry(150, segment + 1, segment + 1)
+        .vertices;
     }
     let positions = new Float32Array(vertices.length * 3);
     let colors = new Float32Array(vertices.length * 3);
@@ -239,9 +246,9 @@ class Home extends Component {
 
     //only show the amount of dots = the number of displayed entries
     const drawCount =
-      this.state.displayedEntries.length > 0
-        ? this.state.displayedEntries.length
-        : this.displayedEntries.length;
+      this.displayedEntries.length > 0
+        ? this.displayedEntries.length
+        : this.state.displayedEntries.length;
     geometry.setDrawRange(0, drawCount);
     geometry.needsUpdate = true;
     //add particles behind spots
@@ -330,6 +337,7 @@ class Home extends Component {
 
   renderParticles = () => {
     const {entryIndex} = this.state;
+
     if (entryIndex < 0) {
       this.particles.rotation.x += 0.0001;
       this.particles.rotation.y += 0.00008;
