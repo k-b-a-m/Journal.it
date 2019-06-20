@@ -1,8 +1,8 @@
 /* eslint-disable react/button-has-type */
-import React, { Component, Fragment } from 'react';
-import { Col, Row, Container, Card, Button } from 'react-bootstrap';
-import { fetchUser } from '../redux/store';
-import { connect } from 'react-redux';
+import React, {Component, Fragment} from 'react';
+import {Col, Row, Container, Card, Button} from 'react-bootstrap';
+import {fetchUser} from '../redux/store';
+import {connect} from 'react-redux';
 import '../styles/UserPage.css';
 
 class UserProfile extends Component {
@@ -13,7 +13,7 @@ class UserProfile extends Component {
     };
   }
   renew() {
-    const { updateEntryThunk } = this.props;
+    const {updateEntryThunk} = this.props;
     const updatedEntry = {
       expireDate: new Date(
         Date.parse(newDate) + 30 * 24 * 60 * 60 * 1000
@@ -24,17 +24,17 @@ class UserProfile extends Component {
   componentDidMount() {
     this.props
       .fetchUser(this.props.fbUserId)
-      .then(user => this.setState({ user }));
+      .then(user => this.setState({user}));
   }
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.props
         .fetchUser(this.props.fbUserId)
-        .then(user => this.setState({ user }));
+        .then(user => this.setState({user}));
     }
   }
   render() {
-    let { user } = this.state;
+    let {user} = this.state;
     console.log(this.state);
     console.log(`Facebook user!\n${user}`);
     return (

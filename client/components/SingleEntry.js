@@ -29,10 +29,10 @@ class SingleEntry extends Component {
       console.log(entry)
       return (
         <div id="entry" className="entry-container" style={{height: '50vh'}}>
+          <p onClick={toggleEntry} className="x-out">
+            <FontAwesomeIcon icon={faTimes} />
+          </p>
           <div className="entry">
-            <p onClick={toggleEntry} className="x-out">
-              <FontAwesomeIcon icon={faTimes} />
-            </p>
             <p>{entry.content}</p>
           </div>
           <div className="spotify">

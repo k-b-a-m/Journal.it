@@ -1,12 +1,12 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-unused-vars */
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as THREE from 'three';
 import TrackballControls from 'three-trackballcontrols';
 import Stats from 'stats.js';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import SingleEntry from './SingleEntry';
-import { Fragment } from 'react';
+import {Fragment} from 'react';
 
 //styles
 import '../styles/Home.css';
@@ -26,7 +26,7 @@ class Home extends Component {
     const today = new Date();
     this.today = today;
     const todayStr = this.parseDate(this.today);
-    this.setState({ date: todayStr });
+    this.setState({date: todayStr});
     //bind
     this.today = today;
 
@@ -56,8 +56,8 @@ class Home extends Component {
     this.scene = scene;
     this.camera = camera;
     this.renderer = renderer;
-    const segment = this.props.entries.length
-      ? Math.ceil(Math.sqrt(this.props.entries.length))
+    const segment = this.displayedEntries.length
+      ? Math.ceil(Math.sqrt(this.displayedEntries.length))
       : 0;
 
     //add light
@@ -71,7 +71,7 @@ class Home extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     //if new entries are different in the redux store
-    const { displayedEntries, entryIndex } = this.state;
+    const {displayedEntries, entryIndex} = this.state;
     if (
       JSON.stringify(JSON.stringify(prevProps.entries)) !==
       JSON.stringify(JSON.stringify(this.props.entries))
@@ -83,17 +83,46 @@ class Home extends Component {
         prevProps.entries.length !== 0 &&
         this.props.entries.length > prevProps.entries.length
       ) {
-        this.geometry.setDrawRange(0, this.displayedEntries.length - 1);
+        this.geometry.setDrawRange(0, this.displayedEntries.length);
         //TODO: change the color of newly added entry/ glow
-        // this.previousColor = this.particles.geometry.attributes.customColor.array[
-        //   this.displayedEntries.length - 1
-        // ];
-        // this.particles.geometry.attributes.customColor.array[
-        //   this.displayedEntries.length - 1
-        // ] = new THREE.Color(0xffffff);
-        // this.particles.geometry.attributes.customColor.needsUpdate = true;
+
+        //render a new bigger sphere if there are no more dots to show
+        if (this.displayedEntries.length > this.vertices.length) {
+          this.rotationx = this.particles.rotation.x;
+          this.rotationy = this.particles.rotation.y;
+          while (this.scene.children.length > 0) {
+            this.scene.remove(this.scene.children[0]);
+          }
+          const segment = Math.ceil(Math.sqrt(this.displayedEntries.length));
+          this.DrawSphere(segment, this.scene, this.camera, this.renderer);
+        }
+
+        this.prevColorArr = [
+          this.particles.geometry.attributes.customColor.array[
+            (this.displayedEntries.length - 1) * 3
+          ],
+          this.particles.geometry.attributes.customColor.array[
+            (this.displayedEntries.length - 1) * 3 + 1
+          ],
+          this.particles.geometry.attributes.customColor.array[
+            (this.displayedEntries.length - 1) * 3 + 2
+          ],
+        ];
+
+        this.particles.geometry.attributes.customColor.array[
+          (this.displayedEntries.length - 1) * 3
+        ] = 1;
+        this.particles.geometry.attributes.customColor.array[
+          (this.displayedEntries.length - 1) * 3 + 1
+        ] = 1;
+        this.particles.geometry.attributes.customColor.array[
+          (this.displayedEntries.length - 1) * 3 + 2
+        ] = 1;
+        this.particles.geometry.attributes.customColor.needsUpdate = true;
+        console.log(this.particles.geometry);
         console.log(this.particles.geometry.attributes.customColor.array);
-        console.log('hey2');
+        console.log(this.displayedEntries);
+        console.log(this.particles.rotation);
       }
       //don't re-render the whole orb on like change
       else if (
@@ -105,7 +134,7 @@ class Home extends Component {
         //render when app first got entries from db after mounting
         console.log('hey3');
         this.renderDisplayedEntries();
-        this.setState({ displayedEntries: this.displayedEntries });
+        this.setState({displayedEntries: this.displayedEntries});
         while (this.scene.children.length > 0) {
           this.scene.remove(this.scene.children[0]);
         }
@@ -152,11 +181,11 @@ class Home extends Component {
   };
 
   DrawSphere = (segment, scene, camera, renderer) => {
-    const { entries } = this.props;
-    const { displayedEntries } = this.state;
+    const {entries} = this.props;
+    const {displayedEntries} = this.state;
     let stats, geometry, material;
     let particles;
-    let PARTICLE_SIZE = 140;
+    let PARTICLE_SIZE = 70;
     if (window.screen.width <= 479) {
       PARTICLE_SIZE = 500;
     }
@@ -166,8 +195,9 @@ class Home extends Component {
     //Creating sphere vertices
     let vertices = new THREE.SphereGeometry(150, segment, segment).vertices;
     //add in extra vertices if we need more
-    if (vertices.length < displayedEntries.length) {
-      vertices = new THREE.SphereGeometry(150, segment + 1, segment).vertices;
+    if (vertices.length < this.displayedEntries.length) {
+      vertices = new THREE.SphereGeometry(150, segment + 1, segment + 1)
+        .vertices;
     }
     let positions = new Float32Array(vertices.length * 3);
     let colors = new Float32Array(vertices.length * 3);
@@ -175,7 +205,7 @@ class Home extends Component {
     let vertex;
     let color = new THREE.Color();
     // console.log(vertices);
-    for (var i = 0, l = vertices.length; i < l; i++) {
+    for (let i = 0, l = vertices.length; i < l; i++) {
       vertex = vertices[i];
       vertex.toArray(positions, i * 3);
       // color.setHSL(0.07 + 0.08 * (i / l), 1, 0.5);
@@ -193,7 +223,7 @@ class Home extends Component {
     material = new THREE.ShaderMaterial({
       uniforms: {
         lights: true,
-        color: { value: new THREE.Color(0xffffff) },
+        color: {value: new THREE.Color(0xffffff)},
         texture: {
           value: new THREE.TextureLoader().load('disc.png'),
         },
@@ -205,8 +235,8 @@ class Home extends Component {
 
     //create sphere
     //color: 0xffff00
-    let sphereGeometry = new THREE.SphereGeometry(40, 32, 32);
-    const sphereTexture = new THREE.TextureLoader().load('white2.png');
+    let sphereGeometry = new THREE.SphereGeometry(30, 32, 32);
+    const sphereTexture = new THREE.TextureLoader().load('white1.jpg');
     const sphereMaterial = new THREE.MeshBasicMaterial({
       map: sphereTexture,
       color: '#dbfffa',
@@ -216,9 +246,9 @@ class Home extends Component {
 
     //only show the amount of dots = the number of displayed entries
     const drawCount =
-      this.state.displayedEntries.length > 0
-        ? this.state.displayedEntries.length - 1
-        : this.displayedEntries.length - 1;
+      this.displayedEntries.length > 0
+        ? this.displayedEntries.length
+        : this.state.displayedEntries.length;
     geometry.setDrawRange(0, drawCount);
     geometry.needsUpdate = true;
     //add particles behind spots
@@ -306,12 +336,13 @@ class Home extends Component {
   };
 
   renderParticles = () => {
-    const { entryIndex } = this.state;
+    const {entryIndex} = this.state;
+
     if (entryIndex < 0) {
       this.particles.rotation.x += 0.0001;
       this.particles.rotation.y += 0.00008;
-      this.sphere.rotation.x += 0.0008;
-      this.sphere.rotation.y += 0.002;
+      this.sphere.rotation.x += 0.0004;
+      this.sphere.rotation.y += 0.00016;
     }
     const geometry = this.particles.geometry;
     const attributes = geometry.attributes;
@@ -330,10 +361,10 @@ class Home extends Component {
             this.INTERSECTED = this.intersects[0].index;
             if (
               attributes.size.array[this.INTERSECTED] !==
-              this.PARTICLE_SIZE * 1.5
+              this.PARTICLE_SIZE * 1.25
             ) {
               attributes.size.array[this.INTERSECTED] =
-                this.PARTICLE_SIZE * 1.5;
+                this.PARTICLE_SIZE * 1.25;
             }
 
             attributes.size.needsUpdate = true;
@@ -351,7 +382,7 @@ class Home extends Component {
   };
 
   toggleEntry = () => {
-    this.setState({ entryIndex: -1 });
+    this.setState({entryIndex: -1});
   };
 
   render() {
@@ -360,11 +391,11 @@ class Home extends Component {
       ? JSON.stringify(this.today.toDateString()) ===
         JSON.stringify(today.toDateString())
       : false;
-    const { entries } = this.props;
-    const { entryIndex, date, displayedEntries } = this.state;
+    const {entries} = this.props;
+    const {entryIndex, date, displayedEntries} = this.state;
     return (
       <div>
-        <div style={{ position: 'absolute' }}>
+        <div style={{position: 'absolute'}}>
           <div
             //this is where all the 3d will mount
 
@@ -376,7 +407,7 @@ class Home extends Component {
           render out message box with entry */}
           {entryIndex >= 0 && entries[0] ? (
             <SingleEntry
-              displayedEntries={displayedEntries}
+              displayedEntries={this.displayedEntries}
               entryIndex={entryIndex}
               toggleEntry={this.toggleEntry}
             />
@@ -406,7 +437,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
-  return { entries: state.entries };
+  return {entries: state.entries};
 };
 
 export default connect(mapStateToProps)(Home);

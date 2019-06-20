@@ -11,10 +11,10 @@ const makeFakeEntry = () => {
     [40.705125, -74.00898],
     [40.714178, -74.00626],
     [40.712094, -74.011946],
-    [40.720909, -74.000678],
-    [40.731208, -73.99747],
-    [40.757863, -73.985554],
-    [40.774226, -73.971878],
+    // [40.720909, -74.000678],
+    // [40.731208, -73.99747],
+    // [40.757863, -73.985554],
+    // [40.774226, -73.971878],
     [40.745086, -73.976254],
     [40.668159, -73.982455],
   ];
@@ -43,7 +43,7 @@ const makeFakeEntry = () => {
   ]
   const randomIdx = Math.floor(Math.random() * points.length);
   const coords = points[randomIdx];
-  const fakeDateTime = faker.date.recent(15)
+  const fakeDateTime = faker.date.recent(10)
 
 
   return {
@@ -69,7 +69,7 @@ const makeFakeEntry = () => {
     ),
     likes: faker.random.number({
       min: 0,
-      max: 100
+      max: 400
     }),
     expireDate: new Date(Date.parse(fakeDateTime) + 30 * 24 * 60 * 60 * 1000).toString(),
     spotifyUrl: spotifyList[Math.floor(Math.random()*20)]
