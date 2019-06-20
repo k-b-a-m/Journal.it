@@ -8,19 +8,29 @@
   z-index: 9999;
 }
 
-.prev {
+.arrow-container{
   position: absolute;
   top: 50%;
-  left: 0;
   transform: translate(0, -50%);
+  width: 98vw;
+  display:flex;
+  justify-content: space-between;
+}
+
+.prev {
+  /* position: absolute; */
+  /* top: 50%; */
+  /* left: 0;
+  transform: translate(0, -50%); */
   z-index: 9999;
 }
 
 .next {
-  position: absolute;
-  top: 49.7%;
-  right: 40px;
-  transform: translate(0, -50%);
+  /* position: absolute; */
+  /* top: 50%; */
+  /* right: 0px;
+  transform: translate(0, -50%); */
+  padding-bottom: 5px;
   z-index: 9999;
 }
 
@@ -39,7 +49,9 @@
 
 button {
   background: black;
+  all: unset;
   border: none;
+  padding: 0;
 }
 
 button:focus {

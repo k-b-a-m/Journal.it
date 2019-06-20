@@ -402,7 +402,7 @@ class Home extends Component {
     const {entryIndex, date, displayedEntries} = this.state;
     return (
       <div>
-        <div style={{position: 'absolute'}}>
+        <div>
           <div
             //this is where all the 3d will mount
 
@@ -421,19 +421,22 @@ class Home extends Component {
           ) : (
             ''
           )}
-          <div className="prev">
-            <button onClick={evt => this.handleArrowClick(evt, false)}>
-              <img src="prev.png" />
-            </button>
+          <div className = 'arrow-container' >
+            <div className="prev">
+              <button onClick={evt => this.handleArrowClick(evt, false)}>
+                <img src="prev.png" />
+              </button>
+            </div>
+            <div className={`next ${disabledButton ? 'disabled' : ''}`}>
+              <button
+                onClick={evt => this.handleArrowClick(evt, true)}
+                disabled={disabledButton}
+              >
+                <img src="next.png" />
+              </button>
+            </div>
           </div>
-          <div className={`next ${disabledButton ? 'disabled' : ''}`}>
-            <button
-              onClick={evt => this.handleArrowClick(evt, true)}
-              disabled={disabledButton}
-            >
-              <img src="next.png" />
-            </button>
-          </div>
+
           <div className="date">
             <h3>{date}</h3>
           </div>
