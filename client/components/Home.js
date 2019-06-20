@@ -85,13 +85,15 @@ class Home extends Component {
       ) {
         this.geometry.setDrawRange(0, this.displayedEntries.length);
         //TODO: change the color of newly added entry/ glow
-        // this.previousColor = this.particles.geometry.attributes.customColor.array[
-        //   this.displayedEntries.length - 1
-        // ];
-        // this.particles.geometry.attributes.customColor.array[
-        //   this.displayedEntries.length - 1
-        // ] = new THREE.Color(0xffffff);
-        // this.particles.geometry.attributes.customColor.needsUpdate = true;
+        console.log(this.displayedEntries);
+        this.previousColor = this.particles.geometry.attributes.customColor.array[
+          this.displayedEntries.length - 1
+        ];
+        this.particles.geometry.attributes.customColor.array[
+          this.displayedEntries.length - 1
+        ] = 0;
+        this.particles.geometry.attributes.customColor.needsUpdate = true;
+        console.log(this.particles.geometry);
         console.log(this.particles.geometry.attributes.customColor.array);
         console.log('hey2');
       }
@@ -339,7 +341,7 @@ class Home extends Component {
             attributes.size.needsUpdate = true;
             //TODO add pop up message containing entries here
             //set state as current dots index
-            console.log(this.intersects[0].index)
+            console.log(this.intersects[0].index);
             console.log(this.displayedEntries);
             this.setState({
               entryIndex: this.intersects[0].index,
